@@ -222,6 +222,19 @@ def pretrain(neox_args):
                 optimizer=optimizer,
                 lr_scheduler=lr_scheduler,
             )
+        
+        if neox_args.do_valid:
+            prefix = "the start of training for val data"
+            evaluate_and_print_results(
+                neox_args=neox_args,
+                prefix=prefix,
+                forward_step_func=forward_step,
+                data_iterator=valid_data_iterator,
+                model=model,
+                iteration=iteration,
+                verbose=False,
+                timers=timers,
+            )
 
         iteration = train(
             neox_args=neox_args,
@@ -552,6 +565,9 @@ def get_optimizer(model, neox_args):
     else:
         raise ValueError(f"Optimizer type {neox_args.optimizer_type} not recognized")
 
+    # print(neox_args.optimizer_type,adam_optimizer)
+    # exit(0)
+
     if neox_args.deepspeed:
         # fp16 wrapper is not required for DeepSpeed.
         return optimizer, param_groups
@@ -651,6 +667,7 @@ def setup_model_and_optimizer(neox_args, use_cache=False, iteration=None):
         print_rank_0(
             f"Loading checkpoint and starting from iteration {neox_args.iteration}"
         )
+        # exit(0)
     else:
         neox_args.iteration = 0
 
@@ -825,9 +842,9 @@ def train(
 
         # Evaluation
         if (
-            neox_args.eval_interval
+            (neox_args.eval_interval
             and iteration % neox_args.eval_interval == 0
-            and neox_args.do_valid
+            and neox_args.do_valid) or lr == neox_args.optimizer.params.lr
         ):
             prefix = "iteration {}".format(iteration)
             evaluate_and_print_results(

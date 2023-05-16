@@ -1,25 +1,48 @@
 # Suggested data paths when using GPT-NeoX locally
 {
-  "data-path": "data/enwik8/enwik8_text_document",
+  # "data-path": "data/enwik8/enwik8_text_document",
 
   # or for weighted datasets:
-  # "train-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
-  # "test-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
-  # "valid-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
-  # "train-data-weights": [1., 2.],
-  # "test-data-weights": [2., 1.],
-  # "valid-data-weights": [0.5, 0.4],
+  "train-data-paths": [
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/arxiv/arxiv_tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/book/book_tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/c4/processed_en/c4_tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/wikipedia/wiki_full_tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/github/tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/cc_classifier_filtered/2019-30/tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/cc_classifier_filtered/2020-05/tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/cc_classifier_filtered/2021-04/tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/cc_classifier_filtered/2022-05/tokenized_text_document",
+    "/gpfs/alpine/csc499/proj-shared/red_pajama_data/cc_classifier_filtered/2023-06/tokenized_text_document",
+  ],
+  "test-data-paths": ["/gpfs/alpine/csc499/proj-shared/red_pajama_data/the_pile/test_tokenized_text_document"],
+  "valid-data-paths": ["/gpfs/alpine/csc499/proj-shared/red_pajama_data/the_pile/val_tokenized_text_document"],
+  "train-data-weights": [
+    2.5,
+    4.5,
+    15.0,
+    4.5,
+    4.5,
+    13.4,
+    13.4,
+    13.4,
+    13.4,
+    13.4
+  ],
+  "test-data-weights": [
+    1.
+  ],
+  "valid-data-weights": [
+    1.
+  ],
 
-  # If weight_by_num_documents is True, Builds dataset weights from a multinomial distribution over groups of data according to the number of documents in each group.
-  # WARNING: setting this to True will override any user provided weights
-  # "weight_by_num_documents": false,
-  # "weighted_sampler_alpha": 0.3,
-
-  "vocab-file": "data/gpt2-vocab.json",
-  "merge-file": "data/gpt2-merges.txt",
-
+  "finetune": true,
+  "tokenizer-type": "HFTokenizer",
+  "vocab_file": "data/20B_tokenizer.json",
+  
   "save": "checkpoints",
-  "load": "checkpoints",
+  "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia/410m",
+
   "checkpoint_validation_with_forward_pass": False,
 
   "tensorboard-dir": "tensorboard",

@@ -39,11 +39,16 @@ class RotaryEmbedding(torch.nn.Module):
     def __init__(self, dim, base=10000, precision=torch.half):
         super().__init__()
         inv_freq = 1.0 / (base ** (torch.arange(0, dim, 2).float() / dim))
+        # print("neox inv_freq",inv_freq)
         self.register_buffer("inv_freq", inv_freq)
         self.seq_len_cached = None
         self.cos_cached = None
         self.sin_cached = None
         self.precision = precision
+        self.base = base
+        self.dim = dim
+        # print("neox inv_freq device",self.inv_freq.device,self.inv_freq.dtype)
+        # exit(0)
 
     def forward(self, x, seq_dim=1, seq_len=None):
         if seq_len is None:
@@ -62,6 +67,32 @@ class RotaryEmbedding(torch.nn.Module):
                 self.sin_cached = self.sin_cached.bfloat16()
         return self.cos_cached, self.sin_cached
 
+    # def forward(self, x, seq_dim=1, seq_len=None):
+    #     if seq_len is None:
+    #         seq_len = x.shape[seq_dim]
+    #     if seq_len != self.seq_len_cached:
+    #         self.seq_len_cached = seq_len
+    #         # t = torch.arange(seq_len, device=x.device).type_as(self.inv_freq)
+    #         inv_freq = 1.0 / (self.base ** (torch.arange(0, self.dim, 2).float() / self.dim))
+    #         self.register_buffer("inv_freq", inv_freq)
+    #         self.inv_freq = self.inv_freq.to('cpu')
+    #         t = torch.arange(2048, device=self.inv_freq.device, dtype=self.inv_freq.dtype)
+    #         self.t = t.clone()
+    #         freqs = torch.einsum("i,j->ij", t, self.inv_freq)
+    #         self.freqs = freqs.clone()
+    #         emb = torch.cat((freqs, freqs), dim=-1)
+    #         self.emb = emb.clone()
+    #         # print("Neox emb",emb[0,:10])
+    #         # if self.precision == torch.bfloat16:
+    #         #     emb = emb.float()
+    #         emb = emb
+    #         self.cos_cached = emb.cos()[:seq_len, None, None, :].half().to(x.device)
+    #         self.sin_cached = emb.sin()[:seq_len, None, None, :].half().to(x.device)
+    #         # if self.precision == torch.bfloat16:
+    #         #     self.cos_cached = self.cos_cached.bfloat16()
+    #         #     self.sin_cached = self.sin_cached.bfloat16()
+    #     return self.cos_cached, self.sin_cached
+
 
 # rotary pos emb helpers:
 
@@ -75,21 +106,33 @@ def rotate_half(x):
 
 @torch.jit.script
 def apply_rotary_pos_emb(q, k, cos, sin, offset: int = 0):
+    # print("[before] cos, sin in neox",cos.shape,sin.shape)
+    #this just ensures the the seq len of cos and sin are
+    #the same as q and k
     cos, sin = (
-        cos[offset : q.shape[0] + offset, ...],
+        cos[offset : q.shape[0] + offset, ...],  
         sin[offset : q.shape[0] + offset, ...],
     )
-    return (q * cos) + (rotate_half(q) * sin), (k * cos) + (rotate_half(k) * sin)
-
-
+    # print("[after] cos, sin in neox",cos.shape,sin.shape)
+    # print("[after] q, k in neox",q.shape,k.shape)
+    return (q * cos) + (rotate_half(q) * sin), (k * cos) + (rotate_half(k) * sin), {} #\
+        # {'cos':cos.clone(),'sin':sin.clone(),
+        # 'rotq':(rotate_half(q) * sin).clone(),'rotk':(rotate_half(k) * sin).clone(),
+        # 'qcos':(q * cos).clone(),'kcos':(k * cos).clone(),}
+        
 def apply_rotary_pos_emb_torch(
     q, k, cos, sin, offset: int = 0
 ):  # jitting fails with bf16
+    # print("[before] cos, sin in neox",cos.shape,sin.shape)
     cos, sin = (
         cos[offset : q.shape[0] + offset, ...],
         sin[offset : q.shape[0] + offset, ...],
     )
-    return (q * cos) + (rotate_half(q) * sin), (k * cos) + (rotate_half(k) * sin)
+    # print("[after] cos, sin in neox",cos.shape,sin.shape)
+    return (q * cos) + (rotate_half(q) * sin), (k * cos) + (rotate_half(k) * sin), {} #\
+        # {'cos':cos.clone(),'sin':sin.clone(),
+        # 'rotq':(rotate_half(q) * sin).clone(),'rotk':(rotate_half(k) * sin).clone(),
+        # 'qcos':(q * cos).clone(),'kcos':(k * cos).clone(),}
 
 
 class AliBi(torch.nn.Module):

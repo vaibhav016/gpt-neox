@@ -240,8 +240,12 @@ def load_checkpoint(
             neox_args.load,
             load_optimizer_states=load_optim_and_scheduler,
             load_lr_scheduler_states=load_optim_and_scheduler,
+            load_module_only=not load_optim_and_scheduler,
             tag=tag,
         )
+
+        # print("loading checkpoints with load_module_only=",not load_optim_and_scheduler)
+        # exit(0)
 
         if checkpoint_name is None:
             # if an iteration is specified, we want to raise an error here rather than

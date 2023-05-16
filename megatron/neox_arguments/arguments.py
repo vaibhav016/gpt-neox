@@ -428,6 +428,33 @@ class NeoXArgs(*BASE_CLASSES):
             megatron_config.update(overwrite_values)
         return cls.from_dict(args_dict=megatron_config)
 
+
+
+    @classmethod
+    def consume_neox_args2(cls, args_parsed, overwrite_values=None):
+        """
+        Deepspeed launcher needs to pass the arguments for `pretrain_gpt2.py` across to all machines.
+
+        In order not to have any problems with different configs being mismatched across machines, we instead read the .yaml configuration file from the main rank,
+        then serialize the arguments to a dictionary, which the deepspeed launcher broadcasts to all machines (`--megatron_config`).
+
+        We then instantiate a new NeoXArgs from the dictionary (`.from_dict`). This should ensure args are never inconsistent across machines.
+        """
+
+        with open(args_parsed.megatron_config) as jsonfile:
+            megatron_config = json.load(jsonfile)
+        if args_parsed.deepspeed_config is not None:
+            overwrite_values = cls.set_up_autotuning(
+                args_parsed.deepspeed_config, overwrite_values
+            )
+        if overwrite_values is not None:
+            megatron_config.update(overwrite_values)
+        return cls.from_dict(args_dict=megatron_config)
+
+
+
+
+
     @staticmethod
     def set_up_autotuning(encoded_config, overwrite_values):
         config = json.loads(base64.urlsafe_b64decode(encoded_config).decode("utf-8"))
@@ -922,7 +949,7 @@ class NeoXArgs(*BASE_CLASSES):
         # Update 'is pipe parallel' flag
         # if we set pipe_parallel_size to 0 or 1, GPT2ModelPipe.to_sequential() is called, and we run training with
         # the sequential model without the PipelineModule wrapper to avoid the overhead it incurs
-        self.update_value("is_pipe_parallel", self.pipe_parallel_size >= 1)
+        self.update_value("is_pipe_parallel", self.pipe_parallel_size >= 2)
 
         # Attention config
         if self.attention_config is None:

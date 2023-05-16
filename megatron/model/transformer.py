@@ -114,9 +114,11 @@ class ParallelMLP(nn.Module):
         )
 
     def forward(self, hidden_states):
+        d = {}
 
         # [s, b, 4hp]
         intermediate_parallel, bias_parallel = self.dense_h_to_4h(hidden_states)
+        # d['before act'] = (intermediate_parallel + bias_parallel).clone()
 
         if (
             self.activation_type == "gelu" and self.bias_gelu_fusion
@@ -129,9 +131,12 @@ class ParallelMLP(nn.Module):
                 intermediate_parallel + bias_parallel
             )
 
+        
+        # d['after act'] = (intermediate_parallel ).clone()
+
         # [s, b, h]
         output, output_bias = self.dense_4h_to_h(intermediate_parallel)
-        return output, output_bias
+        return output, output_bias, d
 
 
 class ParallelLinear(nn.Module):
@@ -316,6 +321,8 @@ class ParallelSelfAttention(nn.Module):
             skip_bias_add=True,
             parallel_output=parallel_output,
         )
+
+        # self.activations = {}
 
     def attention(
         self, query_layer, key_layer, value_layer, layer_past, attention_mask
@@ -527,7 +534,7 @@ class ParallelSelfAttention(nn.Module):
                 # full rotary
                 query_rot, key_rot = query_layer, key_layer
             apply_rotary_fn = (
-                apply_rotary_pos_emb_torch if self.bf16 else apply_rotary_pos_emb
+                apply_rotary_pos_emb_torch# if self.bf16 else apply_rotary_pos_emb
             )
 
             seq_len = key_layer.shape[0]
@@ -536,9 +543,16 @@ class ParallelSelfAttention(nn.Module):
                 offset = layer_past[0].shape[0]
                 seq_len += offset
             cos, sin = self.rotary_emb(value_layer, seq_len=seq_len)
-            query_layer, key_layer = apply_rotary_fn(
+
+            # self.activations['query_rot'] = query_rot.clone()
+            # self.activations['key_rot'] = key_rot.clone()
+            query_layer, key_layer, d_temp = apply_rotary_fn(
                 query_rot, key_rot, cos, sin, offset=offset
             )
+            # self.activations.update(d_temp)
+
+            # self.activations['query'] = query_layer.clone()
+            # self.activations['key'] = key_layer.clone()
 
             if exists(self.rotary_ndims):
                 query_layer = torch.cat((query_layer, query_pass), dim=-1)
@@ -582,7 +596,9 @@ class ParallelSelfAttention(nn.Module):
         # Output. [sq, b, h]
         # =================
 
+        # self.activations['before dense'] = context_layer.clone()
         output, bias = self.dense(context_layer)
+        # self.activations['after dense'] = (output + bias).clone()
 
         if self.use_cache:
             output = [output, present]
@@ -654,6 +670,9 @@ class ParallelTransformerLayer(nn.Module):
 
         self.layer_past = None  # used to cache k/v pairs in inference
 
+
+        # self.act = {}
+
     def _get_bias_dropout(self):
         if self.bias_dropout_fusion:
             fn = (
@@ -701,8 +720,12 @@ class ParallelTransformerLayer(nn.Module):
                     prob=self.hidden_dropout,
                 )
 
+            # self.act['attention_output'] = attention_output.clone()
+
             # mlp operator
-            mlp_output, mlp_bias = self.mlp(x2)
+            mlp_output, mlp_bias, d = self.mlp(x2)
+            # self.act.update(d)
+            # self.act['after_mlp'] = (mlp_output + mlp_bias).clone()
             with torch.enable_grad():
                 output = bias_dropout_fn(
                     mlp_output,
@@ -710,9 +733,11 @@ class ParallelTransformerLayer(nn.Module):
                     residual=attention_output,
                     prob=self.hidden_dropout,
                 )
-
+            # self.act['after attn add'] = output
             # output = (x + attn(ln(x)) + mlp(ln(x))
             output = residual + self.reduce(output)
+
+            # self.act['after_residual'] = output.clone()
         else:
             # pseudocode:
             # x = x + attn(ln1(x))
