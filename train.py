@@ -20,14 +20,29 @@ from megatron.neox_arguments import NeoXArgs
 from megatron.training import pretrain
 
 import os
+import numpy as np
 
 if __name__ == "__main__":
     neox_args = NeoXArgs.consume_neox_args()
     neox_args.configure_distributed_args()
     neox_args.build_tokenizer()  # tokenizer needs to be build in training in order to set the padding vocab
-    neox_args.initialize_tensorboard_writer()  # is initialized if tensorboard directory is defined
-    # os.system("echo $USER")
-    # print(os.environ.keys())
+
+    dir_str = "JOB-{}_{}-iters-{}_warmup-{}_max-lr-{}_min-lr-{}_{}".format(
+        os.environ['LSB_JOBID'],
+        neox_args.identifier_string,
+        neox_args.train_iters, 
+        neox_args.warmup, 
+        neox_args.optimizer['params']['lr'], 
+        neox_args.min_lr, 
+        "finetune" if neox_args.finetune else "pretrain")
+
+
+    neox_args.tensorboard_dir = os.path.join(neox_args.tensorboard_dir, dir_str)
+    neox_args.save = os.path.join(neox_args.save, dir_str)
+    print("NEOX ARGS tensorboard_dir: ", neox_args.tensorboard_dir)
+    print("NEOX ARGS save: ", neox_args.save)
     # exit(0)
+    neox_args.initialize_tensorboard_writer()  # is initialized if tensorboard directory is defined
+
     pretrain(neox_args=neox_args)
     

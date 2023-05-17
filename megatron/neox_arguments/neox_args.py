@@ -360,6 +360,18 @@ class NeoXArgsModel(NeoXArgsTemplate):
     Parameter controlling whether the output layer is parallelized over the hidden dim (row) or the vocab dim (column)
     """
 
+    identifier_string: str = ""
+    """
+    an identifier for the model, used for saving checkpoints,logging, etc.
+    """
+
+    warup_eval_interval: int = 50
+    """
+    the evaluation interval to use during warmup
+    """
+
+
+
 
 @dataclass
 class NeoXArgsOptimizer(NeoXArgsTemplate):

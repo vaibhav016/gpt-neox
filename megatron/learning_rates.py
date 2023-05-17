@@ -67,6 +67,7 @@ class AnnealingLR(object):
         num_iters_ = min(self.num_iters, self.end_iter - self.warmup_iter)
         # Warmup.
         if self.warmup_iter > 0 and self.num_iters <= self.warmup_iter:
+            print_rank_0("In get_lr, using warmup")
             return float(self.start_lr) * num_iters_ / self.warmup_iter
 
         num_iters_ = num_iters_ - self.warmup_iter

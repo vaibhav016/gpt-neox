@@ -830,8 +830,12 @@ def train(
             noise_scale_logger=noise_scale_logger,
         )
 
+
+        save_at_lr_peak = lr_scheduler.num_iters - 1 <= lr_scheduler.warmup_iter \
+                          and lr_scheduler.warmup_iter < (lr_scheduler.num_iters)
+
         # Checkpointing
-        if neox_args.save and iteration in neox_args.save_iters:
+        if ( neox_args.save and iteration in neox_args.save_iters ) or save_at_lr_peak:
             save_checkpoint(
                 neox_args=neox_args,
                 iteration=iteration,
@@ -840,11 +844,14 @@ def train(
                 lr_scheduler=lr_scheduler,
             )
 
-        # Evaluation
+        
         if (
             (neox_args.eval_interval
             and iteration % neox_args.eval_interval == 0
-            and neox_args.do_valid) or lr == neox_args.optimizer.params.lr
+            and neox_args.do_valid) 
+            or save_at_lr_peak
+            or ( (lr_scheduler.num_iters - 1) <= lr_scheduler.warmup_iter 
+                  and iteration % neox_args.warup_eval_interval == 0)
         ):
             prefix = "iteration {}".format(iteration)
             evaluate_and_print_results(
@@ -857,6 +864,9 @@ def train(
                 verbose=False,
                 timers=timers,
             )
+
+        # if save_at_lr_peak:
+        #     exit(0)
 
         if neox_args.exit_interval and iteration % neox_args.exit_interval == 0:
             torch.distributed.barrier()
