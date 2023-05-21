@@ -83,7 +83,7 @@
   "lr-decay-style": "cosine",
   "warmup": 0.01,
   "checkpoint-factor": 1000,
-  "eval-interval": 1,
+  "eval-interval": 100,
   "warup-eval-interval": 50,
   "eval-iters": 10,
 
