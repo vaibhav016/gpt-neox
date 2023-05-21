@@ -77,13 +77,13 @@
 
   # "fp32_allreduce": True, # without a patch to torch, bf16 models have to do the allreduce in fp32
   # misc. training settings
-  "train-iters": 182000,
-  "lr-decay-iters": 182000,
+  "train-iters": 176914,
+  "lr-decay-iters": 176914,
   "distributed-backend": "nccl",
   "lr-decay-style": "cosine",
   "warmup": 0.01,
   "checkpoint-factor": 1000,
-  "eval-interval": 100,
+  "eval-interval": 1,
   "warup-eval-interval": 50,
   "eval-iters": 10,
 
