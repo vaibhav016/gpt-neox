@@ -29,7 +29,7 @@ import torch
 import deepspeed
 from deepspeed.runtime.data_pipeline.curriculum_scheduler import CurriculumScheduler
 import numpy as np
-
+import copy
 from megatron.utils import (
     Timers,
     init_wandb,
@@ -44,7 +44,7 @@ from megatron.model import (
     get_params_for_weight_decay_optimization,
 )
 from megatron.checkpointing import load_checkpoint, save_checkpoint
-from megatron.data.data_utils import build_train_valid_test_data_iterators
+from megatron.data.data_utils import build_train_valid_test_data_iterators, build_validation_iterator
 from megatron.initialize import initialize_megatron
 from megatron.learning_rates import AnnealingLR
 from megatron.logging import tb_wandb_log, training_log
@@ -194,6 +194,11 @@ def pretrain(neox_args):
     )
     timers("model and optimizer").stop()
 
+    neox_args_val = copy.deepcopy(neox_args)
+    neox_args_val.train_data_paths = [None]
+    neox_args_val.test_data_paths = [None]
+    neox_args.valid_data_paths = neox_args.valid_data_paths[0]
+    neox_args.valid_data_weights = neox_args.valid_data_weights[0]
     # Data stuff.
     timers("train/valid/test data iterators").start()
     (
@@ -201,6 +206,14 @@ def pretrain(neox_args):
         valid_data_iterator,
         test_data_iterator,
     ) = build_train_valid_test_data_iterators(neox_args=neox_args)
+    val_iters = [valid_data_iterator]
+    if neox_args_val.valid_data_paths is not None and len(neox_args_val.valid_data_paths) > 1:
+        for i in range(1, len(neox_args_val.valid_data_paths)):
+            temp_copy = copy.deepcopy(neox_args_val)
+            temp_copy.valid_data_paths = temp_copy.valid_data_paths[i]
+            temp_copy.valid_data_weights = temp_copy.valid_data_weights[i]
+            val_iters.append(build_validation_iterator(neox_args=temp_copy))
+
     timers("train/valid/test data iterators").stop()
 
     if neox_args.use_mup and neox_args.coord_check:
@@ -225,16 +238,18 @@ def pretrain(neox_args):
         
         if neox_args.do_valid:
             prefix = "the start of training for val data"
-            evaluate_and_print_results(
-                neox_args=neox_args,
-                prefix=prefix,
-                forward_step_func=forward_step,
-                data_iterator=valid_data_iterator,
-                model=model,
-                iteration=iteration,
-                verbose=False,
-                timers=timers,
-            )
+            for i in range(len(val_iters)):
+                evaluate_and_print_results(
+                    neox_args=neox_args,
+                    prefix=prefix,
+                    forward_step_func=forward_step,
+                    data_iterator=val_iters[i],
+                    model=model,
+                    iteration=iteration,
+                    verbose=False,
+                    timers=timers,
+                    eval_name=f"val_{i}",
+                )
 
         iteration = train(
             neox_args=neox_args,
@@ -243,21 +258,23 @@ def pretrain(neox_args):
             optimizer=optimizer,
             lr_scheduler=lr_scheduler,
             train_data_iterator=train_data_iterator,
-            valid_data_iterator=valid_data_iterator,
+            valid_data_iterators=val_iters,
         )
 
     if neox_args.do_valid:
         prefix = "the end of training for val data"
-        evaluate_and_print_results(
-            neox_args=neox_args,
-            prefix=prefix,
-            forward_step_func=forward_step,
-            data_iterator=valid_data_iterator,
-            model=model,
-            iteration=iteration,
-            verbose=False,
-            timers=timers,
-        )
+        for i in range(len(val_iters)):
+            evaluate_and_print_results(
+                neox_args=neox_args,
+                prefix=prefix,
+                forward_step_func=forward_step,
+                data_iterator=val_iters[i],
+                model=model,
+                iteration=iteration,
+                verbose=False,
+                timers=timers,
+                eval_name=f"val_{i}",
+            )
 
     if neox_args.save and iteration != 0:
         save_checkpoint(
@@ -770,7 +787,7 @@ def train(
     optimizer,
     lr_scheduler,
     train_data_iterator,
-    valid_data_iterator,
+    valid_data_iterators,
 ):
     """Train the model function."""
 
@@ -854,16 +871,18 @@ def train(
                   and iteration % neox_args.warup_eval_interval == 0)
         ):
             prefix = "iteration {}".format(iteration)
-            evaluate_and_print_results(
-                neox_args=neox_args,
-                prefix=prefix,
-                forward_step_func=forward_step,
-                data_iterator=valid_data_iterator,
-                model=model,
-                iteration=iteration,
-                verbose=False,
-                timers=timers,
-            )
+            for i in range(len(valid_data_iterators)):
+                evaluate_and_print_results(
+                    neox_args=neox_args,
+                    prefix=prefix,
+                    forward_step_func=forward_step,
+                    data_iterator=valid_data_iterators[i],
+                    model=model,
+                    iteration=iteration,
+                    verbose=False,
+                    timers=timers,
+                    eval_name=f"val_{i}",
+                )
 
         # if save_at_lr_peak:
         #     exit(0)
@@ -883,7 +902,7 @@ def train(
 
 
 def evaluate(
-    neox_args, forward_step_fn, data_iterator, model, verbose=False, timers=None
+    neox_args, forward_step_fn, data_iterator, model, verbose=False, timers=None, eval_name=None
 ):
     """Evaluation.
     neox_args: NeoX Arguments
@@ -905,9 +924,11 @@ def evaluate(
         while iteration < neox_args.eval_iters:
             iteration += 1
             if verbose and iteration % neox_args.log_interval == 0:
-                print_rank_0(
-                    "Evaluating iter {}/{}".format(iteration, neox_args.eval_iters)
-                )
+                if not eval_name:
+                    eval_name = "Evaluation"
+                else:
+                    eval_name = "Evaluation ({})".format(eval_name)
+                print_rank_0(eval_name + " iter {}/{}".format(iteration, neox_args.eval_iters))
 
             # although we're not accumulating gradients here, we count one iter as train_batch_size_per_gpu * g.a.s
             # to be consistent with deepspeed's pipe parallel engine
@@ -970,6 +991,7 @@ def evaluate_and_print_results(
     verbose=False,
     timers=None,
     chart_name="validation",
+    eval_name=None,
 ):
     """Helper function to evaluate and dump results on screen."""
     total_loss_dict = evaluate(
@@ -979,15 +1001,23 @@ def evaluate_and_print_results(
         model=model,
         verbose=verbose,
         timers=timers,
+        eval_name=eval_name,
     )
-    string = f" {chart_name} results at {prefix} | "
+    if eval_name:
+        string = f" {chart_name} for {eval_name} at {prefix} | "
+    else:
+        string = f" {chart_name} results at {prefix} | "
     for k, v in total_loss_dict.items():
         if isinstance(v, dict):
             for k2, v2 in v.items():
                 k3 = "_".join([k, k2])
                 string += f"{k3} value: {v2:.6E} | "
+                if eval_name:
+                    key = f"{chart_name}/{eval_name}/{k3}"
+                else:
+                    key = f"{chart_name}/{k3}"
                 tb_wandb_log(
-                    f"{chart_name}/{k3}",
+                    key,
                     v2,
                     iteration,
                     use_wandb=neox_args.use_wandb,
@@ -995,8 +1025,12 @@ def evaluate_and_print_results(
                 )
         else:
             string += f"{k} value: {v:.6E} | "
+            if eval_name:
+                key = f"{chart_name}/{eval_name}/{k}"
+            else:
+                key = f"{chart_name}/{k}"
             tb_wandb_log(
-                f"{chart_name}/{k}",
+                key,
                 v,
                 iteration,
                 use_wandb=neox_args.use_wandb,

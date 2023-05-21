@@ -5,7 +5,7 @@
   "pipe-parallel-size": 1,
   "model-parallel-size": 1, # one copy of the model per node
 
-# model settings
+  # model settings
   "num-layers": 24,
   "hidden-size": 1024,
   "num-attention-heads": 16,
@@ -68,17 +68,17 @@
   # precision settings of LLaMa
   "fp16": {
     "enabled": true,
-  #  "type": "bfloat16", # set bf16 as precision
+    # "type": "bfloat16", # set bf16 as precision
     "loss_scale": 0,
     "loss_scale_window": 1000,
     "hysteresis": 2,
     "min_loss_scale": 1
   },
 
-#  "fp32_allreduce": True, # without a patch to torch, bf16 models have to do the allreduce in fp32
+  # "fp32_allreduce": True, # without a patch to torch, bf16 models have to do the allreduce in fp32
   # misc. training settings
-  "train-iters": 182000,
-  "lr-decay-iters": 182000,
+  "train-iters": 176914,
+  "lr-decay-iters": 176914,
   "distributed-backend": "nccl",
   "lr-decay-style": "cosine",
   "warmup": 0.01,
@@ -94,5 +94,4 @@
   "wall_clock_breakdown": true,
 
   "identifier_string": "pythia-c-410M"
-
 }
