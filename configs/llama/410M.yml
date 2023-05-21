@@ -48,7 +48,7 @@
 
   # LLAMA Config
   # batch / data settings
-  # "train_batch_size": 1104, #1104 # approximately 2.2M batch size across 46 nodes 
+  "train_batch_size": 1104, #1104 # approximately 2.2M batch size across 46 nodes 
   "train_micro_batch_size_per_gpu": 4,
   "data-impl": "mmap",
   "split": "949,50,1",
