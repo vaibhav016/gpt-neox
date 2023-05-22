@@ -194,7 +194,10 @@ def pretrain(neox_args):
     )
     timers("model and optimizer").stop()
 
+    tensorboard_writer = neox_args.tensorboard_writer
+    neox_args.tensorboard_writer = None
     neox_args_val = copy.deepcopy(neox_args)
+    neox_args.tensorboard_writer = tensorboard_writer
     neox_args_val.train_data_paths = [None]
     neox_args_val.test_data_paths = [None]
     neox_args.valid_data_paths = neox_args.valid_data_paths[0]
