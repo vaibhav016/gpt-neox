@@ -71,16 +71,16 @@
   "vocab-file": "/gpfs/alpine/csc499/scratch/kshitijkg/gpt-neox/data/20B_tokenizer.json",
   # "merge-file": "data/gpt2-merges.txt",
 
-  "save": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/checkpoints/continued_test8",
+  "save": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/checkpoints/continued_test_final7",
   "load": "/gpfs/alpine/csc499/scratch/kshitijkg/neox_converted/mp1_pp1/pythia",
 
   "checkpoint_validation_with_forward_pass": False,
 
-  "tensorboard-dir": "tensorboard/continued_test8",
-  "log-dir": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/logs/continued_test8",
+  "tensorboard-dir": "tensorboard/continued_test_final7",
+  "log-dir": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/logs/continued_test_final7",
   "use_wandb": False,
   # "wandb_host": "https://api.wandb.ai",
-  "wandb_project": "continued_test8",
+  "wandb_project": "continued_test_final7",
 
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
