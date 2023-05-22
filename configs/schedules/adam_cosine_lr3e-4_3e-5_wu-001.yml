@@ -11,8 +11,6 @@
   },
   "min_lr": 3.0e-4,
 
-
-  
   "lr-decay-style": "cosine",
   "warmup": 0.01,
 
