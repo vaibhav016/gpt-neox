@@ -65,12 +65,13 @@ CUDA_VISIBLE_DEVICES=0 python tools/convert_hf_to_sequential.py \
 Example usage[SUMMIT]: (Converts the 70M Pythia model to NeoX format)
 ================================================================
 CUDA_VISIBLE_DEVICES=0 python tools/convert_hf_to_sequential.py \
-    --hf-model-name pythia-410m-v0 \
-    --revision 143000 \
     --output-dir /gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia/410m \
     --cache-dir /gpfs/alpine/csc499/proj-shared/hf_checkpoints \
     --config configs/pythia/410M.yml configs/local_setup.yml \
-    --test 
+    --test \
+    --download \
+    --hf-model-name pythia-410m-v0 \
+    --revision 143000 \
 
 
 Example usage[SUMMIT]: (Converts the 70M Pythia model to NeoX format)
@@ -484,11 +485,6 @@ if __name__ == "__main__":
 
 
     tmp_cache_dir = get_non_existing_dir(args.ckpt_tmp_dir)
-    print("======================================================================")
-    print("Warning the following script will delete files withing {}".format(args.output_dir))
-    print("Warning the following script will delete this directory {}".format(tmp_cache_dir))
-    print("======================================================================")
-    time.sleep(5)
 
 
 
@@ -499,6 +495,12 @@ if __name__ == "__main__":
             cache_dir=os.path.join(args.cache_dir,f"{args.hf_model_name}/step{args.revision}")
         ).half()
         exit(0)
+    else:
+        print("======================================================================")
+        print("Warning the following script will delete files withing {}".format(args.output_dir))
+        print("Warning the following script will delete this directory {}".format(tmp_cache_dir))
+        print("======================================================================")
+        time.sleep(5)
 
     neox_args = consume_neox_args2(args2)
     # neox_args = NeoXArgs.from_ymls(args.config)
