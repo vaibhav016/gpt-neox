@@ -1,6 +1,4 @@
-
 {
-
 "optimizer": {
     "type": "Adam",
     "params": {
@@ -10,9 +8,6 @@
     }
   },
   "min_lr": 6.0e-5,
-
   "lr-decay-style": "cosine",
   "warmup": 0.02,
-
-
 }

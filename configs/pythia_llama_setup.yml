@@ -85,5 +85,5 @@
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
   "finetune": true,
-  "num_workers": 0,
+  "num_workers": 1,
 }

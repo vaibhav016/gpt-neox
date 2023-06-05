@@ -72,7 +72,7 @@
   # "merge-file": "data/gpt2-merges.txt",
 
   "save": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/checkpoints/continued_test8",
-  "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia",
+  # "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia",
 
   "checkpoint_validation_with_forward_pass": False,
 
@@ -81,9 +81,10 @@
   "use_wandb": False,
   # "wandb_host": "https://api.wandb.ai",
   "wandb_project": "continued_test8",
+  "finetune": true,
 
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
-  "finetune": true,
-  "num_workers": 0,
+  # "finetune": False,
+  "num_workers": 6,
 }

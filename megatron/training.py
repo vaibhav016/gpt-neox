@@ -227,8 +227,13 @@ def pretrain(neox_args):
     timers.log(["model and optimizer", "train/valid/test data iterators"])
     print_rank_0("training ...")
 
+
+    torch.distributed.barrier()
+    print_rank_0("After training barrier reached ...")
+
     iteration = neox_args.iteration
     if neox_args.do_train and neox_args.train_iters > 0:
+        print_rank_0("Entering training loop ...")
         # edge case: save step 0 checkpoint if requested and we're starting from step 0
         if neox_args.save and 0 in neox_args.save_iters and iteration == 0:
             save_checkpoint(
@@ -238,10 +243,13 @@ def pretrain(neox_args):
                 optimizer=optimizer,
                 lr_scheduler=lr_scheduler,
             )
+
+        print_rank_0("after save_checkpoint")
         
         if neox_args.do_valid:
             prefix = "the start of training for val data"
             for i in range(len(val_iters)):
+                print_rank_0("in if neox_args.do_valid for val_iters[i]",i, val_iters[i])
                 evaluate_and_print_results(
                     neox_args=neox_args,
                     prefix=prefix,
@@ -253,6 +261,9 @@ def pretrain(neox_args):
                     timers=timers,
                     eval_name=f"val_{i}",
                 )
+
+
+        print_rank_0("after evaluate_and_print_results")
 
         iteration = train(
             neox_args=neox_args,

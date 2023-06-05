@@ -9,6 +9,6 @@
   },
   "min_lr": 6.0e-5,
   "lr-decay-style": "cosine",
-  "warmup": 0.01,
+  "warmup": 0.0,
   # "load": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/checkpoints/continued_test8/JOB-2959221_pythia-c-410M-iters-181793_warmup-0.01_max-lr-0.0006_min-lr-6e-05_finetune"
 }
