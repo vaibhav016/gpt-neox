@@ -1,0 +1,90 @@
+# Suggested data paths when using GPT-NeoX locally
+{
+  # "data-path": "data/enwik8/enwik8_text_document",
+
+  # or for weighted datasets:
+  "train-data-paths": [
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/arxiv/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/book/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/c4/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/wikipedia/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/github/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2019-30/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2020-05/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2021-04/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2022-05/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2023-06/folder_train/tokenized_text_document",
+  ],
+  "test-data-paths": ["/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/the_pile/test_tokenized_text_document"],
+  "valid-data-paths": [
+    ["/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/the_pile/val_tokenized_text_document"],
+    [
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/arxiv/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/book/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/c4/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/wikipedia/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/github/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2019-30/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2020-05/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2021-04/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2022-05/folder_val/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2023-06/folder_val/tokenized_text_document",
+    ],
+    ],
+  "train-data-weights": [
+    2.5,
+    4.5,
+    15.0,
+    4.5,
+    4.5,
+    13.4,
+    13.4,
+    13.4,
+    13.4,
+    13.4
+  ],
+  "test-data-weights": [
+    1.
+  ],
+  "valid-data-weights": [
+    [1.],
+    [
+    2.5,
+    4.5,
+    15.0,
+    4.5,
+    4.5,
+    13.4,
+    13.4,
+    13.4,
+    13.4,
+    13.4
+    ],
+  ],
+
+  # If weight_by_num_documents is True, Builds dataset weights from a multinomial distribution over groups of data according to the number of documents in each group.
+  # WARNING: setting this to True will override any user provided weights
+  # "weight_by_num_documents": false,
+  # "weighted_sampler_alpha": 0.3,
+
+  "tokenizer-type": "HFTokenizer",
+  "vocab-file": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/20B_tokenizer.json",
+  # "merge-file": "data/gpt2-merges.txt",
+
+  "save": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/checkpoints/continued_test8",
+  # "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia",
+
+  "checkpoint_validation_with_forward_pass": False,
+
+  "tensorboard-dir": "tensorboard/continued_test8",
+  "log-dir": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/logs/continued_test8",
+  "use_wandb": False,
+  # "wandb_host": "https://api.wandb.ai",
+  "wandb_project": "continued_test8",
+  "finetune": true,
+
+  "launcher": "jsrun",
+  "deepspeed_jsrun": true,
+  # "finetune": False,
+  "num_workers": 6,
+}

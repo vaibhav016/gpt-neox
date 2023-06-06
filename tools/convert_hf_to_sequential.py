@@ -67,7 +67,7 @@ Example usage[SUMMIT]: (Converts the 70M Pythia model to NeoX format)
 CUDA_VISIBLE_DEVICES=0 python tools/convert_hf_to_sequential.py \
     --output-dir /gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia/410m \
     --cache-dir /gpfs/alpine/csc499/proj-shared/hf_checkpoints \
-    --config configs/pythia/410M.yml configs/local_setup.yml \
+    --config configs/llama/410M.yml configs/local_setup.yml \
     --test \
     --download \
     --hf-model-name pythia-410m-v0 \
@@ -90,15 +90,19 @@ NOTE: This requires manually changing the arguments below.
 ================================================================
 CUDA_VISIBLE_DEVICES=0,1,2,3 python ./deepy.py tools/convert_hf_to_sequential.py \
     -d configs pythia/70M.yml local_setup.yml
+
+
+simple download script:
+python tools/convert_hf_to_sequential.py --download-only --cache-dir /gpfs/alpine/csc499/proj-shared/hf_checkpoints --hf-model-name pythia-410m-v0 --revision 143000
 """
 
 MULTI_GPU_ARGS = " ".join(
         [
             "--hf-model-name pythia-410m-v0",
-            "--revision 143000",
+            "--revision 27000",
             "--output-dir /gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia/410m",
             "--cache-dir /gpfs/alpine/csc499/proj-shared/hf_checkpoints",
-            "--config configs/llama/410M.yml configs/local_setup_llama.yml",
+            "--config configs/llama/410M.yml configs/local_setup_llama.yml schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml",
             "--test"
         ]
     )
@@ -502,8 +506,13 @@ if __name__ == "__main__":
         print("======================================================================")
         time.sleep(5)
 
-    neox_args = consume_neox_args2(args2)
-    # neox_args = NeoXArgs.from_ymls(args.config)
+    args.output_dir = args.output_dir + f"_step{args.revision}"
+    # print(args.output_dir)
+    # exit(0)
+    if int(os.environ['OMPI_COMM_WORLD_SIZE']) > 1:
+        neox_args = consume_neox_args2(args2)
+    else:
+        neox_args = NeoXArgs.from_ymls(args.config) 
     neox_args.configure_distributed_args()
     neox_args.build_tokenizer()
     neox_args.initialize_tensorboard_writer()

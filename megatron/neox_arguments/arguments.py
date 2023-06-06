@@ -555,7 +555,7 @@ class NeoXArgs(*BASE_CLASSES):
             ).decode("utf-8")
             args_list.append(encoded_ds_config)
 
-        megatron_fp = cwd / Path("megatron_config.json")
+        megatron_fp = cwd / Path(f"megatron_config_{os.environ['LSB_JOBID']}.json")
         # get all config values
         args_list.append("--megatron_config")
         args_list.append(str(megatron_fp))
@@ -1171,6 +1171,7 @@ class NeoXArgs(*BASE_CLASSES):
 
             actual_type = type(actual_value)
             if actual_type != field_def.type:
+                # print("in validate types actual_type:{}, field_name:{}".format(actual_type,field_name))
                 if (
                     actual_type == int and field_def.type == float
                 ):  # floats should be able to be configured as ints

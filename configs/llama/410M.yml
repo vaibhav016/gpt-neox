@@ -25,15 +25,15 @@
   "init_method": "small_init",
   "output_layer_init_method": "wang_init",
 
-  "optimizer": {
-    "type": "Adam",
-    "params": {
-      "lr": 3.0e-4,
-      "betas": [0.9, 0.95],
-      "eps": 1.0e-8,
-    }
-  },
-  "min_lr": 3.0e-5,
+  # "optimizer": {
+  #   "type": "Adam",
+  #   "params": {
+  #     "lr": 3.0e-4,
+  #     "betas": [0.9, 0.95],
+  #     "eps": 1.0e-8,
+  #   }
+  # },
+  # "min_lr": 3.0e-5,
 
   "zero_optimization": {
     "stage": 1,
@@ -80,8 +80,8 @@
   "train-iters": 181793,
   "lr-decay-iters": 181793,
   "distributed-backend": "nccl",
-  "lr-decay-style": "cosine",
-  "warmup": 0.01,
+  # "lr-decay-style": "cosine",
+  # "warmup": 0.01,
   "checkpoint-factor": 1000,
   "eval-interval": 100,
   "warup-eval-interval": 50,

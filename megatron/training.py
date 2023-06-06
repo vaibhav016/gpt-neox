@@ -242,6 +242,7 @@ def pretrain(neox_args):
         if neox_args.do_valid:
             prefix = "the start of training for val data"
             for i in range(len(val_iters)):
+                print_rank_0("in if neox_args.do_valid for val_iters[i]",i, val_iters[i])
                 evaluate_and_print_results(
                     neox_args=neox_args,
                     prefix=prefix,

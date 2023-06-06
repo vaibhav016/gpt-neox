@@ -9,5 +9,5 @@
   },
   "min_lr": 3.0e-5,
   "lr-decay-style": "cosine",
-  "warmup": 0.01,
+  "warmup": 0.02,
 }

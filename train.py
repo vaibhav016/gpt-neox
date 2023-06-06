@@ -35,8 +35,19 @@ if __name__ == "__main__":
         neox_args.optimizer['params']['lr'], 
         neox_args.min_lr, 
         "finetune" if neox_args.finetune else "pretrain")
+    
+    if 'pile' in neox_args.train_data_paths[0]:
+        dir_str += "_pile"
+    elif 'red_pajama' in neox_args.train_data_paths[0]:
+        dir_str += "_red_pajama"
 
 
+    dir_str += neox_args.load.split('/')[-1]
+    print(dir_str)
+    
+    # exit(0)
+
+    
     neox_args.tensorboard_dir = os.path.join(neox_args.tensorboard_dir, dir_str)
     neox_args.save = os.path.join(neox_args.save, dir_str)
     print("NEOX ARGS tensorboard_dir: ", neox_args.tensorboard_dir)
