@@ -1,0 +1,30 @@
+{
+  # or for weighted datasets:
+  "train-data-paths": [
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/arxiv/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/book/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/c4/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/wikipedia/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/github/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/stackexchange/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2019-30/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2020-05/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2021-04/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2022-05/folder_train/tokenized_text_document",
+    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/red_pajama_400B/common_crawl/2023-06/folder_train/tokenized_text_document",
+  ],
+  "train-data-weights": [
+    2.5,
+    4.5,
+    15.0,
+    4.5,
+    4.5,
+    2.0,
+    13.4,
+    13.4,
+    13.4,
+    13.4,
+    13.4
+  ],
+
+}
