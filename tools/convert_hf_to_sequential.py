@@ -99,7 +99,7 @@ python tools/convert_hf_to_sequential.py --download-only --cache-dir /gpfs/alpin
 MULTI_GPU_ARGS = " ".join(
         [
             "--hf-model-name pythia-410m-v0",
-            "--revision 27000",
+            "--revision 143000",
             "--output-dir /gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia/410m",
             "--cache-dir /gpfs/alpine/csc499/proj-shared/hf_checkpoints",
             "--config configs/llama/410M.yml configs/local_setup_llama.yml schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml",
