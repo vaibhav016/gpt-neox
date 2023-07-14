@@ -410,6 +410,7 @@ def build_train_valid_test_data_iterators(neox_args):
 
         # Build dataloders.
         train_dataloader = make_data_loader(train_ds, neox_args=neox_args)
+        neox_args.num_workers = 0
         valid_dataloader = make_data_loader(valid_ds, neox_args=neox_args)
         test_dataloader = make_data_loader(test_ds, neox_args=neox_args)
 

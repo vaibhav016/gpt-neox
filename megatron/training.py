@@ -215,6 +215,7 @@ def pretrain(neox_args):
             temp_copy = copy.deepcopy(neox_args_val)
             temp_copy.valid_data_paths = temp_copy.valid_data_paths[i]
             temp_copy.valid_data_weights = temp_copy.valid_data_weights[i]
+            temp_copy.num_workers = 0
             val_iters.append(build_validation_iterator(neox_args=temp_copy))
 
     timers("train/valid/test data iterators").stop()
