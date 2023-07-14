@@ -8,16 +8,16 @@
   "tokenizer-type": "HFTokenizer",
   "vocab-file": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/20B_tokenizer.json",
 
-  "save": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/checkpoints/continued_full_rp",
+  "save": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/checkpoints/continued_slim_pajama",
   # "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia",
 
   "checkpoint_validation_with_forward_pass": False,
 
-  "tensorboard-dir": "tensorboard/continued_full_rp",
-  "log-dir": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/logs/continued_full_rp",
+  "tensorboard-dir": "tensorboard/continued_slim_pajama",
+  "log-dir": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/logs/continued_slim_pajama",
   "use_wandb": False,
   # "wandb_host": "https://api.wandb.ai",
-  "wandb_project": "continued_full_rp",
+  "wandb_project": "continued_slim_pajama",
 
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
