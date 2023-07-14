@@ -37,12 +37,16 @@ if __name__ == "__main__":
         "finetune" if neox_args.finetune else "pretrain")
     
     if 'pile' in neox_args.train_data_paths[0]:
-        dir_str += "_pile"
+        dir_str += "_pile_"
     elif 'red_pajama' in neox_args.train_data_paths[0]:
-        dir_str += "_red_pajama"
+        dir_str += "_red_pajama_"
+    elif 'tokenized300B' in neox_args.train_data_paths[0]:
+        dir_str += "_slim_pajama_"
 
-
-    dir_str += neox_args.load.split('/')[-1]
+    if neox_args.load.split('/')[-1].startswith('JOB'):
+        dir_str += 'resume'
+    else:
+        dir_str += neox_args.load.split('/')[-1]
     print(dir_str)
     
     # exit(0)
