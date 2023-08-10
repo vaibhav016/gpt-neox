@@ -48,7 +48,7 @@
 
   # LLAMA Config
   # batch / data settings
-  "train_batch_size": 1104, #1104, #1104 # approximately 2.2M batch size across 46 nodes 
+  "train_batch_size": 1104, #1104, #1104, #1104 # approximately 2.2M batch size across 46 nodes 
   "train_micro_batch_size_per_gpu": 4,
   "data-impl": "mmap",
   "split": "949,50,1",
@@ -77,8 +77,11 @@
 
   # "fp32_allreduce": True, # without a patch to torch, bf16 models have to do the allreduce in fp32
   # misc. training settings
-  "train-iters": 131296,
-  "lr-decay-iters": 131296,
+  "train-iters": 5000,
+  "lr-decay-iters": 5000,
+
+
+
   "distributed-backend": "nccl",
   # "lr-decay-style": "cosine",
   # "warmup": 0.01,
