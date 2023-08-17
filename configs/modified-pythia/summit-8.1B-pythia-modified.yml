@@ -2,15 +2,15 @@
 {
    # parallelism settings ( you will want to change these based on your cluster setup, ideally scheduling pipeline stages
    # across the node boundaries )
-   "pipe-parallel-size": 6,
-   "model-parallel-size": 2, # one copy of the model per node
+   "pipe-parallel-size": 4,
+   "model-parallel-size": 6, # one copy of the model per node
 
    # model settings
 
 
-    "num_layers": 32,
-    "hidden_size": 2560,
-    "num_attention_heads": 32,
+    "num_layers": 18,
+    "hidden_size": 6144,
+    "num_attention_heads": 48,
     "seq_length": 2048,
     "max_position_embeddings": 2048,
     "pos_emb": "rotary",
@@ -19,7 +19,7 @@
     "gpt_j_residual": true,
     "output_layer_parallelism": "column",
 
-    "attention_config": [[["global"], 32]],
+    "attention_config": [[["global"], 18]],
 
     "scaled_upper_triang_masked_softmax_fusion": true,
     "bias_gelu_fusion": true,
@@ -28,16 +28,19 @@
    "init_method": "small_init",
    "output_layer_init_method": "wang_init",
 
-   # optimizer settings
-  #  "optimizer": {
-  #    "type": "Adam",
-  #    "params": {
-  #      "lr": 0.00012,
-  #      "betas": [0.9, 0.95],
-  #      "eps": 1.0e-8,
-  #    }
-  #  },
-  #  "min_lr": 0.000012,
+   #optimizer settings
+    # "optimizer": {
+    #   "type": "Adam",
+    #   "params": {
+    #     "lr": 0.00012,
+    #     "betas": [0.9, 0.95],
+    #     "eps": 1.0e-8,
+    #   }
+
+    # },
+    # "min_lr": 0.000012,
+
+    
    # for all zero_optimization options, see https://www.deepspeed.ai/docs/config-json/#zero-optimizations-for-fp16-training
    "zero_optimization": {
     "stage": 1,
@@ -50,11 +53,11 @@
   },
 
    # batch / data settings
-   "train_batch_size": 1104, # across 1024 nodes... fingers crossed
-  #  "train_micro_batch_size_per_gpu": 4,
-  #  "gradient_accumulation_steps": 2,
+   #"train_batch_size": 1, # across 1024 nodes... fingers crossed
+    "train_micro_batch_size_per_gpu": 4,
+    #"gradient_accumulation_steps": 2,
   #  "gradient_accumulation_steps": 8,
-   "gradient_accumulation_steps": 1,
+   "gradient_accumulation_steps": 8,
    "data-impl": "mmap",
    "split": "949,50,1",
 

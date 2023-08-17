@@ -164,7 +164,7 @@ def mup_coord_check(neox_args, timers, lr_scheduler, train_data_iterator):
     print_rank_0("Saved coord check plots... exiting")
     sys.exit(1)
 
-
+import pdb
 def pretrain(neox_args):
     """Main training program.
 
@@ -193,6 +193,7 @@ def pretrain(neox_args):
         neox_args=neox_args, use_cache=False
     )
     timers("model and optimizer").stop()
+
 
     tensorboard_writer = neox_args.tensorboard_writer
     neox_args.tensorboard_writer = None
@@ -265,6 +266,13 @@ def pretrain(neox_args):
             train_data_iterator=train_data_iterator,
             valid_data_iterators=val_iters,
         )
+    
+    if lr_scheduler.reload_optimizer():
+        # reload optimizer parameters to simulate restarting the decay on a checkpoint
+        # without available optimizer states
+        # optimizer.initialize_optimizer_states()
+        print_rank_0("no reloading this time")
+    
 
     if neox_args.do_valid:
         prefix = "the end of training for val data"
@@ -616,7 +624,11 @@ def get_learning_rate_scheduler(optimizer, neox_args):
         num_iters = neox_args.train_iters
     num_iters = max(1, num_iters)
     init_step = 0
-    warmup_iter = neox_args.warmup * num_iters
+    if neox_args.lr_decay_style == 'cosine-inf':
+        warmup_iter = neox_args.warmup * int(num_iters / neox_args.num_repeats)
+    else:
+        warmup_iter = neox_args.warmup * num_iters
+
     lr_scheduler = AnnealingLR(
         optimizer,
         start_lr=neox_args.lr,
@@ -624,6 +636,7 @@ def get_learning_rate_scheduler(optimizer, neox_args):
         total_iters=num_iters,
         decay_style=neox_args.lr_decay_style,
         last_iter=init_step,
+        num_repeats=neox_args.num_repeats,
         min_lr=neox_args.min_lr,
         use_checkpoint_lr_scheduler=neox_args.use_checkpoint_lr_scheduler,
         override_lr_scheduler=neox_args.override_lr_scheduler,
@@ -631,6 +644,20 @@ def get_learning_rate_scheduler(optimizer, neox_args):
     )
 
     return lr_scheduler
+
+
+def reset_optimizer(model,lr_scheduler,neox_args):
+    optimizer, param_groups = get_optimizer(model=model, neox_args=neox_args)
+    model, optimizer, _, lr_scheduler = deepspeed.initialize(
+        model=model,
+        optimizer=optimizer,
+        args=neox_args,
+        lr_scheduler=lr_scheduler,
+        dist_init_required=False,
+        model_parameters=param_groups,
+        config_params=neox_args.deepspeed_config,
+        mpu=mpu if not neox_args.is_pipe_parallel else None,
+    )
 
 
 def setup_model_and_optimizer(neox_args, use_cache=False, iteration=None):

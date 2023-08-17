@@ -429,7 +429,7 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     LR Scheduler Arguments
     """
 
-    lr_decay_style: Literal["constant", "linear", "cosine", "exponential"] = "linear"
+    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential"] = "linear"
     """
     Learning rate decay function. Choose from 'constant', 'linear', 'cosine', 'exponential'.
     """
@@ -457,6 +457,11 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     use_checkpoint_lr_scheduler: bool = False
     """
     Use checkpoint to set the values of the scheduler (learning rate, warmup iterations, minimum learning rate, maximum number of iterations, and decay style from checkpoint and ignore input arguments.
+    """
+
+    num_repeats: int = 1
+    """
+    the number of times the smalle schedule is repeated for infinite cosine decay
     """
 
 
