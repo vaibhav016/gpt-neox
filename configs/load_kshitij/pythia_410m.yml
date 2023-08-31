@@ -1,0 +1,7 @@
+{
+  "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia",
+  "save": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/new_checkpoints/",
+  "tensorboard-dir": "tensorboard/test22",
+  "log-dir": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/log_dir/test22",
+  "wandb_project": "test22",
+}

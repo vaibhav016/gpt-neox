@@ -1,0 +1,10 @@
+{
+  # or for weighted datasets:
+  "train-data-paths": [
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/Wikipedia/Wikipedia',
+    ],
+  "train-data-weights": [
+    1.0,
+  ],
+  # 11963032160
+}
