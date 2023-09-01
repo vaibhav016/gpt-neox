@@ -1,0 +1,20 @@
+{
+  # or for weighted datasets:
+  "train-data-paths": [
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/ArXiv/ArXiv',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/Book/Book',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/C4/C4',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/Wikipedia/Wikipedia',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/Github/Github',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/StackExchange/StackExchange',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_606B/CommonCrawl/CommonCrawl',],
+  "train-data-weights": [
+    4.576447650075095,
+    4.198505982426652,
+    26.62982374026485,
+    3.9945183507095225,
+    5.218824282422116,
+    3.372167199706489,
+    52.00971279439528
+  ],
+}

@@ -6,7 +6,7 @@
   # "weighted_sampler_alpha": 0.3,
 
   "tokenizer-type": "HFTokenizer",
-  "vocab-file": "/gpfs/alpine/csc499/scratch/kshitijkg/gpt-neox/data/20B_tokenizer.json",
+  "vocab-file": "data/20B_tokenizer.json",
 
   "checkpoint_validation_with_forward_pass": False,
   "use_wandb": False,
@@ -14,7 +14,11 @@
 
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
-  "num_workers": 2,
-
+  "num_workers": 1,
   "finetune": true,
+
+  "save": "checkpoints",
+  "tensorboard-dir": "tensorboard/continued_pretraining",
+  "log-dir": "logs",
+  "wandb_project": "continued_pretraining",
 }
