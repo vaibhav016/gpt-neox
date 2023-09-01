@@ -1,0 +1,24 @@
+{
+  # or for weighted datasets: # 315029822326
+  "train-data-paths": [
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/pile/train/pile_train',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/ArXiv/ArXiv',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/Book/Book',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/C4/C4',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/Wikipedia/Wikipedia',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/Github/Github',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/StackExchange/StackExchange',
+    '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/CommonCrawl/CommonCrawl',],
+  "train-data-weights": [
+    5.0,
+    4.3476252676,
+    3.9885806833,
+    25.2983325533,
+    3.7947924332,
+    4.9578830683,
+    3.2035588397,
+    49.4092271547
+  ],
+
+  "train-iters": 139332,
+}
