@@ -1,0 +1,28 @@
+{
+  # or for weighted datasets:
+  "train-data-paths": [
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/ArXiv/ArXiv',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/Book/Book',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/C4/C4',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/Wikipedia/Wikipedia',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/Github/Github',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/StackExchange/StackExchange',
+    '/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/slim_pajama/train_75B/CommonCrawl/CommonCrawl',],
+  "train-data-weights": [
+    4.576447650075095,
+    4.198505982426652,
+    26.62982374026485,
+    3.9945183507095225,
+    5.218824282422116,
+    3.372167199706489,
+    52.00971279439528
+  ],
+}
+
+# {'ArXiv': 4.576447650075095
+# 'Book': 4.198505982426652, 
+# 'C4': 26.62982374026485, 
+# 'Wikipedia': 3.9945183507095225,
+# 'Github': 5.218824282422116, 
+# 'StackExchange': 3.372167199706489, 
+# 'CommonCrawl': 52.00971279439528, }

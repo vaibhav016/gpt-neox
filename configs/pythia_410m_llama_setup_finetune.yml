@@ -6,22 +6,15 @@
   # "weighted_sampler_alpha": 0.3,
 
   "tokenizer-type": "HFTokenizer",
-  "vocab-file": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/20B_tokenizer.json",
-
-  "save": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/checkpoints/continued_pretraining",
-  # "load": "/gpfs/alpine/csc499/scratch/btherien/neox_converted/mp1_pp1/pythia",
+  "vocab-file": "/gpfs/alpine/csc499/scratch/kshitijkg/gpt-neox/data/20B_tokenizer.json",
 
   "checkpoint_validation_with_forward_pass": False,
-
-  "tensorboard-dir": "tensorboard/continued_pretraining",
-  "log-dir": "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/logs/continued_pretraining",
   "use_wandb": False,
   # "wandb_host": "https://api.wandb.ai",
-  "wandb_project": "continued_pretraining",
 
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
-  "num_workers": 1,
-  
+  "num_workers": 2,
+
   "finetune": true,
 }

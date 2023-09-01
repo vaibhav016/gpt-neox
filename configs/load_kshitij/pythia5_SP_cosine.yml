@@ -1,0 +1,7 @@
+{
+  "load": "/gpfs/alpine/csc499/scratch/kshitijkg/neox_converted/deduped/pythia",
+  "save": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/new_checkpoints/pythia5_SP_cosine",
+  "tensorboard-dir": "tensorboard_new/pythia5_SP_cosine",
+  "log-dir": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/log_dir_new/pythia5_SP_cosine",
+  "wandb_project": "pythia5_SP_cosine",
+}

@@ -429,7 +429,7 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     LR Scheduler Arguments
     """
 
-    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential"] = "linear"
+    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential", "constant_infinite", "inverse_sqrt_infinite"] = "linear"
     """
     Learning rate decay function. Choose from 'constant', 'linear', 'cosine', 'exponential'.
     """
@@ -439,9 +439,24 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     Number of iterations to decay learning rate over, If None defaults to --train-iters
     """
 
+    constant_iters_percent: float = None
+    """
+    Percent of total iterations to use constant learning rate for. If None, defaults to 0.
+    """
+
+    cooldown_iters_percent: float = None
+    """
+    Percent of total iterations to cooldown the learning rate for. If None, defaults to 0.
+    """
+
     min_lr: float = 0.0
     """
     Minimum value for learning rate. The scheduler clips values below this threshold.
+    """
+
+    constant_lr: float = None
+    """
+    Constant learning rate. If set, overrides all other learning rate settings.
     """
 
     warmup: float = 0.01

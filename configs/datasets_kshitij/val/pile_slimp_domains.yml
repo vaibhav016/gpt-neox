@@ -1,0 +1,31 @@
+{
+  "test-data-paths": ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/pile/test/pile_test_text_document"],
+  "test-data-weights": [
+    1.
+  ],
+  "valid-data-paths": [
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/pile/val/pile_val_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/all/sp_val"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/pile/val/pile_val_text_document", "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/all/sp_val"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/ArXiv/tokenized_arxiv_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/Book/tokenized_book_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/C4/tokenized_c4_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/Wikipedia/tokenized_wikipedia_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/Github/tokenized_github_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/StackExchange/tokenized_stackexchange_text_document"],
+    ["/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_val/CommonCrawl/tokenized_commoncrawl_text_document"],
+  ],
+  "valid-data-weights": [
+    [1.],
+    [1.],
+    [50.0, 50.0],
+    [1.],
+    [1.],
+    [1.],
+    [1.],
+    [1.],
+    [1.],
+    [1.],
+  ]
+
+}

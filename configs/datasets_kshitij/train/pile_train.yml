@@ -1,0 +1,11 @@
+{ 
+  "train-data-paths": [
+    "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/pile/train/pile_train",
+  ],
+  "train-data-weights": [
+    1.,
+  ],
+
+  #332027803568
+  "train-iters": 146850,
+}

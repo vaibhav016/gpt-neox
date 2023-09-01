@@ -1,0 +1,7 @@
+{
+  "load": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/new_checkpoints/scratch_SP_taskwise_infinite_inv",
+  "save": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/new_checkpoints/scratch_SP_taskwise_infinite_inv",
+  "tensorboard-dir": "tensorboard_new/scratch_SP_taskwise_infinite_inv",
+  "log-dir": "/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/log_dir_new/scratch_SP_taskwise_infinite_inv",
+  "wandb_project": "scratch_SP_taskwise_infinite_inv",
+}
