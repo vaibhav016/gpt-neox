@@ -6,9 +6,9 @@
   "model-parallel-size": 1, # one copy of the model per node
 
   # model settings
-  "num-layers": 24,
-  "hidden-size": 1024,
-  "num-attention-heads": 16,
+  "num-layers": 12,
+  "hidden-size": 768,
+  "num-attention-heads": 12,
   "seq-length": 2048,
   "max-position-embeddings": 2048,
   "pos-emb": "rotary",
@@ -48,8 +48,8 @@
 
   # LLAMA Config
   # batch / data settings
-  "train_batch_size": 1104, #1104, #1104, #1104, #1104, #1104 # approximately 2.2M batch size across 46 nodes 
-  "train_micro_batch_size_per_gpu": 4,
+  "train_batch_size": 48, # 1104, #1104, #1104, #1104, #1104 # approximately 2.2M batch size across 46 nodes 
+  "train_micro_batch_size_per_gpu": 8,
   "data-impl": "mmap",
   "split": "949,50,1",
 
