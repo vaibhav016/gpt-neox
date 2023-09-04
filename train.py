@@ -35,14 +35,20 @@ if __name__ == "__main__":
     # tr: train dataset name
     # finetune: finetune if training from scratch or resume
 
-    if neox_args.load == 'none':
+    if neox_args.load.split('/')[-1].startswith('JOB'):
+        if 'scratch' in neox_args.load:
+            training_mode = 'scratch'
+        elif 'finetune' in neox_args.load:
+            training_mode = 'finetune'
+        else:
+            training_mode = 'resume'
+
+    elif neox_args.load == 'none':
         training_mode = 'scratch'
     elif neox_args.finetune:
         training_mode = 'finetune'
-    elif not neox_args.finetune and neox_args.load.split('/')[-1].startswith('JOB'):
-        training_mode = 'resume'
     else:
-        training_mode = neox_args.load.split('/')[-1]
+        training_mode = 'resume'
 
     dir_str = "JOB-{}_{}_it-{}_wu-{}_mxlr-{}_mnlr-{}_sch-{}_tr-{}_{}".format(
         os.environ['LSB_JOBID'],
