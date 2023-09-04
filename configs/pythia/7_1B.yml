@@ -30,7 +30,6 @@
     #     "eps": 1.0e-8,
     #   }
 
-    # },
     # "min_lr": 0.000012,
    # for all zero_optimization options, see https://www.deepspeed.ai/docs/config-json/#zero-optimizations-for-fp16-training
    "zero_optimization": {
@@ -44,18 +43,13 @@
   },
 
    # batch / data settings
-   #"train_batch_size": 1, # across 1024 nodes... fingers crossed
-    "train_micro_batch_size_per_gpu": 4,
+   #"train_batch_size": 1, # across 1024 nodes... fingers crossed 
+   "train_micro_batch_size_per_gpu": 4,
     #"gradient_accumulation_steps": 2,
   #  "gradient_accumulation_steps": 8,
    "gradient_accumulation_steps": 4,
    "data-impl": "mmap",
 
-
-
-  # misc. training settings
-  "train-iters": 286102,
-  "lr-decay-iters": 286102,
 
    # activation checkpointing
    "checkpoint-activations": true,
@@ -84,7 +78,11 @@
    "distributed-backend": "nccl",
   #  "warmup": 0.01,
    "checkpoint-factor": 250,
-   "extra-save-iters": [0,1,2,4,8,16,32,64,128,256,512],
+   "extra-save-iters": [143051], # [0,1,2,4,8,16,32,64,128,256,512],
+
+
+   "train-iters": 143051,
+   "lr-decay-iters": 143051,
 
    "eval-interval": 100,
    "eval-iters": 10,
