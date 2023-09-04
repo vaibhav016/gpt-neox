@@ -61,7 +61,7 @@ if __name__ == "__main__":
     neox_args.save = os.path.join(neox_args.save, dir_str)
     print("NEOX ARGS tensorboard_dir: ", neox_args.tensorboard_dir)
     print("NEOX ARGS save: ", neox_args.save)
-    exit(0)
+    # exit(0)
     neox_args.initialize_tensorboard_writer()  # is initialized if tensorboard directory is defined
 
     pretrain(neox_args=neox_args)
