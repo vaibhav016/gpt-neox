@@ -1,7 +1,7 @@
 #configs
+configs/load_*
+configs/datasets_*
 configs/pythia_llama_setup.yml
-configs/pythia_410m_llama_setup_finetune.yml
-configs/pythia_410m_llama_setup_resume.yml
 configs/load_adam
 configs/datasets_adam
 

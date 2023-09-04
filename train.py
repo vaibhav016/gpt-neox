@@ -27,36 +27,41 @@ if __name__ == "__main__":
     neox_args.configure_distributed_args()
     neox_args.build_tokenizer()  # tokenizer needs to be build in training in order to set the padding vocab
 
-    dir_str = "JOB-{}_{}-iters-{}_warmup-{}_max-lr-{}_min-lr-{}_{}".format(
-        os.environ['LSB_JOBID'],
-        neox_args.identifier_string,
-        neox_args.train_iters, 
-        neox_args.warmup, 
-        neox_args.optimizer['params']['lr'], 
-        neox_args.min_lr, 
-        "finetune" if neox_args.finetune else "pretrain")
-    
-    if 'pile' in neox_args.train_data_paths[0]:
-        dir_str += "_pile_"
-    elif 'red_pajama' in neox_args.train_data_paths[0]:
-        dir_str += "_red_pajama_"
-    elif 'tokenized300B' in neox_args.train_data_paths[0]:
-        dir_str += "_slim_pajama_"
+    # it: iterations 
+    # wu: warmup
+    # mxlr: max learning rate
+    # mnlr: min learning rate
+    # sch: lr decay style
+    # tr: train dataset name
+    # finetune: finetune if training from scratch or resume
 
-    if neox_args.load.split('/')[-1].startswith('JOB'):
-        dir_str += 'resume'
+    if neox_args.load == 'none':
+        training_mode = 'scratch'
+    elif neox_args.finetune:
+        training_mode = 'finetune'
+    elif not neox_args.finetune and neox_args.load.split('/')[-1].startswith('JOB'):
+        training_mode = 'resume'
     else:
-        dir_str += neox_args.load.split('/')[-1]
-    print(dir_str)
-    
-    # exit(0)
+        training_mode = neox_args.load.split('/')[-1]
+
+    dir_str = "JOB-{}_{}_it-{}_wu-{}_mxlr-{}_mnlr-{}_sch-{}_tr-{}_{}".format(
+        os.environ['LSB_JOBID'],
+        neox_args.identifier_string.replace('_',"-"),
+        neox_args.train_iters,
+        neox_args.warmup,
+        neox_args.optimizer['params']['lr'], 
+        neox_args.min_lr,
+        neox_args.lr_decay_style,
+        neox_args.train_dataset_name.replace('_',"-"),
+        training_mode)
+
 
     
     neox_args.tensorboard_dir = os.path.join(neox_args.tensorboard_dir, dir_str)
     neox_args.save = os.path.join(neox_args.save, dir_str)
     print("NEOX ARGS tensorboard_dir: ", neox_args.tensorboard_dir)
     print("NEOX ARGS save: ", neox_args.save)
-    # exit(0)
+    exit(0)
     neox_args.initialize_tensorboard_writer()  # is initialized if tensorboard directory is defined
 
     pretrain(neox_args=neox_args)

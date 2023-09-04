@@ -10,15 +10,15 @@
     '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/StackExchange/StackExchange', # 10088908154
     '/gpfs/alpine/csc499/scratch/kshitijkg/continued_training/gpt-neox/data/slim_pajama_300B/CommonCrawl/CommonCrawl',], # 155887114486
   "train-data-weights": [
-    52.593786956,
-    2.099234645,
-    1.992545391,
-    12.652006918, 
-    1.894965295, 
-    2.476567438, 
-    1.598100762,
-    24.692792592
+    50.0,
+    2.2140923205,
+    2.101565663,
+    13.344249736,
+    1.9986465625,
+    2.612070528,
+    1.6855393625,
+    26.0438358255
   ],
 
-  "train-iters": 279216,
+  "train-iters": 264732,
 }

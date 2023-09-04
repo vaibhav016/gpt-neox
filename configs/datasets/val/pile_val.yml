@@ -8,6 +8,6 @@
   ],
   "valid-data-weights": [
     [1.],
-  ]
-
+  ],
+  "val-dataset-name": 'pile_val',
 }

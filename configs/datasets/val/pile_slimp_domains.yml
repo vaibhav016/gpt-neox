@@ -24,6 +24,7 @@
     [1.],
     [1.],
     [1.],
-  ]
+  ],
+  "val-dataset-name": 'pile_slimp_domains',
 
 }

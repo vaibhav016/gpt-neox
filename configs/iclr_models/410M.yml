@@ -1,5 +1,8 @@
 # GPT-2 pretraining setup
 {
+  #identifier string for this config used while logging
+  "identifier_string": "410M",
+
   # parallelism settings ( you will want to change these based on your cluster setup, ideally scheduling pipeline stages
   # across the node boundaries )
   "pipe-parallel-size": 1,
@@ -9,7 +12,6 @@
   "num-layers": 24,
   "hidden-size": 1024,
   "num-attention-heads": 16,
-  "seq-length": 2048,
   "max-position-embeddings": 2048,
   "pos-emb": "rotary",
   "rotary-pct": 0.25,
@@ -53,11 +55,6 @@
   "data-impl": "mmap",
   "split": "949,50,1",
 
-
-  # misc. training settings
-  "train-iters": 6000,
-  "lr-decay-iters": 6000,
-
   # activation checkpointing
   "checkpoint-activations": true,
   "checkpoint-num-layers": 1,
@@ -98,5 +95,4 @@
   "keep-last-n-checkpoints": 1000,
   "wall_clock_breakdown": true,
 
-  "identifier_string": "pythia-deduped-410M"
 }

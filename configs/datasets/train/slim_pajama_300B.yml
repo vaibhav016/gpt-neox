@@ -9,12 +9,15 @@
     'data/slim_pajama/train_300B/StackExchange/StackExchange',
     'data/slim_pajama/train_300B/CommonCrawl/CommonCrawl',],
   "train-data-weights": [
-    4.576447650075095,
-    4.198505982426652,
-    26.62982374026485,
-    3.9945183507095225,
-    5.218824282422116,
-    3.372167199706489,
-    52.00971279439528
+    4.428184641, 
+    4.203131326, 
+    26.688499472, 
+    3.997293125, 
+    5.224141056, 
+    3.371078725, 
+    52.087671651
   ],
+  "train-iters": 132366,
+  "lr-decay-iters": 132366,
+  "train-dataset-name": 'slim_pajama_300B',
 }

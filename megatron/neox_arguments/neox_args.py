@@ -1067,6 +1067,16 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     What to scale width by when creating the delta model for mup
     """
 
+    train_dataset_name: str = "no_train_dataset_name_given"
+    """
+    An identified for the training dataset used for logging
+    """
+
+    val_dataset_name: str = "no_val_dataset_name_given"
+    """
+    An identified for the training dataset used for logging
+    """
+
 
 @dataclass
 class NeoXArgsTextgen(NeoXArgsTemplate):

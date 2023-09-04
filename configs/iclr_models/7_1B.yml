@@ -1,4 +1,7 @@
 {
+  #identifier string for this config used while logging
+   "identifier_string": "7-1B",
+
    "pipe-parallel-size": 4,
    "model-parallel-size": 6,
 
@@ -76,7 +79,7 @@
    # misc. training settings
    "distributed-backend": "nccl",
   #  "warmup": 0.01,
-   "checkpoint-factor": 250,
+   "checkpoint-factor": 100,
    "extra-save-iters": [143051], # [0,1,2,4,8,16,32,64,128,256,512],
 
    "eval-interval": 100,

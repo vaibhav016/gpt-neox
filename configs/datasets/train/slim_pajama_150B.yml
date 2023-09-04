@@ -17,4 +17,7 @@
     3.372167199706489,
     52.00971279439528
   ],
+  "train-dataset-name": 'slim_pajama_150B',
+  "train-iters": 66342,
+  "lr-decay-iters": 66342,
 }

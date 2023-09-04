@@ -10,5 +10,6 @@
   "valid-data-weights": [
     [1.],
     [1.],
-  ]
+  ],
+  "val-dataset-name": 'pile_slimp',
 }
