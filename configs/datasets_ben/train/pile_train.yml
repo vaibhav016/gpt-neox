@@ -1,8 +1,0 @@
-{ 
-  "train-data-paths": [
-    "/gpfs/alpine/csc499/scratch/btherien/gpt-neox/data/pile/train/pile_train",
-  ],
-  "train-data-weights": [
-    1.,
-  ],
-}

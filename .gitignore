@@ -2,6 +2,14 @@
 configs/pythia_llama_setup.yml
 configs/pythia_410m_llama_setup_finetune.yml
 configs/pythia_410m_llama_setup_resume.yml
+configs/load_adam
+configs/datasets_adam
+
+# job scripts
+*_CONTICLR.sh
+
+# megatron temp files
+megatron_config_*.json
 
 #custom
 data/

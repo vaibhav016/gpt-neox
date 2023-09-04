@@ -48,9 +48,14 @@
     "train_micro_batch_size_per_gpu": 4,
     #"gradient_accumulation_steps": 2,
   #  "gradient_accumulation_steps": 8,
-   "gradient_accumulation_steps": 8,
+   "gradient_accumulation_steps": 4,
    "data-impl": "mmap",
 
+
+
+  # misc. training settings
+  "train-iters": 286102,
+  "lr-decay-iters": 286102,
 
    # activation checkpointing
    "checkpoint-activations": true,
@@ -78,7 +83,7 @@
    # misc. training settings
    "distributed-backend": "nccl",
   #  "warmup": 0.01,
-   "checkpoint-factor": 1000,
+   "checkpoint-factor": 250,
    "extra-save-iters": [0,1,2,4,8,16,32,64,128,256,512],
 
    "eval-interval": 100,
