@@ -266,6 +266,7 @@ def plot_single(data_dict,
 
     ax.legend(**legend_kwargs)
     ax.set_ylim(*ylim)
+    ax.grid(True)
     if savepath:
         print("saving "+os.path.join(savedir,savepath))
         plt.savefig(os.path.join(savedir,savepath),bbox_inches='tight')
@@ -283,8 +284,13 @@ def merge_tb_logs(list_dict):
 
                 for x in temp[1:]:
                     for kk,vv in accum.items():
-                        # print(kk)
-                        accum[kk].update(dict(v[x][kk]))
+                        try:
+                            accum[kk].update(dict(v[x][kk]))
+                        except KeyError as e:
+                            print(e)
+                            print("Missing key:",kk)
+                            print("Outer key:",k)
+                            
 
                 #sort the zipped object
                 list_dict[k] = {kk:sorted([x for x in zip(tmp.keys(),tmp.values())], key=lambda x: x[0]) for kk,tmp in accum.items()}
@@ -298,7 +304,9 @@ def merge_tb_logs(list_dict):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--copy", action='store_true', default=False, required=False)
-    parser.add_argument("--tb-log-dir", type=str, required=True)
+    parser.add_argument("--tb-log-dir", '-t', type=str, required=True)
+    parser.add_argument("--savedir", '-s', default="/gpfs/alpine/csc499/proj-shared/p2_continued_pretraining/plots",
+                        type=str, required=True)
     return parser.parse_args()
 
 
@@ -342,18 +350,18 @@ if __name__ == "__main__":
             d[parse_job_string(k)] = {k:v}
 
     rd_clone = merge_tb_logs(copy.deepcopy(d))
-    
+    key = 'validation/val_1/lm_loss'
     for k,v in rd_clone.items():
         plot_single({k:v},
                 filter_=['to prevent error but not filtering'],
                 # upper_limit=300,#step_to_token(105837.0),#300,#step_to_token(105837.0), 
-                key_to_plot='validation/val_0/lm_loss',
+                key_to_plot=key,
                 ylabel='Tokens (B)',
-                xlabel='validation/val_0/lm_loss', 
+                xlabel=key, 
                 savepath=k.replace(" ","_") + ".pdf",
-                savedir="/gpfs/alpine/csc499/proj-shared/p2_continued_pretraining/plots",
+                savedir=args.savedir,
                 legend_kwargs=dict(fontsize=12),
-                ylim=[],#(2.44,2.92),
+                ylim=[1.5,4],#(2.44,2.92),
                 figsize=(9,5),
                 warmup_end={'0.01':False,'0.02':False,'0.005':False},
                default_colors=cp1,
