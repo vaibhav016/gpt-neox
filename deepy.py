@@ -25,6 +25,9 @@ def main():
     from megatron.neox_arguments import NeoXArgs
     from megatron.utils import get_wandb_api_key
 
+    from megatron.data.data_utils import compile_helper
+    compile_helper()
+
     neox_args = NeoXArgs.consume_deepy_args()
     deepspeed_main_args = neox_args.get_deepspeed_main_args()
 
