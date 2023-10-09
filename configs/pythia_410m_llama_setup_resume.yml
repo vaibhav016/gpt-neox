@@ -17,8 +17,8 @@
   "num_workers": 1,
   "finetune": false,
 
-  "save": "checkpoints/cpt_iclr",
-  "tensorboard-dir": "tensorboard/cpt_iclr",
+  "save": "checkpoints/cpt_iclr_2",
+  "tensorboard-dir": "tensorboard/cpt_iclr_2",
   "log-dir": "logs",
-  "wandb_project": "cpt_iclr",
+  "wandb_project": "cpt_iclr_2",
 }

@@ -825,6 +825,8 @@ def train(
     valid_data_iterators,
 ):
     """Train the model function."""
+    # print_rank_0("\n\Initially \n\n\n")
+    # print_rank_0(optimizer.optimizer.__dict__["state"])
 
     # Turn on training mode which enables dropout.
     model.train()
