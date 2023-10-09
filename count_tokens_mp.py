@@ -25,7 +25,7 @@ def process_file(f):
     dataset_path = os.path.join(data_path, dir_name, f[:-len('.bin')])
     return dataset_path, get_num_tokens(dataset_path)
 
-data_path = '/gpfs/alpine/csc499/scratch/btherien/data/SlimPajama_split/tokenized_train'
+data_path = '/gpfs/alpine/csc499/scratch/btherien/data/pile_replay_shards/tokenized_splits'
 
 dirs = os.listdir(data_path)
 dataset_map = {}
@@ -47,5 +47,5 @@ print("done Looping")
 print(dataset_map)
 
 # save the dictionary to a json file
-with open('dataset_map.json', 'w') as json_file:
+with open('dataset_map_pile_replay.json', 'w') as json_file:
     json.dump(dataset_map, json_file)

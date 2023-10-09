@@ -95,13 +95,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--orig-dataset-dir",type=str)
     parser.add_argument("--new-dataset-dir",type=str)
-    parser.add_argument("--size",type=int)
+    parser.add_argument("--size",type=float)
     parser.add_argument("--dryrun",action='store_true')
     parser.add_argument("--all",action='store_true')
+    parser.add_argument("--only-size",action='store_true')
     args = parser.parse_args()
 
     
-    with open('/gpfs/alpine/csc499/scratch/btherien/gpt-neox/dataset_map.json') as f:
+    with open('/gpfs/alpine/csc499/scratch/btherien/gpt-neox/dataset_map_pile_replay.json') as f:
         dataset_map = json.load(f)
 
 
@@ -129,27 +130,55 @@ if __name__ == '__main__':
         min_dist = 1
         min_size = 5
         print("running random search for dataset...")
-        while(obj_size > 1 and obj_dist > 0.02):
-            new_dataset = get_dataset_of_mixture(dataset_map, mixture_map, size=args.size)
-            dataset_size = {k:v[0] for k,v in new_dataset.items()}
-            total_size = sum(list(dataset_size.values()))
-            obj_size = np.abs(total_size - args.size)
-            dist = {k:v/total_size for k,v in dataset_size.items()}
-            obj_dist = sum([np.abs(dist[k] - mixture_map[k]/100) for k in dist.keys()])
-            iteration += 1
-            min_dist = min(min_dist, obj_dist)
-            min_size = min(min_size, obj_size)
-            if iteration % 1000 == 0:
-                print("Iteration: {}, min_dist: {}, min_size: {}".format(iteration,min_dist, min_size))
+        if args.only_size:
+            while(obj_size > 0.05):
+                new_dataset = get_dataset_of_mixture(dataset_map, mixture_map, size=args.size)
+                dataset_size = {k:v[0] for k,v in new_dataset.items()}
+                total_size = sum(list(dataset_size.values()))
+                obj_size = np.abs(total_size - args.size)
 
-        if args.dryrun:
-            for k,v in dataset_size.items():
-                print(k,v)
-            total_size = sum(list(dataset_size.values()))
-            print("Total size: {}B".format(total_size))
-            print("Objective size:", obj_size)
-            print("Objective dist:", obj_dist)
-            exit(0)
+
+                dist = {k:v/total_size for k,v in dataset_size.items()}
+                obj_dist = sum([np.abs(dist[k] - mixture_map[k]/100) for k in dist.keys()])
+                iteration += 1
+                min_dist = min(min_dist, obj_dist)
+                min_size = min(min_size, obj_size)
+                if iteration % 1000 == 0:
+                    print(total_size)
+                    print("Iteration: {}, min_dist: {}, min_size: {}".format(iteration,min_dist, min_size))
+
+            if args.dryrun:
+                for k,v in dataset_size.items():
+                    print(k,v)
+                total_size = sum(list(dataset_size.values()))
+                print("Total size: {}B".format(total_size))
+                print("Objective size:", obj_size)
+                print("Objective dist:", obj_dist)
+                exit(0)
+        else:
+            while(obj_size > 1 and obj_dist > 0.02):
+                new_dataset = get_dataset_of_mixture(dataset_map, mixture_map, size=args.size)
+                dataset_size = {k:v[0] for k,v in new_dataset.items()}
+                total_size = sum(list(dataset_size.values()))
+                obj_size = np.abs(total_size - args.size)
+
+
+                dist = {k:v/total_size for k,v in dataset_size.items()}
+                obj_dist = sum([np.abs(dist[k] - mixture_map[k]/100) for k in dist.keys()])
+                iteration += 1
+                min_dist = min(min_dist, obj_dist)
+                min_size = min(min_size, obj_size)
+                if iteration % 1000 == 0:
+                    print("Iteration: {}, min_dist: {}, min_size: {}".format(iteration,min_dist, min_size))
+
+            if args.dryrun:
+                for k,v in dataset_size.items():
+                    print(k,v)
+                total_size = sum(list(dataset_size.values()))
+                print("Total size: {}B".format(total_size))
+                print("Objective size:", obj_size)
+                print("Objective dist:", obj_dist)
+                exit(0)
 
     
     os.makedirs(args.new_dataset_dir, exist_ok=True)
