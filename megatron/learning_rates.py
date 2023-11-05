@@ -137,7 +137,7 @@ class AnnealingLR(object):
 
                         def x_shifted(x, func, x_start, x_end, x_end_new):
                             k = (x_end_new - x_start) / (x_end - x_start)
-                            return func( ((x - x_start) / k) + x_start )
+                            return func(((x - x_start) / k) + x_start)
 
                         y_shifted_func = lambda x: y_shifted(x, inv_sqrt, self.start_lr, self.constant_lr, 0, self.cooldown_iter_before_scale)
                         x_shifted_func = lambda x: x_shifted(x, y_shifted_func, 0, self.cooldown_iter_before_scale, self.cooldown_iter)
