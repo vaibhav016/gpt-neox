@@ -37,6 +37,8 @@ class AnnealingLR(object):
         num_repeats=None,
         constant_iters_percent=None,
         cooldown_iters_percent=None,
+        cooldown_iter_before_scale=None, 
+        timescale=None, 
         use_checkpoint_lr_scheduler=True,
         override_lr_scheduler=False,
         use_mup=False,
@@ -53,6 +55,10 @@ class AnnealingLR(object):
         self.end_iter = total_iters
         self.constant_iter = constant_iters_percent
         self.cooldown_iter = cooldown_iters_percent
+
+        self.timescale = timescale
+        self.cooldown_iter_before_scale = cooldown_iter_before_scale
+
 
         if constant_iters_percent is not None:
             self.constant_iter = constant_iters_percent * total_iters
@@ -118,18 +124,29 @@ class AnnealingLR(object):
         
         elif "infinite" in self.decay_style:
             if num_iters_ <= self.constant_iter:
-                if self.decay_style == "constant_infinite":
-                    if num_iters_ <= self.cooldown_iter:
+                if num_iters_ <= self.cooldown_iter:
+                    if self.decay_style == "constant_infinite":
                         # Do linear decay from start_lr to constant_lr
                         lr = self.start_lr - ((self.start_lr - self.constant_lr) * num_iters_) / self.cooldown_iter
+                    elif self.decay_style == "inverse_sqrt_infinite":
+                        def inv_sqrt(x):
+                            return self.start_lr/math.sqrt((x + self.timescale)/self.timescale)
+
+                        def y_shifted(x, func, A, B_new, x_start, x_end):
+                            return ((B_new - A) / (func(x_end) - func(x_start))) * func(x) + A - ((B_new - A) / (func(x_end) - func(x_start))) * func(x_start)
+
+                        def x_shifted(x, func, x_start, x_end, x_end_new):
+                            k = (x_end_new - x_start) / (x_end - x_start)
+                            return func( ((x - x_start) / k) + x_start )
+
+                        y_shifted_func = lambda x: y_shifted(x, inv_sqrt, self.start_lr, self.constant_lr, 0, self.cooldown_iter_before_scale)
+                        x_shifted_func = lambda x: x_shifted(x, y_shifted_func, 0, self.cooldown_iter_before_scale, self.cooldown_iter)
+                        lr = x_shifted_func(num_iters_)
                     else:
-                        # Stay at constant LR
-                        lr = self.constant_lr
-                elif self.decay_style == "inverse_sqrt_infinite":
-                    # Go from start LR to constant LR in constant iters
-                    lr = self.start_lr + ((1/math.sqrt(num_iters_) - 1) / (1/math.sqrt(self.constant_iter) - 1)) * (self.constant_lr - self.start_lr)
+                        raise NotImplementedError
                 else:
-                    raise NotImplementedError
+                    # Stay at constant LR
+                    lr = self.constant_lr
             else:
                 # Go from constant iters to min LR in remaining iters
                 end_iter_ = self.end_iter - self.warmup_iter - self.constant_iter
