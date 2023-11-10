@@ -124,35 +124,44 @@ class AnnealingLR(object):
         
         elif "infinite" in self.decay_style:
             if num_iters_ <= self.constant_iter:
-                if num_iters_ <= self.cooldown_iter:
-                    if self.decay_style == "constant_infinite":
-                        # Do linear decay from start_lr to constant_lr
-                        lr = self.start_lr - ((self.start_lr - self.constant_lr) * num_iters_) / self.cooldown_iter
-                    elif self.decay_style == "inverse_sqrt_infinite":
-                        def inv_sqrt(x):
-                            return self.start_lr/math.sqrt((x + self.timescale)/self.timescale)
-
-                        def y_shifted(x, func, A, B_new, x_start, x_end):
-                            return ((B_new - A) / (func(x_end) - func(x_start))) * func(x) + A - ((B_new - A) / (func(x_end) - func(x_start))) * func(x_start)
-
-                        def x_shifted(x, func, x_start, x_end, x_end_new):
-                            k = (x_end_new - x_start) / (x_end - x_start)
-                            return func(((x - x_start) / k) + x_start)
-
-                        y_shifted_func = lambda x: y_shifted(x, inv_sqrt, self.start_lr, self.constant_lr, 0, self.cooldown_iter_before_scale)
-                        x_shifted_func = lambda x: x_shifted(x, y_shifted_func, 0, self.cooldown_iter_before_scale, self.cooldown_iter)
-                        lr = x_shifted_func(num_iters_)
-                    else:
-                        raise NotImplementedError
+                if self.decay_style == "infinite_original":
+                    lr = self.start_lr / math.sqrt((num_iters_ + self.timescale) / self.timescale)
                 else:
-                    # Stay at constant LR
-                    lr = self.constant_lr
+                    if num_iters_ <= self.cooldown_iter:
+                        if self.decay_style == "constant_infinite":
+                            # Do linear decay from start_lr to constant_lr
+                            lr = self.start_lr - ((self.start_lr - self.constant_lr) * num_iters_) / self.cooldown_iter
+                        elif self.decay_style == "inverse_sqrt_infinite":
+                            def inv_sqrt(x):
+                                return self.start_lr/math.sqrt((x + self.timescale)/self.timescale)
+
+                            def y_shifted(x, func, A, B_new, x_start, x_end):
+                                return ((B_new - A) / (func(x_end) - func(x_start))) * func(x) + A - ((B_new - A) / (func(x_end) - func(x_start))) * func(x_start)
+
+                            def x_shifted(x, func, x_start, x_end, x_end_new):
+                                k = (x_end_new - x_start) / (x_end - x_start)
+                                return func(((x - x_start) / k) + x_start)
+
+                            y_shifted_func = lambda x: y_shifted(x, inv_sqrt, self.start_lr, self.constant_lr, 0, self.cooldown_iter_before_scale)
+                            x_shifted_func = lambda x: x_shifted(x, y_shifted_func, 0, self.cooldown_iter_before_scale, self.cooldown_iter)
+                            lr = x_shifted_func(num_iters_)
+                        else:
+                            raise NotImplementedError
+                    else:
+                        # Stay at constant LR
+                        lr = self.constant_lr
             else:
-                # Go from constant iters to min LR in remaining iters
-                end_iter_ = self.end_iter - self.warmup_iter - self.constant_iter
-                num_iters_ = num_iters_ - self.constant_iter
-                exp_factor = -math.log(self.min_lr/self.constant_lr) / end_iter_
-                lr = self.constant_lr * math.exp(-1* exp_factor * num_iters_)
+                if self.decay_style == "infinite_original":
+                    end_iter_ = self.end_iter - self.warmup_iter - self.constant_iter
+                    num_iters_ = num_iters_ - self.constant_iter
+                    new_constant_lr = self.start_lr / math.sqrt((self.constant_iter + self.timescale) / self.timescale)
+                    lr = new_constant_lr + ((0 - new_constant_lr) * num_iters_) / end_iter_
+                else:
+                    # Go from constant iters to min LR in remaining iters
+                    end_iter_ = self.end_iter - self.warmup_iter - self.constant_iter
+                    num_iters_ = num_iters_ - self.constant_iter
+                    exp_factor = -math.log(self.min_lr/self.constant_lr) / end_iter_
+                    lr = self.constant_lr * math.exp(-1* exp_factor * num_iters_)
         else:
             lr = self.start_lr
         return max(lr, self.min_lr)
