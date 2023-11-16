@@ -142,6 +142,12 @@ class AnnealingLR(object):
                         y_shifted_func = lambda x: y_shifted(x, inv_sqrt, self.start_lr, self.constant_lr, 0, self.cooldown_iter_before_scale)
                         x_shifted_func = lambda x: x_shifted(x, y_shifted_func, 0, self.cooldown_iter_before_scale, self.cooldown_iter)
                         lr = x_shifted_func(num_iters_)
+                    elif self.decay_style == "cosine_cooldown_infinite":
+                        lr = self.constant_lr + (
+                            (self.start_lr-self.constant_lr)
+                            / 2.0
+                            * (math.cos(math.pi * num_iters_ / self.cooldown_iter) + 1)
+                        )
                     else:
                         raise NotImplementedError
                 else:
