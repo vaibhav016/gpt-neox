@@ -56,7 +56,7 @@
     0.03205115989375923,
     0.49456084911628667,
   ],
-  "train-iters": 44229,
-  "lr-decay-iters": 44229,
+  "train-iters": 88457,
+  "lr-decay-iters": 88457,
   "train-dataset-name": 'slim_pajama_200B_3_replay5',
 }
