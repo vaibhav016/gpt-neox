@@ -60,6 +60,9 @@ def build_the_dataset(
     seed,
     skip_warmup,
     build_index_mappings=True,
+    index_mapping_paths=None,
+    index_offset=0,
+    reshuffle_when_loading=True,
 ):
     """Build train/valid/test datasets."""
 
@@ -79,6 +82,9 @@ def build_the_dataset(
         seq_length,
         seed,
         build_index_mappings=build_index_mappings,
+        index_mapping_paths=index_mapping_paths,
+        index_offset=index_offset,
+        reshuffle_when_loading=reshuffle_when_loading,
     )
     return dataset
 
@@ -186,6 +192,33 @@ def get_normalized_weights_and_num_samples(
     return weights, weighted_num_samples
 
 
+def get_normalized_weights_and_num_samples_with_replay(
+    weights: List[float], replay_weights: List[float], replay_fraction, num_samples: int
+) -> Tuple[List[float], List[int]]:
+    # Normalize weights. weights correspond to the weights from the training data and replay_weights correspond
+    # to weights from the replay data. The idea is that we will be merge the weights provided for training data
+    # and replay data into the same array. We know that replay_weights should contribute replay_fraction of all
+    # weights, so we also need to normalise replay weights by replay_fraction and the rest by (1-replay_fraction).
+    weight_sum = sum(weights)
+    assert weight_sum > 0.0
+    weights = [(weight / weight_sum) * (1-replay_fraction) for weight in weights]
+
+    replay_weights_sum = sum(replay_weights)
+    assert replay_weights_sum > 0.0
+    replay_weights = [(replay_weight / replay_weights_sum) * replay_fraction for replay_weight in replay_weights]
+
+    # merge weights with the replay weights given the replay_fraction
+    weights = weights + replay_weights
+
+    # Add 0.5% (the 1.005 factor) so in case the blending dataset does
+    # not uniformly distribute the number of samples, we still have
+    # samples left to feed to the network.
+    weighted_num_samples = []
+    for weight in weights:
+        weighted_num_samples.append(int(math.ceil(num_samples * weight * 1.005)))
+    return weights, weighted_num_samples
+
+
 def build_weighted_datasets(
     neox_args,
     train_num_samples,
@@ -196,6 +229,16 @@ def build_weighted_datasets(
     test_weights,
     build_index_mappings=True,
 ):
+    
+    if neox_args.is_replay_enabled:
+        # Merge replay data paths into train data paths logic, but need to keep track of
+        # what paths in train_data_paths came from replay
+        num_replay_data_paths = len(neox_args.replay_data_paths)
+        num_non_replay_data_paths = len(neox_args.train_data_paths)
+        neox_args.train_data_paths += neox_args.replay_data_paths
+    else:
+        num_replay_data_paths = 0
+
     # build individual datasets
     train_datasets, valid_datasets, test_datasets = [], [], []
     for i, (train_path, valid_path, test_path) in enumerate(
@@ -206,18 +249,37 @@ def build_weighted_datasets(
         )
     ):
         if train_path:
-            train_datasets.append(
-                build_the_dataset(
-                    data_prefix=train_path,
-                    name=f"train_{i}",
-                    data_impl=neox_args.data_impl,
-                    num_samples=train_num_samples[i],
-                    seq_length=neox_args.seq_length,
-                    seed=neox_args.seed,
-                    skip_warmup=(not neox_args.mmap_warmup),
-                    build_index_mappings=build_index_mappings,
+            if i < len(neox_args.train_data_paths) - num_replay_data_paths:
+                train_datasets.append(
+                    build_the_dataset(
+                        data_prefix=train_path,
+                        name=f"train_{i}",
+                        data_impl=neox_args.data_impl,
+                        num_samples=train_num_samples[i],
+                        seq_length=neox_args.seq_length,
+                        seed=neox_args.seed,
+                        skip_warmup=(not neox_args.mmap_warmup),
+                        build_index_mappings=build_index_mappings,
+                    )
                 )
-            )
+            # when dealing with replay dataset, will need to pass neox_args to load idx files instead of building them.
+            else:
+                i_replay = i - (len(neox_args.train_data_paths) - num_replay_data_paths)
+                train_datasets.append(
+                    build_the_dataset(
+                        data_prefix=train_path,
+                        name=f"replay_{i_replay}",
+                        data_impl=neox_args.data_impl,
+                        num_samples=train_num_samples[i],
+                        seq_length=neox_args.seq_length,
+                        seed=neox_args.replay_seed,
+                        skip_warmup=(not neox_args.mmap_warmup),
+                        build_index_mappings=False,
+                        index_mapping_paths=neox_args.replay_data_to_idx_paths[train_path],
+                        index_offset=neox_args.replay_idx_offsets[i_replay],
+                        reshuffle_when_loading=neox_args.replay_reshuffle_idx,
+                    )
+                )                 
 
         if valid_path:
             valid_datasets.append(
@@ -318,9 +380,15 @@ def build_train_valid_test_data_iterators(neox_args):
         if neox_args.train_data_paths:
             # when individual train / valid / test data paths are provided
             # normalize weight values and get num samples for each dataset
-            train_weights, train_num_samples = get_normalized_weights_and_num_samples(
-                neox_args.train_data_weights, train_val_test_num_samples[0]
-            )
+            if neox_args.is_replay_enabled:
+                train_weights, train_num_samples = get_normalized_weights_and_num_samples_with_replay(
+                    neox_args.train_data_weights, neox_args.replay_data_weights, 
+                    neox_args.replay_fraction, train_val_test_num_samples[0]
+                )
+            else:
+                train_weights, train_num_samples = get_normalized_weights_and_num_samples(
+                    neox_args.train_data_weights, train_val_test_num_samples[0]
+                )
             valid_weights, valid_num_samples = get_normalized_weights_and_num_samples(
                 neox_args.valid_data_weights, train_val_test_num_samples[1]
             )
