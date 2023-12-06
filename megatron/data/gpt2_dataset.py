@@ -209,11 +209,28 @@ def _load_index_mappings(
             shuffle_idx = shuffle_idx[:num_samples_originally_seen]
             # get a sufficient length if needed
             
+
         # apply offset, but add back the removed elements.
         # TODO Do we want to shuffle again the shuffle_idx[:index_offset] term ?
         index_offset = index_offset % len(shuffle_idx)
         if reshuffle_when_loading:
-            shuffle_idx = np_rng.shuffle(shuffle_idx)
+            # Numpy can throw errors if the array isn't writeable, which it is not apparently when it is loaded
+            if not shuffle_idx.flags.writeable:
+                try:
+                    shuffle_idx.setflags(write=True)
+                except:
+                    # copy trick if we couldn't set it to writeable
+                    print("Loaded shuffle_idx at {} is not writeable, need to copy it as workaround...".format("_".join(idx_prefix)))
+                    temp = shuffle_idx.copy()
+                    shuffle_idx = temp
+                    assert shuffle_idx.flags.writeable, "Failed to make shuffle_idx writeable, the shuffling will not work."
+                    print("succesfully copied !")
+            # For some reason this is faster than shuffling the copied array directly. I'm sure there is a good reason for it.
+            temp_random_idx = np.array(range(len(shuffle_idx)))
+            np_rng.shuffle(temp_random_idx)
+            shuffle_idx = shuffle_idx[temp_random_idx]
+            del temp_random_idx
+            # np_rng.shuffle(shuffle_idx)
         shuffle_idx = np.concatenate([shuffle_idx[index_offset:], shuffle_idx[:index_offset]])
         np.save(shuffle_idx_filename, shuffle_idx, allow_pickle=True)
         print_rank_0(

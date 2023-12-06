@@ -228,9 +228,11 @@ def build_weighted_datasets(
     valid_weights,
     test_weights,
     build_index_mappings=True,
+    concatenate_train_replay_paths=False,
 ):
-    
-    if neox_args.is_replay_enabled:
+    # The concatenate_train_replay_paths bool is necessary to avoid issues when this function gets called again
+    # for the validation dataloader.
+    if neox_args.is_replay_enabled and concatenate_train_replay_paths:
         # Merge replay data paths into train data paths logic, but need to keep track of
         # what paths in train_data_paths came from replay
         num_replay_data_paths = len(neox_args.replay_data_paths)
@@ -406,6 +408,7 @@ def build_train_valid_test_data_iterators(neox_args):
                 valid_weights,
                 test_weights,
                 build_index_mappings=not neox_args.weight_by_num_documents,
+                concatenate_train_replay_paths=True,
             )
 
             if neox_args.weight_by_num_documents:
@@ -446,6 +449,7 @@ def build_train_valid_test_data_iterators(neox_args):
                 )
 
                 # rebuild datasets weighted according to new weights
+                # Warning, untested with replay.
                 train_datasets, valid_datasets, test_datasets = build_weighted_datasets(
                     neox_args,
                     train_num_samples,
@@ -454,6 +458,7 @@ def build_train_valid_test_data_iterators(neox_args):
                     train_weights,
                     valid_weights,
                     test_weights,
+                    concatenate_train_replay_paths=True,
                 )
 
             if train_datasets:
@@ -588,6 +593,7 @@ def build_validation_iterator(neox_args):
             valid_weights,
             0,
             build_index_mappings=not neox_args.weight_by_num_documents,
+            concatenate_train_replay_paths=False,
         )
 
         # if neox_args.weight_by_num_documents: # Not supported for now
