@@ -13,6 +13,5 @@
   "constant_lr": 0.000165,
   "constant_iters_percent" : 0.85,
   "cooldown_iters_percent" : 0.6,
-  "cooldown_iter_before_scale" : 10,
-  "timescale" : 1,
+  "timescale" : 10,
 }

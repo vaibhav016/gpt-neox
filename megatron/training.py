@@ -641,7 +641,6 @@ def get_learning_rate_scheduler(optimizer, neox_args):
         num_repeats=neox_args.num_repeats,
         constant_iters_percent=neox_args.constant_iters_percent,
         cooldown_iters_percent=neox_args.cooldown_iters_percent,
-        cooldown_iter_before_scale = neox_args.cooldown_iter_before_scale,
         timescale = neox_args.timescale,
         use_checkpoint_lr_scheduler=neox_args.use_checkpoint_lr_scheduler,
         override_lr_scheduler=neox_args.override_lr_scheduler,

@@ -37,7 +37,6 @@ class AnnealingLR(object):
         num_repeats=None,
         constant_iters_percent=None,
         cooldown_iters_percent=None,
-        cooldown_iter_before_scale=None, 
         timescale=None, 
         use_checkpoint_lr_scheduler=True,
         override_lr_scheduler=False,
@@ -57,8 +56,6 @@ class AnnealingLR(object):
         self.cooldown_iter = cooldown_iters_percent
 
         self.timescale = timescale
-        self.cooldown_iter_before_scale = cooldown_iter_before_scale
-
 
         if constant_iters_percent is not None:
             self.constant_iter = constant_iters_percent * total_iters
@@ -129,19 +126,16 @@ class AnnealingLR(object):
                         # Do linear decay from start_lr to constant_lr
                         lr = self.start_lr - ((self.start_lr - self.constant_lr) * num_iters_) / self.cooldown_iter
                     elif self.decay_style == "inverse_sqrt_infinite":
-                        def inv_sqrt(x):
-                            return self.start_lr/math.sqrt((x + self.timescale)/self.timescale)
 
-                        def y_shifted(x, func, A, B_new, x_start, x_end):
-                            return ((B_new - A) / (func(x_end) - func(x_start))) * func(x) + A - ((B_new - A) / (func(x_end) - func(x_start))) * func(x_start)
-
-                        def x_shifted(x, func, x_start, x_end, x_end_new):
-                            k = (x_end_new - x_start) / (x_end - x_start)
-                            return func(((x - x_start) / k) + x_start)
-
-                        y_shifted_func = lambda x: y_shifted(x, inv_sqrt, self.start_lr, self.constant_lr, 0, self.cooldown_iter_before_scale)
-                        x_shifted_func = lambda x: x_shifted(x, y_shifted_func, 0, self.cooldown_iter_before_scale, self.cooldown_iter)
-                        lr = x_shifted_func(num_iters_)
+                        def inv_f(t):
+                            return (1/math.sqrt(1+(self.timescale*t))) - 1
+                        lr = self.start_lr + (
+                            (self.constant_lr - self.start_lr)
+                            / inv_f(1)
+                            * (inv_f(num_iters_ / self.cooldown_iter))
+                        )
+                        return lr
+                    
                     elif self.decay_style == "cosine_cooldown_infinite":
                         lr = self.constant_lr + (
                             (self.start_lr-self.constant_lr)

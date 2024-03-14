@@ -448,11 +448,6 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     """
     Percent of total iterations to cooldown the learning rate for. If None, defaults to 0.
     """
-    
-    cooldown_iter_before_scale: int = None
-    """
-    The number of iterations used for cooldown before scaling up to cooldown_iters_percent*total_iters
-    """
 
     timescale: int = None
     """
