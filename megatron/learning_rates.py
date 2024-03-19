@@ -34,6 +34,11 @@ class AnnealingLR(object):
         decay_style,
         last_iter,
         min_lr=0.0,
+        constant_lr=None,
+        num_repeats=None,
+        constant_iters_percent=None,
+        cooldown_iters_percent=None,
+        timescale=None, 
         use_checkpoint_lr_scheduler=True,
         override_lr_scheduler=False,
         use_mup=False,
@@ -43,9 +48,26 @@ class AnnealingLR(object):
         self.optimizer = optimizer
         self.start_lr = start_lr
         self.min_lr = min_lr
+        self.constant_lr = constant_lr
         self.warmup_iter = warmup_iter
         self.num_iters = last_iter
         self.end_iter = total_iters
+        self.constant_iter = constant_iters_percent
+        self.cooldown_iter = cooldown_iters_percent
+        self.timescale = timescale
+
+        if constant_iters_percent is not None:
+            self.constant_iter = constant_iters_percent * total_iters
+        if cooldown_iters_percent is not None:
+            self.cooldown_iter = cooldown_iters_percent * total_iters
+        
+        if decay_style != 'cosine-inf':
+            num_repeats = 1
+            
+        if num_repeats is not None: 
+            assert total_iters % num_repeats == 0
+            self.repeat_iter_interval = int( total_iters / num_repeats )
+
         assert self.end_iter > 0
         self.decay_style = decay_style
         self.override_lr_scheduler = override_lr_scheduler
@@ -84,6 +106,47 @@ class AnnealingLR(object):
             # exp(-0.693) = 1/2
             end_iter = self.end_iter - self.warmup_iter
             lr = self.start_lr * math.exp(-0.693 * num_iters_ / end_iter)
+        elif self.decay_style == "cosine-inf":
+            end_iter_ = self.repeat_iter_interval - self.warmup_iter
+            lr = self.min_lr + (
+                (self.start_lr-self.min_lr)
+                / 2.0
+                * (math.cos(math.pi * num_iters_ / end_iter_) + 1)
+            )
+        elif "infinite" in self.decay_style:
+            if num_iters_ <= self.constant_iter:
+                if num_iters_ <= self.cooldown_iter:
+                    if self.decay_style == "constant_infinite":
+                        # Do linear decay from start_lr to constant_lr
+                        lr = self.start_lr - ((self.start_lr - self.constant_lr) * num_iters_) / self.cooldown_iter
+                    elif self.decay_style == "inverse_sqrt_infinite":
+
+                        def inv_f(t):
+                            return (1/math.sqrt(1+(self.timescale*t))) - 1
+                        lr = self.start_lr + (
+                            (self.constant_lr - self.start_lr)
+                            / inv_f(1)
+                            * (inv_f(num_iters_ / self.cooldown_iter))
+                        )
+                        return lr
+                    
+                    elif self.decay_style == "cosine_cooldown_infinite":
+                        lr = self.constant_lr + (
+                            (self.start_lr-self.constant_lr)
+                            / 2.0
+                            * (math.cos(math.pi * num_iters_ / self.cooldown_iter) + 1)
+                        )
+                    else:
+                        raise NotImplementedError
+                else:
+                    # Stay at constant LR
+                    lr = self.constant_lr
+            else:
+                # Go from constant iters to min LR in remaining iters
+                end_iter_ = self.end_iter - self.warmup_iter - self.constant_iter
+                num_iters_ = num_iters_ - self.constant_iter
+                exp_factor = -math.log(self.min_lr/self.constant_lr) / end_iter_
+                lr = self.constant_lr * math.exp(-1* exp_factor * num_iters_)
         else:
             lr = self.start_lr
         return max(lr, self.min_lr)
