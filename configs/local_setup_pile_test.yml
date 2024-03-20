@@ -1,7 +1,7 @@
 # Suggested data paths when using GPT-NeoX locally
 {
   # "data_path": "data/enwik8/enwik8_text_document",
-   "data_path": "data/pile/train/pile_train",
+   "data_path": "/home/mila/v/vaibhav.singh/gpt-neox/data/pile/train/pile_train", # Full path is passed due to debugger
    "tokenizer-type": "HFTokenizer",
 
   # or for weighted datasets:
@@ -17,11 +17,11 @@
   # "weight_by_num_documents": false,
   # "weighted_sampler_alpha": 0.3,
 
-  "vocab_file": "data/20B_tokenizer.json",
+  "vocab_file": "/home/mila/v/vaibhav.singh/gpt-neox/data/20B_tokenizer.json",
   # "merge_file": "data/gpt2-merges.txt",
 
-  "save": "checkpoints",
-  "load": "checkpoints",
+  "save": "/home/mila/v/vaibhav.singh/gpt-neox/checkpoints",
+  "load": "/home/mila/v/vaibhav.singh/gpt-neox/checkpoints",
   "checkpoint_validation_with_forward_pass": False,
 
   "tensorboard_dir": "tensorboard",

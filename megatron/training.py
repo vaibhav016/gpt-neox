@@ -964,6 +964,15 @@ def train(
                 optimizer=optimizer,
                 lr_scheduler=lr_scheduler,
             )
+        # Checkpointing A -> model just before annealing begins: 
+        if neox_args.save and iteration == (neox_args.train_iters * neox_args.constant_iters_percent):
+            save_checkpoint(
+                neox_args=neox_args,
+                iteration=iteration,
+                model=model,
+                optimizer=optimizer,
+                lr_scheduler=lr_scheduler,
+            )
         # Evaluation
         if (
             neox_args.eval_interval
