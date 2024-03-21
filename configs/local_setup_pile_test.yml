@@ -2,7 +2,7 @@
 {
   # "data_path": "data/enwik8/enwik8_text_document",
    "data_path": "/home/mila/v/vaibhav.singh/gpt-neox/data/pile/train/pile_train", # Full path is passed due to debugger
-   "tokenizer-type": "HFTokenizer",
+  #  "tokenizer_type": "HFTokenizer", # already found in model config file 
 
   # or for weighted datasets:
   # "train-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
