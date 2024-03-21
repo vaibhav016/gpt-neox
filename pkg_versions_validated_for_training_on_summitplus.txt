@@ -1,0 +1,158 @@
+absl-py==2.1.0
+aiohttp==3.9.3
+aiosignal==1.3.1
+annotated-types==0.6.0
+anyio==4.3.0
+apex @ file:///gpfs/alpine2/csc565/scratch/adami/apex
+appdirs==1.4.4
+arrow @ file:///croot/arrow_1676588139442/work
+async-timeout==4.0.3
+attrs==23.2.0
+autopep8==2.0.4
+best-download==0.1.2
+boltons @ file:///croot/boltons_1677628712487/work
+Bottleneck @ file:///opt/conda/conda-bld/bottleneck_1657175574298/work
+Brotli @ file:///opt/conda/conda-bld/brotli-split_1659616066417/work
+cachetools==4.2.4
+certifi @ file:///home/builder/cbouss/croot/certifi_1701115306566/work/certifi
+cffi @ file:///croot/cffi_1670423215080/work
+cfgv==3.4.0
+chardet==5.2.0
+charset-normalizer @ file:///tmp/build/80754af9/charset-normalizer_1630003229654/work
+clang-format==17.0.6
+click==8.1.7
+colorama==0.4.6
+conda @ file:///croot/conda_1696257484045/work
+conda-content-trust @ file:///opt/conda/conda-bld/conda-content-trust_1658126376478/work
+conda-package-handling @ file:///croot/conda-package-handling_1690999933402/work
+conda_package_streaming @ file:///croot/conda-package-streaming_1690987977345/work
+coverage==7.4.2
+cryptography @ file:///croot/cryptography_1677533078973/work
+cxxfilt==0.3.0
+Cython==0.29.32
+DataProperty==1.0.1
+datasets==2.0.0
+-e git+https://github.com/EleutherAI/DeeperSpeed.git@edab285bfb632f03d8676008fcf9ace4b08d19d5#egg=deepspeed
+dill==0.3.8
+distlib==0.3.8
+distro==1.9.0
+docker-pycreds==0.4.0
+einops==0.7.0
+exceptiongroup==1.2.0
+execnet==2.0.2
+filelock==3.13.1
+flash-attn==0.2.2
+frozenlist==1.4.1
+fsspec==2024.2.0
+ftfy==6.1.3
+-e git+https://github.com/bentherien/gpt-neox.git@20a782363c56ac07098fed347061898fda969cc2#egg=fused_kernels&subdirectory=megatron/fused_kernels
+gitdb==4.0.11
+GitPython==3.1.42
+google-auth==1.35.0
+google-auth-oauthlib==0.4.6
+grpcio @ file:///croot/grpc-suite_1681912598008/work
+h11==0.14.0
+hjson==3.1.0
+httpcore==1.0.3
+httpx==0.26.0
+huggingface-hub==0.20.3
+identify==2.5.35
+idna @ file:///croot/idna_1666125583058/work
+importlib-metadata==7.0.1
+iniconfig==2.0.0
+joblib @ file:///croot/joblib_1685113425125/work
+jsonlines==4.0.0
+jsonpatch @ file:///tmp/build/80754af9/jsonpatch_1615747632069/work
+jsonpointer==2.1
+lm-eval==0.3.0
+lm_dataformat @ git+https://github.com/EleutherAI/lm_dataformat.git@4eec05349977071bf67fc072290b95e31c8dd836
+Markdown==3.5.2
+MarkupSafe==2.1.5
+mbstrdecoder==1.1.3
+-e git+https://github.com/mpi4py/mpi4py.git@5ffef9cf44aeaacbc32c5a1cad76f8d5e1a2e3d5#egg=mpi4py
+multidict==6.0.5
+multiprocess==0.70.16
+ninja==1.11.1.1
+nltk==3.8.1
+nodeenv==1.8.0
+numexpr @ file:///croot/numexpr_1696515299695/work
+numpy==1.23.4
+oauthlib==3.2.2
+openai==1.12.0
+packaging @ file:///croot/packaging_1693575179638/work
+pandas @ file:///croot/pandas_1697477172947/work/dist/pandas-2.1.1-cp39-cp39-linux_ppc64le.whl#sha256=72fe2b3eabbc910fa5df88e3a4baf71e513093c3ebec56e970fe3590e1000112
+pathvalidate==3.2.0
+pillow==10.2.0
+platformdirs==4.2.0
+pluggy==1.4.0
+portalocker==2.8.2
+pre-commit==3.6.2
+protobuf==4.25.3
+psutil==5.9.8
+py==1.11.0
+py-cpuinfo==9.0.0
+pyarrow==11.0.0
+pyasn1==0.5.1
+pyasn1-modules==0.3.0
+pybind11==2.11.1
+pycodestyle==2.11.1
+pycosat @ file:///croot/pycosat_1696537044884/work
+pycountry==23.12.11
+pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
+pydantic==1.10.8
+pydantic_core==2.16.2
+pyOpenSSL @ file:///croot/pyopenssl_1690223432522/work
+PySocks @ file:///root/worker/containers/000030ucv4h/tmp/build/80754af9/pysocks_1605305830876/work
+pytablewriter==1.2.0
+pytest==8.0.1
+pytest-cov==4.1.0
+pytest-forked==1.6.0
+pytest-xdist==3.5.0
+python-dateutil @ file:///tmp/build/80754af9/python-dateutil_1626374649649/work
+pytz @ file:///croot/pytz_1695131593551/work
+PyYAML==6.0.1
+regex==2023.12.25
+requests @ file:///croot/requests_1690400229480/work
+requests-oauthlib==1.3.1
+responses==0.18.0
+rouge-score==0.1.2
+rsa==4.9
+ruamel.yaml @ file:///croot/ruamel.yaml_1666304552652/work
+ruamel.yaml.clib @ file:///croot/ruamel.yaml.clib_1666302251792/work
+sacrebleu==1.5.0
+safetensors==0.4.2
+scikit-learn @ file:///croot/scikit-learn_1694788567054/work
+scipy @ file:///croot/scipy_1696543306036/work/dist/scipy-1.11.3-cp39-cp39-linux_ppc64le.whl#sha256=833f00ecd4495b0783c79990d745da26b5b34dd6b8288cf9b323c4f6efbd3e14
+sentencepiece @ file:///croot/sentencepiece_1684523577659/work/python
+sentry-sdk==1.40.5
+setproctitle==1.3.3
+six @ file:///tmp/build/80754af9/six_1644875935023/work
+smmap==5.0.1
+sniffio==1.3.0
+sqlitedict==2.1.0
+tabledata==1.3.3
+tcolorpy==0.1.4
+tensorboard==2.5.0
+tensorboard-data-server==0.6.1
+tensorboard-plugin-wit==1.8.1
+threadpoolctl @ file:///Users/ktietz/demo/mc3/conda-bld/threadpoolctl_1629802263681/work
+tokenizers==0.15.2
+tomli==2.0.1
+torch @ file:///gpfs/alpine2/csc565/proj-shared/env_setup/torch-1.13.0a0%2Bgit49444c3-cp39-cp39-linux_ppc64le.whl#sha256=19742306e8f3811f6b9d832717b71afb9b9ecf4f4a3c83e38058960ae4fd7798
+torchvision @ file:///gpfs/alpine2/csc565/proj-shared/env_setup/torchvision-0.15.1a0%2B42759b1-cp39-cp39-linux_ppc64le.whl#sha256=3dc8dd05bbef74ef9c6e9bca10aab0a44265e2634743c3ba0e99b1cdc450054a
+tqdm @ file:///croot/tqdm_1679561868699/work
+tqdm-multiprocess==0.0.11
+transformers==4.37.2
+typepy==1.3.2
+typing_extensions==4.9.0
+tzdata @ file:///croot/python-tzdata_1690578112552/work
+ujson==5.9.0
+urllib3 @ file:///croot/urllib3_1698258062599/work
+virtualenv==20.25.0
+wandb==0.16.3
+wcwidth==0.2.13
+Werkzeug==3.0.1
+xxhash==3.4.1
+yarl==1.9.4
+zipp==3.17.0
+zstandard @ file:///croot/zstandard_1677014146280/work
