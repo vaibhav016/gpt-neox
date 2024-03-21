@@ -32,12 +32,13 @@
       1.00,
     ],
     "replay_idx_offsets": [
-      1,
+      0,
     ],
     # Fraction of samples coming from the replay buffer, between 0 and 1.
     "replay_fraction": 0.5,
     # Will need to reshuffle the shuffled indices. If you have replay multiple times on the same task, don't
-    # forget to change it every time ! Otherwise you will see the same replay buffer in the same order.
+    # forget to change it every time if not manually managing offsets ! Otherwise you will see the same replay 
+    # buffer in the same order.
     "replay_seed": 1234,
     "replay_reshuffle_idx": true,
   },
