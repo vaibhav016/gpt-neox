@@ -449,6 +449,11 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     Percent of total iterations to cooldown the learning rate for. If None, defaults to 0.
     """
 
+    timescale: int = None
+    """
+    Defines the steepness of the cooldown curve.
+    """
+    
     min_lr: float = 0.0
     """
     Minimum value for learning rate. The scheduler clips values below this threshold.
