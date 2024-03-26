@@ -1,11 +1,16 @@
 # Suggested data paths when using GPT-NeoX locally
 {
   # "data_path": "data/enwik8/enwik8_text_document",
-   "data_path": "data/pile/train/pile_train", # Full path is passed due to debugger
+  #  "data_path": "data/pile/train/pile_train", # Full path is passed due to debugger
 
   #  "tokenizer_type": "HFTokenizer", # already found in model config file 
 
   # or for weighted datasets:
+
+  "train-data-paths": ["data/pile/train/pile_train"] ,
+  "test-data-paths": ["data/pile/test/pile_test_text_document"] ,
+  "valid-data-paths": ["data/pile/val/pile_val_text_document"] ,
+  
   # "train-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
   # "test-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
   # "valid-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
@@ -24,6 +29,8 @@
   "save": "checkpoints",
   "load": "checkpoints",
   "checkpoint_validation_with_forward_pass": False,
+  "train-dataset-name": 'pile_train',
+  "val-dataset-name": 'pile-val',
 
   "tensorboard_dir": "tensorboard",
   "log_dir": "logs",

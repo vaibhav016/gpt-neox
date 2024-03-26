@@ -1,4 +1,5 @@
-{
+{ 
+  "identifier_string": "49M_local_test",
   # parallelism settings
   "pipe_parallel_size": 1,
   "model_parallel_size": 1,
@@ -87,12 +88,12 @@
   # "warmup": 0.01, ########### Present in schedule
   "checkpoint_factor": 50,
   "eval_interval": 10,
-  "eval_iters": 10,
+  "eval_iters": 50,
   # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
-  "finetune": true,
+  "finetune": false,
   # logging
-  "log_interval": 10,
-  "steps_per_print": 10,
+  "log_interval": 50,
+  "steps_per_print": 50,
   "wall_clock_breakdown": true,
   "tokenizer_type": "HFTokenizer",
   # "launcher": "slurm",
