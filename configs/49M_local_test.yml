@@ -82,13 +82,13 @@
 
   # misc. training settings
   # "train_iters": 143000,
-  "train_iters": 8000,
-  "lr_decay_iters": 8000,
+  "train_iters": 1500,
+  "lr_decay_iters": 1500,
   "distributed_backend": "nccl",
   # "lr_decay_style": "cosine",
   # "warmup": 0.01, ########### Present in schedule
   "checkpoint_factor": 500,
-  "eval_interval": 8000,
+  "eval_interval": 1500,
   "eval_iters": 10,
   # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
   "finetune": false,

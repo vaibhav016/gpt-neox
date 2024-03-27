@@ -26,14 +26,14 @@
   "vocab_file": "data/20B_tokenizer.json",
   # "merge_file": "data/gpt2-merges.txt",
 
-  # "save": "checkpoints",
+  "save": "checkpoints",
   "load": "checkpoints",
   "checkpoint_validation_with_forward_pass": False,
   
   "train-dataset-name": 'pile_train',
   "val-dataset-name": 'pile_val',
 
-  # "tensorboard_dir": "tensorboard",
+  "tensorboard_dir": "tensorboard",
   "log_dir": "logs",
   "use_wandb": False,
   "wandb_host": "https://api.wandb.ai",
