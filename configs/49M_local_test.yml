@@ -1,5 +1,5 @@
 { 
-  "identifier_string": "49M_local_test",
+  "identifier_string": "49M",
   # parallelism settings
   "pipe_parallel_size": 1,
   "model_parallel_size": 1,
@@ -51,10 +51,11 @@
   },
 
   # batch / data settings
-  "train_micro_batch_size_per_gpu": 16,
-  "gradient_accumulation_steps": 1,
+  "train_batch_size": 256,
+  "train_micro_batch_size_per_gpu": 64,
+  # "gradient_accumulation_steps": 2,
   "data_impl": "mmap",
-  "num_workers": 1,
+  "num_workers": 24,
 
   # activation checkpointing
   "checkpoint_activations": true,
@@ -81,22 +82,25 @@
 
   # misc. training settings
   # "train_iters": 143000,
-  "train_iters": 100,
-  "lr_decay_iters": 100,
+  "train_iters": 8000,
+  "lr_decay_iters": 8000,
   "distributed_backend": "nccl",
-  "lr_decay_style": "cosine",
+  # "lr_decay_style": "cosine",
   # "warmup": 0.01, ########### Present in schedule
-  "checkpoint_factor": 50,
-  "eval_interval": 10,
-  "eval_iters": 50,
+  "checkpoint_factor": 500,
+  "eval_interval": 8000,
+  "eval_iters": 10,
   # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
   "finetune": false,
+  
   # logging
-  "log_interval": 50,
-  "steps_per_print": 50,
+  "log_interval": 1,
+  "steps_per_print": 1,
   "wall_clock_breakdown": true,
   "tokenizer_type": "HFTokenizer",
-  # "launcher": "slurm",
-  # "deepspeed_slurm": true,
-  # "no_ssh_check": true
+
+  #slurm
+  "launcher": "slurm",
+  "deepspeed_slurm": true,
+  "no_ssh_check": true
 }

@@ -272,9 +272,24 @@ class NeoXArgs(*BASE_CLASSES):
             nargs="+",
             help="Configuration file path. Multiple files can be provided and will be merged.",
         )
+        group = parser.add_argument_group(title="Save Dir & Tensorboard Dir from SLURM")
+        group.add_argument(
+            "--save",
+            "-s",
+            type=str,
+            default="checkpoints",
+            help="Path in scratch, where tensorboard logs are saved; for SLURM Job",
+        )
+        group.add_argument(
+            "--tensorboard_dir",
+            "-td",
+            type=str,
+            default="tensorboard",
+            help="Path in scratch, where tensorboard logs are saved; for SLURM Job",
+        )
 
         group = parser.add_argument_group(title="Weights and Biases monitoring args")
-
+        
         group.add_argument(
             "--wandb_group",
             type=str,

@@ -1,9 +1,13 @@
 # Suggested data paths when using GPT-NeoX locally
 {
   # "data_path": "data/enwik8/enwik8_text_document",
-   "data_path": "/home/mila/v/vaibhav.singh/gpt-neox/data/pile/train/pile_train", # Full path is passed due to debugger
+  #  "data_path": "/home/mila/v/vaibhav.singh/gpt-neox/data/pile/train/pile_train", # Full path is passed due to debugger
   #  "tokenizer_type": "HFTokenizer", # already found in model config file 
 
+  "train-data-paths": ["/home/mila/v/vaibhav.singh/gpt-neox/data/pile/train/pile_train"] ,
+  "test-data-paths": ["/home/mila/v/vaibhav.singh/gpt-neox/data/pile/test/pile_test_text_document"] ,
+  "valid-data-paths": ["/home/mila/v/vaibhav.singh/gpt-neox/data/pile/val/pile_val_text_document"] ,
+  
   # or for weighted datasets:
   # "train-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
   # "test-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
@@ -23,8 +27,11 @@
   "save": "/home/mila/v/vaibhav.singh/gpt-neox/checkpoints",
   "load": "/home/mila/v/vaibhav.singh/gpt-neox/checkpoints",
   "checkpoint_validation_with_forward_pass": False,
+  
+  "train-dataset-name": 'pile_train',
+  "val-dataset-name": 'pile_val',
 
-  "tensorboard_dir": "tensorboard",
+  "tensorboard_dir": "/home/mila/v/vaibhav.singh/gpt-neox/tensorboard",
   "log_dir": "logs",
   "use_wandb": False,
   "wandb_host": "https://api.wandb.ai",
