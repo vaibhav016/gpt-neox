@@ -55,7 +55,7 @@
   "train_micro_batch_size_per_gpu": 64,
   # "gradient_accumulation_steps": 2,
   "data_impl": "mmap",
-  "num_workers": 24,
+  "num_workers": 8,
 
   # activation checkpointing
   "checkpoint_activations": true,
@@ -82,13 +82,13 @@
 
   # misc. training settings
   # "train_iters": 143000,
-  "train_iters": 1500,
-  "lr_decay_iters": 1500,
+  "train_iters": 3000,
+  "lr_decay_iters": 3000,
   "distributed_backend": "nccl",
   # "lr_decay_style": "cosine",
   # "warmup": 0.01, ########### Present in schedule
-  "checkpoint_factor": 500,
-  "eval_interval": 1500,
+  "checkpoint_factor": 1000,
+  "eval_interval": 100,
   "eval_iters": 10,
   # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
   "finetune": false,
@@ -98,9 +98,10 @@
   "steps_per_print": 1,
   "wall_clock_breakdown": true,
   "tokenizer_type": "HFTokenizer",
+  "no_ssh_check": true,
 
-  #slurm
+  # slurm
   "launcher": "slurm",
   "deepspeed_slurm": true,
-  "no_ssh_check": true
+
 }

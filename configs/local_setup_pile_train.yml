@@ -25,7 +25,6 @@
 
   "vocab_file": "data/20B_tokenizer.json",
   # "merge_file": "data/gpt2-merges.txt",
-
   "save": "checkpoints",
   "load": "checkpoints",
   "checkpoint_validation_with_forward_pass": False,
