@@ -36,7 +36,11 @@ sd=$SLURM_TMPDIR/output
 # Launch training
 # python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infinv_lr3e-4_3e-5_wu-001.yml --save "$sd/checkpoints" --tensorboard_dir "$sd/tensorboard"
 
+<<<<<<< HEAD
 python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_cosine_medium_lr3e-3_3e-6_wu-001.yml
+=======
+python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_german_test.yml ./configs/schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml
+>>>>>>> 040a670 (added config and sbatch files for german data training for cosine and inf schedules)
 
 cp -r $SLURM_TMPDIR/output $SCRATCH 
 
