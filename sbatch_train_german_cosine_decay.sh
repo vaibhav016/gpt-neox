@@ -1,9 +1,9 @@
 #!/bin/bash
-#SBATCH --job-name="pile_tr_inf_sq"
+#SBATCH --job-name="pile_training_cosine_decay"
 #SBATCH --nodes=1
 #SBATCH --mem=128G
 #SBATCH --gpus-per-node=a100l:4
-#SBATCH --time=3:00:00 
+#SBATCH --time=03:00:00 
 #SBATCH --output=/network/scratch/v/vaibhav.singh/slurm-%j.out
 #SBATCH --error=/network/scratch/v/vaibhav.singh/slurm-%j.err
 #SBATCH --cpus-per-task=24
@@ -33,22 +33,9 @@ echo "save_path: $SLURM_TMPDIR/output"
 sd=$SLURM_TMPDIR/output
 
 # Launch training
-#### when passing scratch arguments ########
 # python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infinv_lr3e-4_3e-5_wu-001.yml --save "$sd/checkpoints" --tensorboard_dir "$sd/tensorboard"
 
-
-######### without scratch arguments ##########
-# python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infinv_lr3e-4_3e-5_wu-001.yml
-
-
-
-########### training for remaining pile #########
-python deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_constant_lr1.6e-4_wu-0.yml
-
-
-
-###########German data #############
-# python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_german_test.yml ./configs/schedules/adam_infinv_lr_constant_german.yml
+python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_german_test.yml ./configs/schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml
 
 cp -r $SLURM_TMPDIR/output $SCRATCH 
 

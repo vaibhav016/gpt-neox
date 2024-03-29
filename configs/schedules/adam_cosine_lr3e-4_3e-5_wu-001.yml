@@ -10,4 +10,5 @@
   "min_lr": 3.0e-5,
   "lr-decay-style": "cosine",
   "warmup": 0.01,
+  "constant_iters_percent" : 0.85, # This argument does not affect lr, its only required to save the model(HACKY solution)
 }

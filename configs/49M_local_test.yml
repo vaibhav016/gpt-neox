@@ -87,7 +87,7 @@
   "distributed_backend": "nccl",
   # "lr_decay_style": "cosine",
   # "warmup": 0.01, ########### Present in schedule
-  "checkpoint_factor": 1000,
+  "checkpoint_factor": 3000,
   "eval_interval": 100,
   "eval_iters": 10,
   # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
