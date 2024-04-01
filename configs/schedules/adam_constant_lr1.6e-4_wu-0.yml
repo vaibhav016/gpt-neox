@@ -7,8 +7,8 @@
       "eps": 1.0e-8,
     }
   },
-  "min_lr": 3.0e-5,
-  "lr-decay-style": "inverse_sqrt_infinite",
+  "min_lr": 0.000165,
+  "lr-decay-style": "constant",
   "warmup": 0,
   "constant_lr": 0.000165,
   "constant_iters_percent" : 0.85,
@@ -17,4 +17,3 @@
   "override_lr_scheduler": True, # setting this to True, since we want to train on german for a constant lr
   "use_checkpoint_lr_scheduler": False # Again, we dont want to use the checkpoint's LR schedular. 
 }
-
