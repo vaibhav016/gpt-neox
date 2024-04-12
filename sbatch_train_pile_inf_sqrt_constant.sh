@@ -1,13 +1,14 @@
 #!/bin/bash
 #SBATCH --job-name="pile_tr_inf_sq"
 #SBATCH --nodes=1
+#SBATCH --ntasks-per-node=5
+#SBATCH --gpus-per-node=a100l:5
+#SBATCH --cpus-per-task=6
 #SBATCH --mem=128G
-#SBATCH --gpus-per-node=a100l:4
-#SBATCH --time=3:00:00 
+#SBATCH --time=6:00:00 
 #SBATCH --output=/network/scratch/v/vaibhav.singh/slurm-%j.out
 #SBATCH --error=/network/scratch/v/vaibhav.singh/slurm-%j.err
-#SBATCH --cpus-per-task=24
-#SBATCH --partition=short-unkillable
+
 
 # Some potentially useful distributed environment variables
 export HOSTNAMES=`scontrol show hostnames "$SLURM_JOB_NODELIST"`

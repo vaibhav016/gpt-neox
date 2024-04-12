@@ -55,7 +55,7 @@
   "train_micro_batch_size_per_gpu": 64,
   # "gradient_accumulation_steps": 2,
   "data_impl": "mmap",
-  "num_workers": 8,
+  "num_workers": 6,
 
   # activation checkpointing
   "checkpoint_activations": true,
@@ -82,8 +82,8 @@
 
   # misc. training settings
   # "train_iters": 143000,
-  "train_iters": 3000,
-  "lr_decay_iters": 3000,
+  "train_iters": 6000,
+  "lr_decay_iters": 6000,
   "distributed_backend": "nccl",
   # "lr_decay_style": "cosine",
   # "warmup": 0.01, ########### Present in schedule
