@@ -55,7 +55,7 @@
   "train_micro_batch_size_per_gpu": 64,
   # "gradient_accumulation_steps": 2,
   "data_impl": "mmap",
-  "num_workers": 8,
+  "num_workers": 6,
 
   # activation checkpointing
   "checkpoint_activations": true,
