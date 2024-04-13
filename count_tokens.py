@@ -24,15 +24,26 @@ parser.add_argument("--outer-dir",
                     help="the file name to read", 
                     default='/gpfs/alpine/csc499/scratch/btherien/data/SlimPajama_split/tokenized_train')
 
-parser.add_argument("--jsonl-file-name", 
+parser.add_argument("--jsonl-file-name", '-jfn',
                     help="the file name to read", 
-                    default='/gpfs/alpine/csc499/scratch/btherien/data/SlimPajama_split/test/ArXiv/data_0_time1690516559_slimpajama0.jsonl')
+                    default=None)
 
 parser.add_argument("--output-file", 
                     help="the file name to write", 
-                    default='token_counts.txt')
+                    default=None)
 
 args = parser.parse_args()
+
+
+if args.jsonl_file_name is not None:
+    try:
+        ds = MMapIndexedDataset(args.jsonl_file_name)
+        print("Size:",np.sum(ds._index._sizes)/1e9, "B")
+    except AttributeError as e:
+        print(e)
+        print("Above exception occured for file:", args.jsonl_file_name)
+    exit(0)
+
 
 total_size = 0
 for dir in os.listdir(args.outer_dir):

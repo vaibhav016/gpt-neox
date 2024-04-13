@@ -6,7 +6,6 @@
   "valid-data-paths": [
     ["data/pile/val/pile_val_text_document"],
     ["data/slim_pajama/val/all/sp_val"],
-    ["data/pile/val/pile_val_text_document", "data/slim_pajama/val/all/sp_val"],
     ["data/slim_pajama/val/ArXiv/tokenized_arxiv_text_document"],
     ["data/slim_pajama/val/Book/tokenized_book_text_document"],
     ["data/slim_pajama/val/C4/tokenized_c4_text_document"],
@@ -18,7 +17,6 @@
   "valid-data-weights": [
     [1.],
     [1.],
-    [50.0, 50.0],
     [1.],
     [1.],
     [1.],

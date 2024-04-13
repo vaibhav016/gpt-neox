@@ -317,7 +317,9 @@ if __name__ == "__main__":
     parent_dir = args.tb_log_dir
     
     if args.copy:
-        os.system("rsync -r {} /gpfs/alpine/csc499/proj-shared/p2_continued_pretraining/tensorboard_iclr")
+        command = "rsync -r {} /gpfs/alpine/csc499/proj-shared/p2_continued_pretraining/tensorboard_iclr"
+        print(command)
+        os.system(command)
 
     # Get a list of subdirectories in the parent directory
     subdirectories = [subdir for subdir in os.listdir(parent_dir) if os.path.isdir(os.path.join(parent_dir, subdir))]
