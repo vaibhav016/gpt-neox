@@ -32,7 +32,7 @@
   "train-dataset-name": 'pile_train',
   "val-dataset-name": 'pile_val',
 
-  "tensorboard_dir": "tensorboard",
+  "tensorboard_dir": "tensorboard_6000_tests",
   "log_dir": "logs",
   "use_wandb": False,
   "wandb_host": "https://api.wandb.ai",

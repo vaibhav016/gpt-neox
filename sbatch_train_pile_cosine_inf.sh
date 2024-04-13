@@ -1,14 +1,15 @@
 #!/bin/bash
-#SBATCH --job-name="train_pile_med"
+#SBATCH --job-name="pile_tr_infcos_med"
+#SBATCH --partition=main
 #SBATCH --nodes=1
-#SBATCH --mem=80G
-#SBATCH --gpus-per-task=a100l:4
-#SBATCH  --ntasks-per-node=1
-#SBATCH --time=03:00:00 
-#SBATCH --output=train_pile_med.out
-#SBATCH --error=train_pile_med.err
-#SBATCH --cpus-per-task=24
-#SBATCH --partition=short-unkillable
+#SBATCH --ntasks-per-node=2
+#SBATCH --gpus-per-node=a100l:2
+#SBATCH --cpus-per-task=4
+#SBATCH --mem=48G
+#SBATCH --time=07:00:00 
+#SBATCH --output=pile_tr_infcos_med-%j.out
+#SBATCH --error=pile_tr_infcos_med-%j.err
+
 
 # Some potentially useful distributed environment variables
 export HOSTNAMES=`scontrol show hostnames "$SLURM_JOB_NODELIST"`
@@ -36,7 +37,7 @@ sd=$SLURM_TMPDIR/output
 # Launch training
 # python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infinv_lr3e-4_3e-5_wu-001.yml --save "$sd/checkpoints" --tensorboard_dir "$sd/tensorboard"
 
-python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_cosine_medium_lr3e-3_3e-6_wu-001.yml
+python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infcos_medium_lr3e-3_3e-6_wu-001.yml
 
 cp -r $SLURM_TMPDIR/output $SCRATCH 
 

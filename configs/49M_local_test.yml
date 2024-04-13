@@ -51,7 +51,7 @@
   },
 
   # batch / data settings
-  "train_batch_size": 256,
+  "train_batch_size": 128,
   "train_micro_batch_size_per_gpu": 64,
   # "gradient_accumulation_steps": 2,
   "data_impl": "mmap",
@@ -82,12 +82,12 @@
 
   # misc. training settings
   # "train_iters": 143000,
-  "train_iters": 3000,
-  "lr_decay_iters": 3000,
+  "train_iters": 6000,
+  "lr_decay_iters": 6000,
   "distributed_backend": "nccl",
   # "lr_decay_style": "cosine",
   # "warmup": 0.01, ########### Present in schedule
-  "checkpoint_factor": 3000,
+  "checkpoint_factor": 6000,
   "eval_interval": 100,
   "eval_iters": 10,
   # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
