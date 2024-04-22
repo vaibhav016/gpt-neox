@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --mem=10G
 #SBATCH --gpus-per-node=a100l:4
-#SBATCH --time=00:03:00 
+#SBATCH --time=03:00:00 
 #SBATCH --output=slurm-%j.out
 #SBATCH --error=slurm-%j.err
 #SBATCH --cpus-per-task=24
@@ -35,7 +35,7 @@ sd=$SLURM_TMPDIR/output
 # Launch training
 # python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infinv_lr3e-4_3e-5_wu-001.yml --save "$sd/checkpoints" --tensorboard_dir "$sd/tensorboard"
 
-python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml
+python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml
 
 # python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_german_test.yml ./configs/schedules/adam_infinv_lr_constant_german.yml
 

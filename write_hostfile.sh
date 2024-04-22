@@ -1,5 +1,5 @@
 #!/bin/bash
-GPUS_PER_NODE=2
+GPUS_PER_NODE=4
 mkdir -p /home/mila/p/paria.mehrbod/scratch/resetbranch/gpt-neox/hostfiles
 # need to add the current slurm jobid to hostfile name so that we don't add to previous hostfile
 hostfile=/home/mila/p/paria.mehrbod/scratch/resetbranch/gpt-neox/hostfiles/hosts_$SLURM_JOBID

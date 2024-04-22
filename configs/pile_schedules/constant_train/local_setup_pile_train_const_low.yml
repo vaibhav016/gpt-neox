@@ -26,7 +26,7 @@
   "vocab_file": "data/20B_tokenizer.json",
   # "merge_file": "data/gpt2-merges.txt",
   "save": "checkpoints",
-  "load": "checkpoints/JOB-4582207_49M_it-6000_wu-0.01_mxlr-0.003_mnlr-3e-06_sch-inverse_sqrt_infinite_tr-pile-train_resume",
+  "load": "checkpoints/JOB-4593140_49M_it-6000_wu-0.01_mxlr-0.003_mnlr-3e-06_sch-cosine_cooldown_infinite_tr-pile-train_resume",
   "checkpoint_validation_with_forward_pass": False,
   
   "train-dataset-name": 'pile_train',

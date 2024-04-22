@@ -32,7 +32,7 @@
   # "merge_file": "data/gpt2-merges.txt",
 
   "save": "./checkpoints",
-  "load": "./checkpoints/JOB-4588193_49M_it-6000_wu-0_mxlr-0.000165_mnlr-0.000165_sch-constant_tr-pile-train_resume",
+  "load": "./checkpoints/JOB-4596473_49M_it-6000_wu-0_mxlr-0.000165_mnlr-0.000165_sch-constant_tr-pile-train_resume",
 
   # Choose the checkpoint where the model is finished training on Pile.
   # "load": "./checkpoints/JOB-4384461_49M_it-3000_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-pile-train_resume",
