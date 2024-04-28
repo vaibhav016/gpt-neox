@@ -32,16 +32,37 @@
   # "merge_file": "data/gpt2-merges.txt",
 
   "save": "./checkpoints",
-  "load": "./checkpoints/JOB-4597164_49M_it-6000_wu-0_mxlr-0.000165_mnlr-3e-06_sch-constant_tr-pile-train_resume",
-
+  "load": "./checkpoints/",
 
   # Choose the checkpoint where the model is finished training on Pile.
   # "load": "./checkpoints/JOB-4384461_49M_it-3000_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-pile-train_resume",
   "checkpoint_validation_with_forward_pass": False,
 
-
   "train-dataset-name": 'german_train',
   "val-dataset-name": 'german_val',
+
+  "replay_config": {
+    "enabled": true,
+    # Have to specify idx filenames from original pretraining on tasks, as they contain the num iterations
+    # and seen indices assuming we're using the same (non-replay) seed as during pretraining
+    "replay_idx_paths_prefixes": [
+      # "data/pile/train/pile_train_train_0_indexmap_146862725ns_2048sl_1234s",
+      "data/pile/train/pile_train_train_0_indexmap_1543680ns_2048sl_1234s",
+    ],
+    "replay_data_weights":[
+      1.00,
+    ],
+    "replay_idx_offsets": [
+      1,
+    ],
+    # Fraction of samples coming from the replay buffer, between 0 and 1.
+    "replay_fraction": 0.5,
+    # Seed and reshuffle go hand in hand. They control whether you want to see the replay data in the same order
+    # as you've seen it (done by setting reshuffle to false), and if you decide to reshuffle, what seed you should
+    # use to reshuffle the seen data.
+    "replay_seed": 1234,
+    "replay_reshuffle_idx": false,
+  },
 
   "tensorboard_dir": "tensorboard",
   "log_dir": "logs",

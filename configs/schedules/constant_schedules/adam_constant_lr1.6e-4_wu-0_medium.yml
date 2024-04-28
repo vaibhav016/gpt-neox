@@ -7,7 +7,7 @@
       "eps": 1.0e-8,
     }
   },
-  "min_lr": 0.000165,
+  "min_lr": 3.0e-6,
   "lr-decay-style": "constant",
   "warmup": 0,
   "constant_lr": 0.000165,
