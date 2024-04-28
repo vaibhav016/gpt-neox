@@ -28,7 +28,7 @@
   # "merge_file": "data/gpt2-merges.txt",
 
   "save": "checkpoints",
-  "load": "checkpoints/JOB-4382437_49M_it-3000_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-inverse_sqrt_infinite_tr-pile-train_resume",
+  "load": "checkpoints/JOB-4582206_49M_it-6000_wu-0.01_mxlr-0.003_mnlr-3e-06_sch-inverse_sqrt_infinite_tr-pile-train_resume",
   "checkpoint_validation_with_forward_pass": False,
   
   "train-dataset-name": 'pile_train',
