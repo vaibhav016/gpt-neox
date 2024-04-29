@@ -37,7 +37,7 @@ sd=$SLURM_TMPDIR/output
 
 # python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_infinv_lr3e-4_3e-5_wu-001.yml
 
-python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/german_schedules/german_valid/local_setup_german_val_ger_medium.yml ./configs/schedules/inf_cosine_schedules/adam_infcos_lr_constant_german_medium.yml
+python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/german_schedules/pile_valid/local_setup_german_val_pile_medium.yml ./configs/schedules/inf_cosine_schedules/adam_infcos_lr_constant_german_medium.yml
 
 
 cp -r $SLURM_TMPDIR/output $SCRATCH 
