@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name="pile_training_cosine_decay"
+#SBATCH --job-name="cosine_decay"
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-node=a100l:4
@@ -29,17 +29,16 @@ module load cuda/12.1.1
 # export CUDA_VISIBLE_DEVICES=0
 echo $CUDA_VISIBLE_DEVICES
 
-mkdir $SLURM_TMPDIR/output
-echo "save_path: $SLURM_TMPDIR/output"
-sd=$SLURM_TMPDIR/output
+# mkdir $SLURM_TMPDIR/output
+# echo "save_path: $SLURM_TMPDIR/output"
+# sd=$SLURM_TMPDIR/output
 
-# Launch training
-python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/pile_schedules/train/local_setup_pile_train.yml ./configs/schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-6_wu-0.01.yml
+# pile training
+# python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/pile_schedules/train/local_setup_pile_train.yml ./configs/schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-6_wu-0.01.yml
 
-# python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/local_setup_pile_train.yml ./configs/schedules/adam_cosine_lr3e-4_3e-5_wu-001.yml
+# german training
+python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/german_schedules/pile_valid/local_setup_german_val_gr_and_pile_cosine_decay_replay.yml ./configs/schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-6_wu-0.01.yml
 
-# python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/local_setup_german_test.yml ./configs/schedules/adam_infinv_lr_constant_german.yml
-
-cp -r $SLURM_TMPDIR/output $SCRATCH 
+# cp -r $SLURM_TMPDIR/output $SCRATCH 
 
 exit 0

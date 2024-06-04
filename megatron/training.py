@@ -267,11 +267,11 @@ def pretrain(neox_args):
             valid_data_iterators=val_iters,
         )
     
-    if lr_scheduler.reload_optimizer():
-        # reload optimizer parameters to simulate restarting the decay on a checkpoint
-        # without available optimizer states
-        # optimizer.initialize_optimizer_states()
-        print_rank_0("no reloading this time")
+    # if lr_scheduler.reload_optimizer():
+    #     # reload optimizer parameters to simulate restarting the decay on a checkpoint
+    #     # without available optimizer states
+    #     # optimizer.initialize_optimizer_states()
+    #     print_rank_0("no reloading this time")
     
 
     if neox_args.do_valid:
