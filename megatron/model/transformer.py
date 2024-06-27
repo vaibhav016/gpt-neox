@@ -761,7 +761,7 @@ class ParallelTransformerLayer(nn.Module):
                 )
 
             # output = x + mlp(ln2(x))
-            mlp_output, mlp_bias = self.mlp(
+            mlp_output, mlp_bias, _ = self.mlp(
                 self.post_attention_layernorm(attention_output)
             )
             with torch.enable_grad():
