@@ -1,4 +1,4 @@
-# Copyright (c) 2024, EleutherAI
+# Copyright (c) 2021, EleutherAI
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,6 @@ ATTENTION_TYPE_CHOICES = [
     "gmlp",
     "amlp",
     "flash",
-    "mamba",
 ]
 
 
@@ -84,11 +83,6 @@ class NeoXArgsParallelism(NeoXArgsTemplate):
     according to pipeline parallel size.
     """
 
-    expert_interval: int = 2
-    """
-    Have one MoE layer every expert_interval layers
-    """
-
 
 @dataclass
 class NeoXArgsModel(NeoXArgsTemplate):
@@ -111,39 +105,14 @@ class NeoXArgsModel(NeoXArgsTemplate):
     Transformer hidden size.
     """
 
-    intermediate_size: int = None
-    """
-    Transformer intermediate size. Currently only used for "mlp_type": "llama".
-
-    If not passed, will be set to a reasonable default.
-    """
-
     num_attention_heads: int = None
     """
     Number of transformer attention heads.
-
-    If num_kv_heads is set, will control only number of query heads.
-    """
-
-    num_kv_heads: int = None
-    """
-    Number of transformer key/value attention heads.
-
-    If set to None or the same value as num_attention_heads, will perform multi-head attention (MHA).
-    If set to < num_attention_heads but > 1, will perform grouped-query attention (GQA) (https://arxiv.org/pdf/2305.13245.pdf)
-    If set to 1, will perform multi-query attention.
-
-    Must be < num_attention_heads and divide num_attention_heads evenly.
     """
 
     seq_length: int = None
     """
     Maximum sequence length to process.
-    """
-
-    sliding_window_width: int = None
-    """
-    Width of the attention sliding window. Only supported with Flash Attention 2.
     """
 
     max_position_embeddings: int = None
@@ -154,16 +123,6 @@ class NeoXArgsModel(NeoXArgsTemplate):
     norm: Literal["layernorm", "rmsnorm", "scalenorm"] = "layernorm"
     """
     Normalization layer to use. Choose from "layernorm", "rmsnorm", "scalenorm".
-    """
-
-    layernorm_fusion: bool = False
-    """
-    Use fused layer norm kernel (if `norm` is `layernorm`).
-    """
-
-    use_qk_layernorm: bool = False
-    """
-    Use QK Normalization
     """
 
     layernorm_epsilon: float = 1.0e-5
@@ -216,7 +175,7 @@ class NeoXArgsModel(NeoXArgsTemplate):
     The first item in the list specifies the attention type(s), and should be a list of strings. The second item
     specifies the number of times to repeat those attention types in the full list.
 
-    attention type choices:  [global, local, sparse_fixed, sparse_variable, bslongformer, bigbird, "gmlp", "amlp", "flash", "mamba"]
+    attention type choices:  [global, local, sparse_fixed, sparse_variable, bslongformer, bigbird]
 
     So a 12 layer network with only global attention could be specified like:
         [[[`global`], 12]]
@@ -269,11 +228,9 @@ class NeoXArgsModel(NeoXArgsTemplate):
     Pad the vocab size to be divisible by this value. This is added for computational efficiency reasons.
     """
 
-    activation: Literal[
-        "gelu", "geglu", "relu", "softsign", "swish", "mish", "silu"
-    ] = "gelu"
+    activation: Literal["gelu", "geglu", "relu", "softsign", "swish", "mish"] = "gelu"
     """
-    Activation function to use - choose from ["gelu", "geglu", "relu", "softsign", "swish", "mish", "silu"]
+    Activation function to use - choose from ["gelu", "geglu", "relu", "softsign", "swish", "mish"]
     """
 
     scaled_upper_triang_masked_softmax_fusion: bool = False
@@ -294,11 +251,6 @@ class NeoXArgsModel(NeoXArgsTemplate):
     bias_dropout_fusion: bool = False
     """
     Enable bias and dropout fusion.
-    """
-
-    rope_fusion: bool = False
-    """
-    Enable rotary embedding fusion.
     """
 
     fp16_lm_cross_entropy: bool = False
@@ -336,15 +288,6 @@ class NeoXArgsModel(NeoXArgsTemplate):
     Base for rotary positional embedding
     """
 
-    rotary_save_freqs_buffer: bool = False
-    """
-    Used to control whether the `inv_freqs` buffer in rotary embeddings
-    will be stored in checkpoints (persistent=True) or not.
-
-    Defaults to false, but is left configurable to maintain backward-compatibility
-    with GPT-NeoX checkpoints that were trained with this flag.
-    """
-
     init_method: Literal[
         "normal",
         "scaled_normal",
@@ -354,7 +297,6 @@ class NeoXArgsModel(NeoXArgsTemplate):
         "xavier_normal",
         "wang_init",
         "small_init",
-        "single_residual_scaled_normal",
     ] = "normal"
     """
     Init function used on all layers except ff residual outputs - choose from
@@ -370,7 +312,6 @@ class NeoXArgsModel(NeoXArgsTemplate):
         "xavier_normal",
         "wang_init",
         "small_init",
-        "single_residual_scaled_normal",
     ] = "scaled_normal"
     """
     Init function used for ff residual outputs - choose from
@@ -402,22 +343,6 @@ class NeoXArgsModel(NeoXArgsTemplate):
       x = x + attn(y) + mlp(y)
     """
 
-    use_bias_in_norms: bool = True
-    """
-    If false, norms (e.g. LayerNorm) will not have bias terms
-    """
-    use_bias_in_attn_linear: bool = True
-    """
-    If false, attn_linear (e.g. QKVO) will not have bias terms
-    """
-
-    mlp_type: str = "regular"
-    """
-    Types:
-        regular: Megatron implementation
-        llama: LLaMA MLP (SiLU-gated MLP)
-    """
-
     soft_prompt_tuning: dict = None
     """
     Dictionary configuring the soft prompt tuning parameters.
@@ -429,39 +354,7 @@ class NeoXArgsModel(NeoXArgsTemplate):
         'init_range': float = 0.5 # if no init string is provided, initialize the soft prompt with a uniform distribution between -init_range and init_rang
     """
 
-    mamba_selective_scan_fusion: bool = False
-    """
-    Enable fused kernels for Mamba selective scan.
-    """
-
-    mamba_causal_conv_fusion: bool = False
-    """
-    Enable fused kernels for Mamba causal Conv1d.
-    """
-
-    mamba_inner_func_fusion: bool = False
-    """
-    Enable fused inner operator for Mamba. (Supersedes conv. and selective scan fusion flags, requires each of those kernels to be installed.)
-    """
-
-    mamba_selective_fp32_params: bool = True
-    """
-    Keep selected parameters in fp32 for Mamba (A and D).
-    Requires https://github.com/EleutherAI/DeeperSpeed/pull/61 .
-    """
-
-    mamba_use_bias_in_conv: bool = True
-    """
-    If false, conv1d in mamba block will not have bias term
-    """
-
-    mamba_use_bias_in_linears: bool = False
-    """
-    Enable bias terms in mamba block up- and down- projections (in_proj and out_proj).
-    """
-
-    # Output layer parallelism over the hidden dim is currently broken (https://github.com/EleutherAI/gpt-neox/issues/905)
-    output_layer_parallelism: Literal["column"] = "column"
+    output_layer_parallelism: Literal["row", "column"] = "row"
 
     """
     Parameter controlling whether the output layer is parallelized over the hidden dim (row) or the vocab dim (column)
@@ -478,6 +371,8 @@ class NeoXArgsModel(NeoXArgsTemplate):
     """
 
 
+
+
 @dataclass
 class NeoXArgsOptimizer(NeoXArgsTemplate):
     """
@@ -485,17 +380,10 @@ class NeoXArgsOptimizer(NeoXArgsTemplate):
     """
 
     optimizer_type: Literal[
-        "adam",
-        "onebitadam",
-        "cpu_adam",
-        "cpu_torch_adam",
-        "sm3",
-        "madgrad_wd",
-        "sgd",
-        "lion",
+        "adam", "onebitadam", "cpu_adam", "cpu_torch_adam", "sm3", "madgrad_wd", "sgd"
     ] = "adam"
     """
-    Type of optimizer to use. Choose from ['adam', 'onebitadam', 'cpu_adam', 'cpu_torch_adam', 'sm3', 'madgrad_wd', 'sgd', 'lion']
+    Type of optimizer to use. Choose from ['adam', 'onebitadam', 'cpu_adam', 'cpu_torch_adam', 'sm3', 'madgrad_wd', 'sgd']
     NOTE: sgd will use MuSGD from Mup. Mup must be enabled for this optimizer.
     """
 
@@ -541,8 +429,7 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     LR Scheduler Arguments
     """
 
-    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential", "constant_infinite", "inverse_sqrt_infinite", "cosine_cooldown_infinite"] = "linear"
-
+    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential", "constant_infinite", "inverse_sqrt_infinite"] = "linear"
     """
     Learning rate decay function. Choose from 'constant', 'linear', 'cosine', 'exponential'.
     """
@@ -551,12 +438,12 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     """
     Number of iterations to decay learning rate over, If None defaults to --train-iters
     """
-    
+
     constant_iters_percent: float = None
     """
     Percent of total iterations to use constant learning rate for. If None, defaults to 0.
     """
-    
+
     cooldown_iters_percent: float = None
     """
     Percent of total iterations to cooldown the learning rate for. If None, defaults to 0.
@@ -571,7 +458,7 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     """
     Minimum value for learning rate. The scheduler clips values below this threshold.
     """
-    
+
     constant_lr: float = None
     """
     Constant learning rate. If set, overrides all other learning rate settings.
@@ -591,11 +478,12 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     """
     Use checkpoint to set the values of the scheduler (learning rate, warmup iterations, minimum learning rate, maximum number of iterations, and decay style from checkpoint and ignore input arguments.
     """
-    
+
     num_repeats: int = 1
     """
     the number of times the smalle schedule is repeated for infinite cosine decay
     """
+
 
 @dataclass
 class NeoXArgsLogging(NeoXArgsTemplate):
@@ -639,7 +527,7 @@ class NeoXArgsLogging(NeoXArgsTemplate):
     Write TensorBoard logs to this directory.
     """
 
-    log_interval: int = 100
+    log_interval: int = None
     """
     Interval between logging.
     """
@@ -679,39 +567,6 @@ class NeoXArgsLogging(NeoXArgsTemplate):
     gradient_noise_scale_cpu_offload: bool = False
     """
     Whether to offload the buffered gradients to cpu when measuring gradient noise scale.
-    """
-
-    memory_profiling: bool = False
-    """
-    Whether to take a memory snapshot of the model. Useful for debugging memory issues.
-    """
-
-    memory_profiling_path: str = None
-    """
-    Path to save memory snapshot to.
-    """
-
-    profile: bool = False
-    """
-    Enable nsys profiling. When using this option,
-    nsys options should be specified in commandline.
-    An example nsys commandline is
-    ```
-    nsys profile -s none -t nvtx,cuda -o <path/to/output_file>
-    --force-overwrite true
-    --capture-range=cudaProfilerApi
-    --capture-range-end=stop
-    ```
-    """
-
-    profile_step_start: int = 10
-    """
-    Step to start profiling at.
-    """
-
-    profile_step_stop: int = 12
-    """
-    Step to stop profiling at.
     """
 
 
@@ -794,6 +649,11 @@ class NeoXArgsOther(NeoXArgsTemplate):
     Run via SLURM, this will attempt to discover the necessary variables to initialize torch distributed from the SLURM environment
     """
 
+    deepspeed_jsrun: bool = False
+    """
+    Run via JSRUN, this will attempt to discover the necessary variables to initialize torch distributed from the IBM LSF environment
+    """
+
     user_script: str = None
     """
     user script to be run
@@ -804,17 +664,17 @@ class NeoXArgsOther(NeoXArgsTemplate):
     Set during training
     """
 
-    do_train: bool = None
+    do_train: int = None
     """
     Set during training
     """
 
-    do_valid: bool = None
+    do_valid: int = None
     """
     Set during training
     """
 
-    do_test: bool = None
+    do_test: int = None
     """
     Set during training
     """
@@ -882,11 +742,6 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     List of paths to train datasets.
     """
 
-    label_data_paths: list = None
-    """
-    List of paths to label datasets (not shifted by 1 yet!).
-    """
-
     test_data_paths: list = None
     """
     List of paths to test datasets.
@@ -947,6 +802,7 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     can add an exit(0) statement in training.py in pretrain() after the call to build_train_valid_test_data_iterators(neox_args=neox_args).
     It is crucial to use the same dataset shard, sequence length, number of iterations, seed, and potentially batch size, or the indices
     generated may not be the same.
+
     For a single replay data source, the value passed looks like ["data/mydataset/train/mydataset_train_4_indexmap_456789ns_2048sl_1234s"] and
     the files at the following paths (the paths will be constructed during execution from the prefix), must exist:
         "data/mydataset/train/mydataset_train_4_indexmap_456789ns_2048sl_1234s_doc_idx.npy"
@@ -1018,7 +874,7 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     See https://arxiv.org/abs/1911.02116 for more details
     """
 
-    weighted_sampler_alpha: float = 1.0
+    weighted_sampler_alpha: float = 0.3
     """
     Alpha value for `weight_by_num_documents`. Only has an effect if `weight_by_num_documents` = True.
 
@@ -1027,9 +883,9 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     as alpha -> inf, the probability of sampling from the groups with *the most samples* -> 1
     """
 
-    data_impl: Literal["infer", "mmap", "cached"] = "infer"
+    data_impl: str = "infer"
     """
-    Implementation of indexed datasets, can be one of "infer", "cached", or "mmap"
+    Implementation of indexed datasets.
     """
 
     mmap_warmup: bool = False
@@ -1040,16 +896,6 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     save: str = None
     """
     Output directory to save checkpoints to.
-    """
-
-    s3_path: str = None
-    """
-    Path to s3 bucket for saving checkpoints.
-    """
-
-    s3_chunk_size: int = 104_857_600
-    """
-    The number of bytes in each file chunk when uploading to s3. Defaults to 100MiB.
     """
 
     config_files: dict = None
@@ -1167,17 +1013,17 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     Exit the program after the iteration is divisible by this value.
     """
 
-    attention_dropout: float = 0.0
+    attention_dropout: float = 0.1
     """
     Post attention dropout probability.
     """
 
-    hidden_dropout: float = 0.0
+    hidden_dropout: float = 0.1
     """
     Dropout probability for hidden state transformer.
     """
 
-    weight_decay: float = 0.1
+    weight_decay: float = 0.01
     """
     Weight decay coefficient for L2 regularization.
     """
@@ -1223,7 +1069,10 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     Partition Activations across GPUs before checkpointing.
     """
 
-    clip_grad: float = 1.0
+    gas: int = None
+    """gradient_accumulation_steps"""  # TODO this is a duplicate, remove?
+
+    clip_grad: float = None
     """
     Gradient clipping based on global L2 norm.
     """
@@ -1309,7 +1158,7 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     """
     What to scale width by when creating the delta model for mup
     """
-    
+
     train_dataset_name: str = "no_train_dataset_name_given"
     """
     An identified for the training dataset used for logging
@@ -1319,6 +1168,7 @@ class NeoXArgsTraining(NeoXArgsTemplate):
     """
     An identified for the training dataset used for logging
     """
+
 
 @dataclass
 class NeoXArgsTextgen(NeoXArgsTemplate):
@@ -1391,61 +1241,4 @@ class NeoXArgsTextgen(NeoXArgsTemplate):
     eval_tasks: list = None
     """
     Tasks to evaluate on using lm_eval_harness
-
-    NOTE: Requires internet connection
-    """
-
-    moe_top_k: int = 1
-    """
-    Activate top K experts in MoE
-    """
-
-    use_tutel: bool = False
-    """
-    Use Tutel optimizations in MoE
-    """
-
-    num_experts: int = 1
-    """
-    Number of MoE experts
-    """
-
-    moe_loss_coeff: float = 0.1
-    """
-    Coefficient for MoE loss
-    """
-
-    moe_train_capacity_factor: float = 1.0
-    """
-    The capacity of the expert at train time
-    """
-
-    moe_eval_capacity_factor: float = 1.0
-    """
-    The capacity of the expert at eval time
-    """
-
-    moe_min_capacity: int = 4
-    """
-    The minimum capacity per expert regardless of the capacity_factor
-    """
-
-    moe_token_dropping: bool = True
-    """
-    Whether to drop tokens when exceeding capacity
-    """
-
-    create_moe_param_group: bool = True
-    """
-    Whether to create a separate parameter group for MoE parameters
-    """
-
-    moe_use_residual: bool = True
-    """
-    Whether to use residual in MoE
-    """
-
-    moe_expert_parallel_size: int = 1
-    """
-    Number of parallel experts in MoE
     """

@@ -395,6 +395,9 @@ def load_checkpoint(
             tag=tag,
         )
 
+        # print("loading checkpoints with load_module_only=",not load_optim_and_scheduler)
+        # exit(0)
+
         if checkpoint_name is None:
             # if an iteration is specified, we want to raise an error here rather than
             # continuing silently, since we are trying to load a specific checkpoint

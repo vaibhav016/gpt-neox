@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# Copyright (c) 2024, EleutherAI
+# Copyright (c) 2021, EleutherAI
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,16 @@ import os
 import deepspeed.launcher.runner
 
 
-def main(input_args=None):
+def main():
     logging.basicConfig(level=os.environ.get("LOGLEVEL", "INFO"))
 
     from megatron.neox_arguments import NeoXArgs
     from megatron.utils import get_wandb_api_key
 
-    neox_args = NeoXArgs.consume_deepy_args(input_args)
+    from megatron.data.data_utils import compile_helper
+    compile_helper()
+
+    neox_args = NeoXArgs.consume_deepy_args()
     deepspeed_main_args = neox_args.get_deepspeed_main_args()
 
     # Extract wandb API key and inject into worker environments

@@ -73,11 +73,11 @@ def initialize_megatron(neox_args, allow_no_cuda=False):
         # Megatron's MPU is the master. Complete initialization right away.
         finish_mpu_init()
 
-        # Compile dataset C++ code.
-        if neox_args.local_rank == 0:
-            from megatron.data.data_utils import compile_helper
+        # # Compile dataset C++ code.
+        # if neox_args.local_rank == 0:
+        #     from megatron.data.data_utils import compile_helper
 
-            compile_helper()
+        #     compile_helper()
 
         # Write arguments to tensorboard.
         _write_args_to_tensorboard(neox_args=neox_args)
@@ -153,6 +153,8 @@ def _initialize_distributed(neox_args):
             distributed_port=os.getenv("MASTER_PORT", "6000"),
             verbose=True,
         )
+        neox_args.rank = deepspeed.comm.get_rank()
+        neox_args.world_size = deepspeed.comm.get_world_size()
 
     # Setup 3D topology.
     pp = neox_args.pipe_parallel_size if neox_args.pipe_parallel_size >= 1 else 1

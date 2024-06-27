@@ -2248,7 +2248,7 @@ Args for deepspeed runner (deepspeed.launcher.runner).
 
 
 
-- **launcher**: typing.Literal['pdsh', 'openmpi', 'mvapich', 'slurm']
+- **launcher**: typing.Literal['pdsh', 'openmpi', 'mvapich', 'slurm', 'jsrun']
 
     Default = pdsh
 
