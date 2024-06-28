@@ -3,11 +3,12 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-node=a100l:4
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=6
 #SBATCH --mem=80G
-#SBATCH --time=1:00:00 
+#SBATCH --time=00:10:00 
 #SBATCH --output=pile_tr_inf_cos_high_constant_resume-%j.out
 #SBATCH --error=pile_tr_inf_cos_high_constant_resume-%j.err
+#SBATCH --partition=short-unkillable
 
 
 
@@ -34,11 +35,12 @@ mkdir $SLURM_TMPDIR/output
 echo "save_path: $SLURM_TMPDIR/output"
 sd=$SLURM_TMPDIR/output
 
+########### training for pile (not tested)
+python deepy.py train.py ./configs/49M_local_test.yml ./configs/pile_schedules/train/local_setup_pile_train.yml ./configs/schedules/constant_schedules/adam_constant_lr1.6e-3_wu-0_high.yml
 
 
-
-########### training for remaining pile #########
-python deepy.py train.py ./configs/49M_local_test.yml ./configs/pile_schedules/constant_train/local_setup_pile_train_const_high.yml ./configs/schedules/constant_schedules/adam_constant_lr1.6e-3_wu-0_high.yml
+# ########### training for remaining pile #########
+# python deepy.py train.py ./configs/49M_local_test.yml ./configs/pile_schedules/constant_train/local_setup_pile_train_const_high.yml ./configs/schedules/constant_schedules/adam_constant_lr1.6e-3_wu-0_high.yml
 
 
 ###########German data #############

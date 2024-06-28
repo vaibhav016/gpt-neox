@@ -32,7 +32,7 @@
   # "merge_file": "data/gpt2-merges.txt",
 
   "save": "./checkpoints",
-  "load": "./checkpoints/JOB-4860191_49M_it-6000_wu-0_mxlr-0.00165_mnlr-3e-06_sch-cosine_cooldown_infinite_tr-german-train_resume",
+  "load": "./checkpoints/JOB-4596035_49M_it-6000_wu-0_mxlr-0.00165_mnlr-0.00165_sch-constant_tr-pile-train_resume",
 
   # Choose the checkpoint where the model is finished training on Pile.
   # "load": "./checkpoints/JOB-4384461_49M_it-3000_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-pile-train_resume",
@@ -56,7 +56,7 @@
       1,
     ],
     # Fraction of samples coming from the replay buffer, between 0 and 1.
-    "replay_fraction": 0.5,
+    "replay_fraction": 0.05,
     # Seed and reshuffle go hand in hand. They control whether you want to see the replay data in the same order
     # as you've seen it (done by setting reshuffle to false), and if you decide to reshuffle, what seed you should
     # use to reshuffle the seen data.

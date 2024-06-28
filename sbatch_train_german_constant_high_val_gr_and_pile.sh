@@ -1,13 +1,13 @@
 #!/bin/bash
-#SBATCH --job-name="ger_tr_inf_cos_high_val_gr_and_pile"
+#SBATCH --job-name="ger_tr_inf_cos_high_val_gr_and_pile_after5100_replayp5"
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-node=a100l:4
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=80G
 #SBATCH --time=01:00:00 
-#SBATCH --output=ger_tr_inf_cos_high_val_gr_and_pile-%j.out
-#SBATCH --error=ger_tr_inf_cos_high_val_gr_and_pile-%j.err
+#SBATCH --output=ger_tr_inf_cos_high_val_gr_and_pile_after5100_replayp5-%j.out
+#SBATCH --error=ger_tr_inf_cos_high_val_gr_and_pile_after5100_replayp5-%j.err
 
 # Some potentially useful distributed environment variables
 export HOSTNAMES=`scontrol show hostnames "$SLURM_JOB_NODELIST"`
@@ -31,8 +31,10 @@ mkdir $SLURM_TMPDIR/output
 echo "save_path: $SLURM_TMPDIR/output"
 sd=$SLURM_TMPDIR/output
 
-# python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/german_schedules/pile_valid/local_setup_german_val_gr_and_pile_high.yml ./configs/schedules/inf_cosine_schedules/adam_infcos_lr_constant_german_high.yml
+# before annealing
+# python3 deepy.py train.py ./configs/49M_local_test_finetune.yml ./configs/german_schedules/pile_valid/local_setup_german_val_gr_and_pile_high_replay_before5100_p05.yml ./configs/schedules/inf_cosine_schedules/adam_infcos_lr_constant_german_high.yml
 
+# anneling phase
  python3 deepy.py train.py ./configs/49M_local_test.yml ./configs/german_schedules/pile_valid/local_setup_german_val_gr_and_pile_high_replay_after5100.yml ./configs/schedules/inf_cosine_schedules/adam_infcos_lr_constant_german_high.yml
 
 

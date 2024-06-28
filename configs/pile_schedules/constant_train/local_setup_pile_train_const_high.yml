@@ -16,7 +16,7 @@
   # "valid-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
   "train-data-weights": [1.,],
   "test-data-weights": [1.,],
-  "valid-data-weights": [1.,],
+  "valid-data-weights": [[1.,],,
 
   # If weight_by_num_documents is True, Builds dataset weights from a multinomial distribution over groups of data according to the number of documents in each group.
   # WARNING: setting this to True will override any user provided weights

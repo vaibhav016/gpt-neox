@@ -155,3 +155,8 @@ src/
 # test data files
 tests/data/*.bin
 tests/data/*.idx
+
+
+*.out
+*.err
+hostfiles/
