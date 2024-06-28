@@ -57,7 +57,7 @@
       1,
     ],
     # Fraction of samples coming from the replay buffer, between 0 and 1.
-    "replay_fraction": 0.5,
+    "replay_fraction": 0.12,
     # Seed and reshuffle go hand in hand. They control whether you want to see the replay data in the same order
     # as you've seen it (done by setting reshuffle to false), and if you decide to reshuffle, what seed you should
     # use to reshuffle the seen data.
