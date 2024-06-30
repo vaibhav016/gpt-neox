@@ -91,23 +91,22 @@ class AnnealingLR(object):
         if self.warmup_iter > 0 and self.num_iters <= self.warmup_iter:
             print_rank_0("In get_lr, using warmup")
             return float(self.start_lr) * num_iters_ / self.warmup_iter
-        elif self.decay_style == 'cosine-inf' \
-        and self.warmup_iter > 0 \
-        and num_iters_ % self.repeat_iter_interval <= self.warmup_iter:
-            print_rank_0("In get_lr, using warmup")
-            return float(self.min_lr) + float(self.start_lr - self.min_lr) * (num_iters_ % self.repeat_iter_interval) / self.warmup_iter
-            
-
-        num_iters_ = (num_iters_%self.repeat_iter_interval) - self.warmup_iter
+        
+        num_iters_ = num_iters_ - self.warmup_iter
         if self.decay_style == "linear":
-            lr = self.start_lr * (self.end_iter - num_iters_) / self.end_iter
+            end_iter_ = self.end_iter - self.warmup_iter
+            lr = self.start_lr * (end_iter_ - num_iters_) / end_iter_
         elif self.decay_style == "cosine":
             end_iter_ = self.end_iter - self.warmup_iter
             lr = self.min_lr + (
-                (self.start_lr-self.min_lr)
+                (self.start_lr - self.min_lr)
                 / 2.0
                 * (math.cos(math.pi * num_iters_ / end_iter_) + 1)
             )
+        elif self.decay_style == "exponential":
+            # exp(-0.693) = 1/2
+            end_iter = self.end_iter - self.warmup_iter
+            lr = self.start_lr * math.exp(-0.693 * num_iters_ / end_iter)
         elif self.decay_style == "cosine-inf":
             end_iter_ = self.repeat_iter_interval - self.warmup_iter
             lr = self.min_lr + (
@@ -115,10 +114,6 @@ class AnnealingLR(object):
                 / 2.0
                 * (math.cos(math.pi * num_iters_ / end_iter_) + 1)
             )
-        elif self.decay_style == "exponential":
-            # exp(-0.693) = 1/2
-            lr = self.start_lr * math.exp(-0.693 * num_iters_ / self.end_iter)
-        
         elif "infinite" in self.decay_style:
             if num_iters_ <= self.constant_iter:
                 if num_iters_ <= self.cooldown_iter:
@@ -156,6 +151,7 @@ class AnnealingLR(object):
         else:
             lr = self.start_lr
         return max(lr, self.min_lr)
+
 
     def step(self, step_num=None):
         """Set lr for all parameters groups."""

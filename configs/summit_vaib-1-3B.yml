@@ -49,6 +49,7 @@
 
    # batch / data settings
    "train_micro_batch_size_per_gpu": 4,
+   "gradient_accumulation_steps": 4,
    "data-impl": "mmap",
 
    # activation checkpointing
@@ -65,10 +66,11 @@
 
    # precision settings
    "fp16": {
-     "fp16": true,
+    #  "fp16": true,
      "enabled": true,
      "loss_scale": 0,
      "loss_scale_window": 1000,
+     "initial_scale_power": 6,
      "hysteresis": 2,
      "min_loss_scale": 1
    },
@@ -79,14 +81,14 @@
    "distributed-backend": "nccl",
   #  "lr-decay-style": "cosine",
   #  "warmup": 0.01,
-   "checkpoint-factor": 1000,
-   "eval-interval": 1000,
+   "checkpoint-factor": 100,
+   "eval-interval": 100,
    "eval-iters": 10,
 
    # logging
-   "log-interval": 1000,
-   "steps_per_print": 100,
-   "keep-last-n-checkpoints": 4,
+   "log-interval": 10,
+   "steps_per_print": 10,
+   "keep-last-n-checkpoints": 3,
    "wall_clock_breakdown": true,
 
 }

@@ -429,7 +429,7 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     LR Scheduler Arguments
     """
 
-    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential", "constant_infinite", "inverse_sqrt_infinite"] = "linear"
+    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential", "constant_infinite", "inverse_sqrt_infinite",  "cosine_cooldown_infinite"] = "linear"
     """
     Learning rate decay function. Choose from 'constant', 'linear', 'cosine', 'exponential'.
     """

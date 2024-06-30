@@ -201,8 +201,8 @@ def pretrain(neox_args):
     neox_args.tensorboard_writer = tensorboard_writer
     neox_args_val.train_data_paths = [None]
     neox_args_val.test_data_paths = [None]
-    neox_args.valid_data_paths = neox_args.valid_data_paths
-    neox_args.valid_data_weights = neox_args.valid_data_weights
+    neox_args.valid_data_paths = neox_args.valid_data_paths[0]
+    neox_args.valid_data_weights = neox_args.valid_data_weights[0]
     # Data stuff.
     timers("train/valid/test data iterators").start()
     (
@@ -212,13 +212,13 @@ def pretrain(neox_args):
     ) = build_train_valid_test_data_iterators(neox_args=neox_args)
     val_iters = [valid_data_iterator]
     
-    # if neox_args_val.valid_data_paths is not None and len(neox_args_val.valid_data_paths) > 1:
-    #     for i in range(1, len(neox_args_val.valid_data_paths)):
-    #         temp_copy = copy.deepcopy(neox_args_val)
-    #         temp_copy.valid_data_paths = temp_copy.valid_data_paths[i]
-    #         temp_copy.valid_data_weights = temp_copy.valid_data_weights[i]
-    #         temp_copy.num_workers = 0
-    #         val_iters.append(build_validation_iterator(neox_args=temp_copy))
+    if neox_args_val.valid_data_paths is not None and len(neox_args_val.valid_data_paths) > 1:
+        for i in range(1, len(neox_args_val.valid_data_paths)):
+            temp_copy = copy.deepcopy(neox_args_val)
+            temp_copy.valid_data_paths = temp_copy.valid_data_paths[i]
+            temp_copy.valid_data_weights = temp_copy.valid_data_weights[i]
+            temp_copy.num_workers = 0
+            val_iters.append(build_validation_iterator(neox_args=temp_copy))
 
     timers("train/valid/test data iterators").stop()
 
@@ -886,12 +886,14 @@ def train(
             noise_scale_logger=noise_scale_logger,
         )
 
-
         save_at_lr_peak = lr_scheduler.num_iters - 1 <= lr_scheduler.warmup_iter \
                           and lr_scheduler.warmup_iter < (lr_scheduler.num_iters)
-
+        
+        # Checkpointing when const lr starts for inf lr scheduling
+        train_iters_const = iteration == (neox_args.train_iters * neox_args.constant_iters_percent)
+        
         # Checkpointing
-        if ( neox_args.save and iteration in neox_args.save_iters ) or save_at_lr_peak:
+        if ( neox_args.save and iteration in neox_args.save_iters ) or save_at_lr_peak or train_iters_const:
             save_checkpoint(
                 neox_args=neox_args,
                 iteration=iteration,
