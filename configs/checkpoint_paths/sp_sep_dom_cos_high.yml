@@ -1,0 +1,4 @@
+{
+  "load": "checkpoints/JOB-3637544__it-10000_wu-0.01_mxlr-0.003_mnlr-3e-05_sch-cosine_tr-sp-train_resume",
+
+}

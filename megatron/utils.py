@@ -149,7 +149,7 @@ def get_wandb_api_key(neox_args):
 
 
 def init_wandb(neox_args):
-    # Wandb. (one worker per machine)
+            # Wandb. (one worker per machine)
     if neox_args.use_wandb == False:
         return
 
@@ -178,7 +178,6 @@ def init_wandb(neox_args):
                 flush=True,
             )
         wandb.config.update(neox_args.all_config)
-
 
 def obtain_resource_pool(
     hostfile_path, include_arg, exclude_arg

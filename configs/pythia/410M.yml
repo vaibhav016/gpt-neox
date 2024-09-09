@@ -41,9 +41,12 @@
     "contiguous_gradients": true,
     "cpu_offload": false
   },
-  "train_batch_size": 1104, #1104 # approximately 2.2M batch size across 46 nodes 
-  "train_micro_batch_size_per_gpu": 4,
-  "gas": 1,
+  # "train_batch_size": 60, #1104 # approximately 2.2M batch size across 46 nodes 
+  # "train_micro_batch_size_per_gpu": 4,
+
+  "train_micro_batch_size_per_gpu": 2,
+  "gradient_accumulation_steps": 1,
+  # "gas": 1,
   "data-impl": "mmap",
   # "num_workers": 1,
 
@@ -68,9 +71,11 @@
   },
 
   "distributed-backend": "nccl",
+  "train-iters": 10000,
+  "lr-decay-iters": 10000,
   # "warmup": 0.01,
-  "checkpoint-factor": 1000,
-  "extra-save-iters": [0,1,2,4,8,16,32,64,128,256,512],
+  "checkpoint-factor": 500,
+  # "extra-save-iters": [0,1,2,4,8,16,32,64,128,256,512],
   "eval-interval": 100,
   "eval-iters": 10,
   "log-interval": 10,

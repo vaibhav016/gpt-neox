@@ -1,0 +1,77 @@
+
+# Suggested data paths when using GPT-NeoX locally
+{
+  # "data-path": "data/enwik8/enwik8_text_document",
+
+  # or for weighted datasets:
+  # "train-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
+  # "test-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
+  # "valid-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
+  
+  # "train-data-weights": [1., 2.],
+  # "test-data-weights": [2., 1.],
+  # "valid-data-weights": [0.5, 0.4],
+
+  "train-data-paths":[
+    # 'data/slim_pajama/tokenized_train_0-100B/ArXiv/ArXiv',
+    # 'data/slim_pajama/tokenized_train_0-100B/Book/Book',
+    # 'data/slim_pajama/tokenized_train_0-100B/C4/C4',
+    # 'data/slim_pajama/tokenized_train_0-100B/Wikipedia/Wikipedia',
+    # 'data/slim_pajama/tokenized_train_0-100B/Github/Github',
+    # 'data/slim_pajama/tokenized_train_0-100B/StackExchange/StackExchange',
+    'data/slim_pajama/tokenized_train_0-100B/CommonCrawl/CommonCrawl',
+    ],
+  "train-data-weights": [
+    1.0,
+  ],
+  "test-data-paths": ["data/slim_pajama/test/CommonCrawl/tokenized_commoncrawl_text_document"] ,
+  
+  "valid-data-paths": [["data/pile/val/pile_val_text_document"], 
+                       ["data/slim_pajama/val/CommonCrawl/tokenized_commoncrawl_text_document"]
+                      ] ,
+  
+  # "train-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
+  # "test-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
+  # "valid-data-paths": ["data/enwik8/enwik8_text_document", "data/enwik8/enwik8_text_document"],
+  
+  # "train-data-weights": [1.,],
+  "test-data-weights": [1.,],
+  "valid-data-weights": [[1.], [1.]],
+
+  # If weight_by_num_documents is True, Builds dataset weights from a multinomial distribution over groups of data according to the number of documents in each group.
+  # WARNING: setting this to True will override any user provided weights
+  # "weight_by_num_documents": false,
+  # "weighted_sampler_alpha": 0.3,
+
+  # "vocab-file": "data/gpt2-vocab.json",
+
+  "vocab_file": "data/20B_tokenizer.json",
+  # "merge-file": "data/gpt2-merges.txt",
+  "tokenizer_type": "HFTokenizer",
+
+  "train-dataset-name": 'sp_train',
+  "val-dataset-name": 'sp_val',
+
+  "save": "checkpoints",
+  # Loading will be done via separate yml files.
+  "checkpoint_validation_with_forward_pass": False,
+
+  "tensorboard-dir": "tensorboard",
+  "log-dir": "logs",
+  "use_wandb": False,
+  "wandb_host": "https://api.wandb.ai",
+  "wandb_project": "inf-lr",
+
+  "launcher": "jsrun",
+  "deepspeed_jsrun": true,
+
+  # "train_on_new_dataset_from_old_checkpoint": true, # Set this to True only when a new Dataset comes, eg from Pile -> German
+  "finetune": false,
+  "num_workers": 4,
+  
+}
+
+
+
+
+

@@ -717,6 +717,12 @@ class NeoXArgs(*BASE_CLASSES):
     def calculate_batch_parameters(
         dp_world_size, train_batch=None, micro_batch=None, grad_acc=None
     ):
+        print("----------Batch parameters at function signature"
+                f"DP World Size: {dp_world_size}",
+                " Training Batch size: ", train_batch , 
+                " Micro Batch Size per GPU:", micro_batch , 
+                " Grad Accumulation Steps:", grad_acc , 
+            )
         # all values are provided nothing needs to be set
         if train_batch is not None and micro_batch is not None and grad_acc is not None:
             return train_batch, micro_batch, grad_acc
@@ -751,6 +757,13 @@ class NeoXArgs(*BASE_CLASSES):
             assert (
                 False
             ), "Either train_batch_size or micro_batch_per_gpu needs to be provided"
+        
+        logging.info( "Batch parameters after calculation"
+                f"DP World Size: {dp_world_size}",
+                f"Training Batch size: {train_batch}",
+                f"Micro Batch Size per GPU: {micro_batch}",
+                f"Grad Accumulation Steps: {grad_acc}",
+            )
         return int(train_batch), int(micro_batch), int(grad_acc)
 
     @staticmethod

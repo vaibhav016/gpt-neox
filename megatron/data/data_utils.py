@@ -180,7 +180,7 @@ def get_normalized_weights_and_num_samples(
     weights: List[float], num_samples: int
 ) -> Tuple[List[float], List[int]]:
     # Normalize weights
-    # print(weights)
+    print(weights, type(weights))
     weight_sum = sum(weights)
     assert weight_sum > 0.0
     weights = [weight / weight_sum for weight in weights]
@@ -389,6 +389,7 @@ def build_train_valid_test_data_iterators(neox_args):
                     neox_args.replay_fraction, train_val_test_num_samples[0]
                 )
             else:
+                print(neox_args.train_data_weights, type(neox_args.train_data_weights))
                 train_weights, train_num_samples = get_normalized_weights_and_num_samples(
                     neox_args.train_data_weights, train_val_test_num_samples[0]
                 )

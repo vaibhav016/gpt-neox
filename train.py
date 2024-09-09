@@ -18,6 +18,7 @@
 """Train"""
 from megatron.neox_arguments import NeoXArgs
 from megatron.training import pretrain
+# from megatron.utils import init_wandb
 
 import os
 import numpy as np
@@ -69,6 +70,7 @@ if __name__ == "__main__":
     print("NEOX ARGS save: ", neox_args.save)
     # exit(0)
     neox_args.initialize_tensorboard_writer()  # is initialized if tensorboard directory is defined
+    # init_wandb(neox_args=neox_args)
 
     pretrain(neox_args=neox_args)
     

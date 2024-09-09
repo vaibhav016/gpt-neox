@@ -9,6 +9,7 @@
   },
   "min_lr": 3.0e-6,
   "lr-decay-style": "constant",
+  # For Annealing, add "constant_infinite"
   "warmup": 0,
   "constant_lr": 1.65e-3,
   "constant_iters_percent" : 0.85,
@@ -17,4 +18,5 @@
   "override_lr_scheduler": True, # setting this to True, since we want to train on german for a constant lr
   "use_checkpoint_lr_scheduler": False # Again, we dont want to use the checkpoint's LR schedular. 
 }
+
 

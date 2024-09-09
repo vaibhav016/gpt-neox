@@ -45,12 +45,17 @@
 
   "tensorboard-dir": "tensorboard",
   "log-dir": "logs",
+  #  "wandb": {
+  #   "enabled": true,
+  #   "team": "my_team",
+  #   "group": "my_group",
+  #   "project": "my_project"
+  # },
   "use_wandb": False,
-  "wandb_host": "https://api.wandb.ai",
+  # "wandb_host": "https://api.wandb.ai",
   "wandb_project": "neox",
 
   "launcher": "jsrun",
   "deepspeed_jsrun": true,
-
-  "num_workers": 0,
+  "num_workers": 4,
 }
