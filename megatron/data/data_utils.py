@@ -180,7 +180,7 @@ def get_normalized_weights_and_num_samples(
     weights: List[float], num_samples: int
 ) -> Tuple[List[float], List[int]]:
     # Normalize weights
-    print(weights, type(weights))
+    # print(weights, type(weights))
     weight_sum = sum(weights)
     assert weight_sum > 0.0
     weights = [weight / weight_sum for weight in weights]

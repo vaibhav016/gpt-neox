@@ -890,7 +890,7 @@ def train(
                           and lr_scheduler.warmup_iter < (lr_scheduler.num_iters)
         
         # Checkpointing when const lr starts for inf lr scheduling
-        train_iters_const = iteration == (neox_args.train_iters * neox_args.constant_iters_percent)
+        train_iters_const = iteration == int(neox_args.train_iters * neox_args.constant_iters_percent)
         
         # Checkpointing
         if ( neox_args.save and iteration in neox_args.save_iters ) or save_at_lr_peak or train_iters_const:

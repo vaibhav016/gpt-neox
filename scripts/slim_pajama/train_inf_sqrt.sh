@@ -40,7 +40,7 @@ cd test/gpt-neox/
 # rm megatron_config_3*.json
 
 
-# rm core.*
+# du -h --max-depth=1
 # rm megatron_config_3*.json
 
 # Kill previous job and setup next job pickup

@@ -1,10 +1,10 @@
 #!/bin/bash
-#BSUB -nnodes 92
-#BSUB -W 0:30
+#BSUB -nnodes 46
+#BSUB -W 6:00
 #BSUB -q batch
 #BSUB -o /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_out.%J
 #BSUB -e /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_err.%J
-#BSUB -J 410_cnst_pl_icos
+#BSUB -J 410_cnst_pl_icos_high
 #BSUB -alloc_flags gpudefault
 #BSUB -P csc565
 #BSUB -N vaibhav.singh@mila.quebec

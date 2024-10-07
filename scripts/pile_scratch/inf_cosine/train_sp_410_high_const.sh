@@ -1,6 +1,6 @@
 #!/bin/bash
-#BSUB -nnodes 92
-#BSUB -W 12:00
+#BSUB -nnodes 46
+#BSUB -W 6:00
 #BSUB -q batch
 #BSUB -o /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_out.%J
 #BSUB -e /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_err.%J

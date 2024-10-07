@@ -47,6 +47,7 @@ class Encoder(object):
         Encoder.tokenizer = build_tokenizer(self.args)
 
     def encode(self, text):
+        token_count = 0
         if self.args.ftfy:
             text = ftfy.fix_text(text)
         ids = {}
@@ -55,10 +56,14 @@ class Encoder(object):
             text_ids = Encoder.tokenizer.tokenize(text)
             if len(text_ids) > 0:
                 doc_ids.append(text_ids)
+                if self.args.tokenizer_type.lower() == "Llama3HFTokenizer".lower():
+                    token_count = len(text_ids) - 1 # No including the bos token
+                else:
+                    token_count = len(text_ids)  # HFTokenizer doesnt has bos token
             if self.args.append_eod:
                 doc_ids[-1].append(Encoder.tokenizer.eod)
             ids[key] = doc_ids
-        return ids, len(text)
+        return ids, len(text), token_count
 
 
 def get_args():
@@ -94,6 +99,7 @@ def get_args():
             "GPT2BPETokenizer",
             "CharLevelTokenizer",
             "TiktokenTokenizer",
+            "Llama3HFTokenizer",
         ],
         help="What type of tokenizer to use.",
     )
@@ -192,6 +198,7 @@ def main():
     # each key will output to a different file beginning with args.output_prefix
     output_bin_files = {}
     output_idx_files = {}
+    output_size_file = {}
     builders = {}
     for key in args.jsonl_keys:
         output_bin_files[key] = "{}_{}_{}.bin".format(
@@ -200,6 +207,9 @@ def main():
         output_idx_files[key] = "{}_{}_{}.idx".format(
             args.output_prefix, key, "document"
         )
+        output_size_file[key] = "{}_{}_{}_{}.txt".format(
+            args.output_prefix, args.tokenizer_type, key, "document"
+        )
         builders[key] = indexed_dataset.make_builder(
             output_bin_files[key],
             impl=args.dataset_impl,
@@ -207,34 +217,44 @@ def main():
         )
 
     # actually do tokenization
+    total_tokens=0
     proc_start = time.time()
     total_bytes_processed = 0
     pbar = tqdm.tqdm()
-    for i, (doc, bytes_processed) in enumerate(encoded_docs, start=1):
+    for i, (doc, bytes_processed, token_count) in enumerate(encoded_docs, start=1):
         total_bytes_processed += bytes_processed
-
+        total_tokens += token_count
         # release semaphore so `yield_from_files` can add another file to the buffer
         semaphore.release()
-
         # add each tokenized document / sentence
         for key, sentences in doc.items():
             for sentence in sentences:
+                # total_tokens += len(sentence)
+                # print(sentence)
                 builders[key].add_item(np.array(sentence, dtype=builders[key].dtype))
+        
             # separate with eos token
             builders[key].end_document()
+            # print(1/0)
 
         # log progress
         if i % args.log_interval == 0:
+            # print("*********** Tokens counted ************", total_tokens)
             current = time.time()
             elapsed = current - proc_start
             mbs = total_bytes_processed / elapsed / 1024 / 1024
             pbar.set_description(
-                f"Processed {i}{'' if args.num_docs is None else '/' + str(args.num_docs)} documents ({i / elapsed} docs/s, {mbs} MB/s)."
+                f"Tokens counted = {total_tokens}, Processed {i}{'' if args.num_docs is None else '/' + str(args.num_docs)} documents ({i / elapsed} docs/s, {mbs} MB/s)."
             )
             if i != 0:
                 pbar.update(args.log_interval)
+    
 
     # save output file
+    with open(output_size_file[key], "w") as file:
+        # Write the large number as a string
+        file.write(str(total_tokens))
+           
     for key in args.jsonl_keys:
         builders[key].finalize(output_idx_files[key])
 

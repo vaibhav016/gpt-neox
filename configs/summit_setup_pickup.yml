@@ -40,7 +40,7 @@
   "val-dataset-name": 'pile_val',
 
   "save": "checkpoints",
-  "load": "checkpoints",
+  # "load": "checkpoints",
   "checkpoint_validation_with_forward_pass": False,
 
   "tensorboard-dir": "tensorboard",

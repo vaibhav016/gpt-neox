@@ -35,7 +35,7 @@ endd=20
 
 # end=$((start + increment))
 
-python download_scripts/tokenize_the_dataset.py \
+python3 download_scripts/tokenize_the_dataset.py \
         --input-path data/oscar_german_2301 \
         --output-path data/tokenized_oscar_german_2301 \
         --start $start --end $endd

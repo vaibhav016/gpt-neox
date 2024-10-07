@@ -31,20 +31,20 @@ start = int(args.start / 100 * len(jsonl_files))
 end = int(args.end / 100 * len(jsonl_files))
 
 print("using start and end: {} {}".format(start, end))
-max_workers = os.cpu_count() * 2
+max_workers = os.cpu_count()//16
 print("***** CPU WORKERS****", max_workers)
 
 for file in tqdm(jsonl_files[start:end]):
     command = 'python tools/preprocess_data.py \
         --input \"{}\" \
         --output-prefix \"{}\" \
-        --vocab /ccs/home/vaibhav_016/csc565/scratch/vaibhav_016/test/gpt-neox/data/20B_tokenizer.json \
-        --tokenizer-type HFTokenizer \
+        --vocab /ccs/home/vaibhav_016/csc565/scratch/vaibhav_016/test/gpt-neox/data/Meta-Llama-3-8B/tokenizer.json \
+        --tokenizer-type Llama3HFTokenizer \
         --append-eod \
         --jsonl-keys text \
         --workers {}'.format(
                 os.path.join(args.input_path, file),
-                os.path.join(args.output_path,file.replace('.parquet','').replace('.jsonl','')), 
+                os.path.join(args.output_path, file.replace('.parquet','').replace('.jsonl','')), 
                 max_workers
             )
     print(command)

@@ -1,10 +1,10 @@
 #!/bin/bash
-#BSUB -nnodes 92
-#BSUB -W 12:00
+#BSUB -nnodes 46
+#BSUB -W 6:00
 #BSUB -q batch
 #BSUB -o /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_out.%J
 #BSUB -e /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_err.%J
-#BSUB -J german_train_pl
+#BSUB -J german_pl_small
 #BSUB -alloc_flags gpudefault
 #BSUB -P csc565
 #BSUB -N vaibhav.singh@mila.quebec
@@ -47,7 +47,7 @@ cd test/gpt-neox/
 # bkill 3178176
 # python /gpfs/alpine/csc499/scratch/btherien/experiments_phase_2/7-1B_future_launch.py --job-id $LSB_JOBID --sleep-time 9 &
 
-python $TRAIN_PATH/deepy.py $TRAIN_PATH/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml vaibhav_german_setup_no_replay/summit_setup_cos_low.yml vaibhav_schedules/cosine_decay_schedules/adam_cosine_lr3e-4_3e-5_wu-0.01.yml
+python $TRAIN_PATH/deepy.py $TRAIN_PATH/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml vaibhav_german_setup_no_replay/summit_setup_cos_low_pickup.yml vaibhav_schedules/cosine_decay_schedules/adam_cosine_lr3e-4_3e-5_wu-0.01.yml checkpoint_paths/german/from_pile/cos/low.yml
 
 
 # bash /gpfs/alpine/csc499/scratch/btherien/write_hostfile.sh

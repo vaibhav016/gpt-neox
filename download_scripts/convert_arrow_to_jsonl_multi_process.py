@@ -9,7 +9,6 @@ from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 
-
 # arrow_path = 'PATH TO EXISTING DIRECTORY CONTAINING DATA IN .ARROW FORMAT'
 # jsonl_path = 'NEW DIRECTORY FOR THE JSONL DATA'
 
@@ -41,7 +40,7 @@ if __name__ == "__main__":
     os.makedirs(jsonl_path, exist_ok=True)
     arrow_files = os.listdir(arrow_path)
 
-    max_workers = os.cpu_count()  # Use all available CPUs
+    max_workers = 8  # Use all available CPUs
     print(" CPU WORKERS -> ", max_workers)
     main(arrow_path, jsonl_path, max_workers)
 

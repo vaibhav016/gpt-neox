@@ -39,7 +39,6 @@
   "val-dataset-name": 'pile_val',
 
   "save": "checkpoints",
-  "load": "checkpoints/JOB-3572096__it-10000_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-pile-train_resume",
   "checkpoint_validation_with_forward_pass": False,
 
   "tensorboard-dir": "tensorboard",

@@ -4,7 +4,7 @@
 #BSUB -q batch
 #BSUB -o /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_out.%J
 #BSUB -e /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_err.%J
-#BSUB -J 410_cnst_sp_icos_high
+#BSUB -J 410_hi_pl_icos_pickup
 #BSUB -alloc_flags gpudefault
 #BSUB -P csc565
 #BSUB -N vaibhav.singh@mila.quebec
@@ -47,7 +47,7 @@ cd test/gpt-neox/
 # bkill 3178176
 # python /gpfs/alpine/csc499/scratch/btherien/experiments_phase_2/7-1B_future_launch.py --job-id $LSB_JOBID --sleep-time 9 &
 
-python $TRAIN_PATH/deepy.py $TRAIN_PATH/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml summit_setup_slim_pajama_pickup.yml vaibhav_schedules/constant_schedules/adam_const_lr5e-4_wu-0_high.yml checkpoint_paths/sp_const_high.yml
+python $TRAIN_PATH/deepy.py $TRAIN_PATH/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml summit_setup_pickup.yml vaibhav_schedules/inf_cosine_schedules/adam_infcos_lr1e-3_3e-5_wu-001_const_5.yml checkpoint_paths/pile_scratch_inf_cos_high_1e.yml
 
 # Write the hostfile for this job
 # bash /gpfs/alpine/csc499/scratch/btherien/write_hostfile.sh

@@ -1,7 +1,7 @@
 #!/bin/bash
-#BSUB -nnodes 92
-#BSUB -W 12:00
-#BSUB -q batch
+#BSUB -nnodes 46
+#BSUB -W 24:00
+#BSUB -q batch-hm
 #BSUB -o /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_out.%J
 #BSUB -e /gpfs/alpine2/csc565/scratch/vaibhav_016/test/training_logs/gpt_neox_err.%J
 #BSUB -J 410_hi_pl_cos
@@ -47,7 +47,10 @@ cd test/gpt-neox/
 # bkill 3178176
 # python /gpfs/alpine/csc499/scratch/btherien/experiments_phase_2/7-1B_future_launch.py --job-id $LSB_JOBID --sleep-time 9 &
 
-python $TRAIN_PATH/deepy.py $TRAIN_PATH/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml summit_setup.yml vaibhav_schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-5_wu-0.01.yml
+python $TRAIN_PATH/deepy.py $TRAIN_PATH/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml summit_setup.yml vaibhav_schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-5_wu-0.01.yml checkpoint_paths/pile_scratch_cos_high.yml
+
+#  --conf_dir $TRAIN_PATH/configs pythia/410M.yml summit_setup.yml vaibhav_schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-5_wu-0.01.yml
+# python $TRAIN_PATH_ISTA/deepy.py $TRAIN_PATH_ISTA/train.py --conf_dir $TRAIN_PATH/configs pythia/410M.yml summit_setup.yml vaibhav_schedules/cosine_decay_schedules/adam_cosine_lr3e-3_3e-5_wu-0.01.yml
 
 # Write the hostfile for this job
 # bash /gpfs/alpine/csc499/scratch/btherien/write_hostfile.sh
