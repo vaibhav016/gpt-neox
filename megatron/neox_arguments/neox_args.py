@@ -468,6 +468,22 @@ class NeoXArgsModel(NeoXArgsTemplate):
     Parameter controlling whether the output layer is parallelized over the hidden dim (row) or the vocab dim (column)
     """
 
+    identifier_string: str = ""
+
+    """
+    an identifier for the model, used for saving checkpoints,logging, etc.
+    """
+
+    train_dataset_name: str = "no_train_dataset_name_given"
+    """
+    An identified for the training dataset used for logging
+    """
+
+    val_dataset_name: str = "no_val_dataset_name_given"
+    """
+    An identified for the training dataset used for logging
+    """
+
 
 @dataclass
 class NeoXArgsOptimizer(NeoXArgsTemplate):
@@ -809,9 +825,10 @@ class NeoXArgsTokenizer(NeoXArgsTemplate):
         "SPMTokenizer",
         "CharLevelTokenizer",
         "TiktokenTokenizer",
+        "Llama3HFTokenizer",
     ] = "GPT2BPETokenizer"
     """
-    Type of tokenizer to use - should be one of ["GPT2BPETokenizer", "HFTokenizer", "HFGPT2Tokenizer", "SPMTokenizer", "CharLevelTokenizer", "TiktokenTokenizer"]
+    Type of tokenizer to use - should be one of ["GPT2BPETokenizer", "HFTokenizer", "HFGPT2Tokenizer", "SPMTokenizer", "CharLevelTokenizer", "TiktokenTokenizer", "Llama3HFTokenizer"]
     """
 
     padded_vocab_size: int = None

@@ -15,7 +15,7 @@
 
   "attention_config": [[["flash"], 24]],
 
-  "scaled_upper_triang_masked_softmax_fusion": true,
+  "scaled_upper_triang_masked_softmax_fusion": false,
   "bias_gelu_fusion": true,
 
   "init_method": "small_init",
@@ -42,9 +42,9 @@
     "cpu_offload": false
   },
 
-  "train_micro_batch_size_per_gpu": 32,
+  "train_micro_batch_size_per_gpu": 28,
   "data_impl": "mmap",
-  "num_workers": 50,
+  "num_workers": 1,
 
   "checkpoint_activations": true,
   "checkpoint_num_layers": 1,
