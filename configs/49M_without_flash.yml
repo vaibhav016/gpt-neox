@@ -18,9 +18,6 @@
   "norm": "rmsnorm",
   "rms_norm_epsilon": 1.0e-6,
 
-  # Added flash attention to fasten things
-  "attention_config": [[["flash"], 10]],
-
   # these should provide some speedup but takes a while to build, set to true if desired
   "scaled_upper_triang_masked_softmax_fusion": false,
   "bias_gelu_fusion": false,
@@ -87,8 +84,8 @@
   "precision": "bfloat16",
 
   # misc. training settings
-  "train_iters": 1000,
-  "lr_decay_iters": 1000,
+  "train_iters": 500,
+  "lr_decay_iters": 500,
   "distributed_backend": "nccl",
   # "lr_decay_style": "cosine",
   # "warmup": 0.01,

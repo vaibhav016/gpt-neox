@@ -56,10 +56,10 @@
     "min_loss_scale": 1
   },
 
-  "train_iters": 3391,
-  "lr_decay_iters": 3391,
+  "train_iters": 509,
+  "lr_decay_iters": 509,
   "distributed_backend": "nccl",
-  "checkpoint_factor": 1000,
+  "checkpoint_factor": 100,
   # "extra_save_iters": [0,1,2,4,8,16,32,64,128,256,512],
   "eval_interval": 100,
   "eval_iters": 10,

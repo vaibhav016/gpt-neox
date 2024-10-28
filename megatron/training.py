@@ -712,7 +712,11 @@ def get_learning_rate_scheduler(optimizer, neox_args):
         num_iters = neox_args.train_iters
     num_iters = max(1, num_iters)
     init_step = 0
-    warmup_iter = neox_args.warmup * num_iters
+    if neox_args.lr_decay_style == 'cosine-inf':
+        warmup_iter = neox_args.warmup * int(num_iters / neox_args.num_repeats)
+    else:
+        warmup_iter = neox_args.warmup * num_iters
+
     lr_scheduler = AnnealingLR(
         optimizer,
         start_lr=neox_args.lr,
@@ -721,6 +725,11 @@ def get_learning_rate_scheduler(optimizer, neox_args):
         decay_style=neox_args.lr_decay_style,
         last_iter=init_step,
         min_lr=neox_args.min_lr,
+        constant_lr=neox_args.constant_lr,
+        num_repeats=neox_args.num_repeats,
+        constant_iters_percent=neox_args.constant_iters_percent,
+        cooldown_iters_percent=neox_args.cooldown_iters_percent,
+        timescale = neox_args.timescale,
         use_checkpoint_lr_scheduler=neox_args.use_checkpoint_lr_scheduler,
         override_lr_scheduler=neox_args.override_lr_scheduler,
         use_mup=neox_args.use_mup,
@@ -1035,8 +1044,11 @@ def train(
             noise_scale_logger=noise_scale_logger,
         )
 
+        # Checkpointing when const lr starts for inf lr scheduling
+        train_iters_const = iteration == int(neox_args.train_iters * neox_args.constant_iters_percent)
+        
         # Checkpointing
-        if neox_args.save and iteration in neox_args.save_iters:
+        if (neox_args.save and iteration in neox_args.save_iters) or train_iters_const:
             save_checkpoint(
                 neox_args=neox_args,
                 iteration=iteration,

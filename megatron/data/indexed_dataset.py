@@ -21,6 +21,7 @@ from itertools import accumulate
 
 import numpy as np
 import torch
+import tqdm
 
 from megatron import print_rank_0
 
@@ -68,9 +69,9 @@ def make_dataset(path, impl, skip_warmup=False):
         return None
     if impl == "infer":
         impl = infer_dataset_impl(path)
-    elif impl == "cached" and IndexedDataset.exists(path):
+    if impl == "cached" and IndexedDataset.exists(path):
         return IndexedCachedDataset(path)
-    elif impl == "mmap" and MMapIndexedDataset.exists(path):
+    if impl == "mmap" and MMapIndexedDataset.exists(path):
         return MMapIndexedDataset(path, skip_warmup)
     print(f"Unknown dataset implementation: {impl}")
     return None
@@ -331,10 +332,28 @@ class IndexedDatasetBuilder(object):
         index.close()
 
 
+# def _warmup_mmap_file(path):
+#     with open(path, "rb") as stream:
+#         while stream.read(100 * 1024 * 1024):
+#             pass
+
 def _warmup_mmap_file(path):
+    # Get the total size of the file to define the progress bar range
+    file_size = os.path.getsize(path)
+    
     with open(path, "rb") as stream:
-        while stream.read(100 * 1024 * 1024):
-            pass
+        # Initialize progress bar
+        progress_bar = tqdm.tqdm(total=file_size, unit='B', unit_scale=True, desc="Warming up mmap file")
+        
+        # Read the file in 100MB chunks and update the progress bar
+        while True:
+            chunk = stream.read(100 * 1024 * 1024)  # Read 100 MB at a time
+            if not chunk:
+                break
+            progress_bar.update(len(chunk))  # Update progress bar based on the chunk size
+        
+        progress_bar.close()
+
 
 
 class MMapIndexedDataset(torch.utils.data.Dataset):

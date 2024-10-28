@@ -2,6 +2,7 @@ import os
 import sys
 import json
 import argparse
+import numpy as np
 
 sys.path.append(
     os.path.abspath(
@@ -32,11 +33,14 @@ def main(args):
         prefixes.add(prefix)
 
     builder = None
-    for prefix in sorted(prefixes):
+    for i, prefix in enumerate(sorted(prefixes)):
+        if i<2:
+            continue
         if builder is None:
             dataset = indexed_dataset.make_dataset(
                 os.path.join(args.input, prefix), "infer"
             )
+            print(dataset, type(dataset))
 
             if isinstance(dataset, indexed_dataset.MMapIndexedDataset):
                 builder = indexed_dataset.MMapIndexedDatasetBuilder(
@@ -48,7 +52,7 @@ def main(args):
                 )
 
             del dataset
-
+        print("********* size *********", np.sum(builder._sizes))
         builder.merge_file_(os.path.join(args.input, prefix))
 
     builder.finalize(args.output_prefix + ".idx")

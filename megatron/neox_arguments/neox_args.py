@@ -548,7 +548,7 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     LR Scheduler Arguments
     """
 
-    lr_decay_style: Literal["constant", "linear", "cosine", "exponential"] = "linear"
+    lr_decay_style: Literal["constant", "linear", "cosine", "cosine-inf", "exponential", "constant_infinite", "inverse_sqrt_infinite",  "cosine_cooldown_infinite", "cosine_constant_infinite"] = "linear"
     """
     Learning rate decay function. Choose from 'constant', 'linear', 'cosine', 'exponential'.
     """
@@ -558,9 +558,29 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     Number of iterations to decay learning rate over, If None defaults to --train-iters
     """
 
+    constant_iters_percent: float = None
+    """
+    Percent of total iterations to use constant learning rate for. If None, defaults to 0.
+    """
+
+    cooldown_iters_percent: float = None
+    """
+    Percent of total iterations to cooldown the learning rate for. If None, defaults to 0.
+    """
+
+    timescale: int = None
+    """
+    Defines the steepness of the cooldown curve.
+    """
+
     min_lr: float = 0.0
     """
     Minimum value for learning rate. The scheduler clips values below this threshold.
+    """
+
+    constant_lr: float = None
+    """
+    Constant learning rate. If set, overrides all other learning rate settings.
     """
 
     warmup: float = 0.01
@@ -576,6 +596,11 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     use_checkpoint_lr_scheduler: bool = False
     """
     Use checkpoint to set the values of the scheduler (learning rate, warmup iterations, minimum learning rate, maximum number of iterations, and decay style from checkpoint and ignore input arguments.
+    """
+
+    num_repeats: int = 1
+    """
+    the number of times the smalle schedule is repeated for infinite cosine decay
     """
 
 
