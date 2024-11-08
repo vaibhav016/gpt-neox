@@ -80,7 +80,7 @@
   # "train_iters": 1000,
   "lr_decay_iters": 190735,
   "distributed_backend": "nccl",
-  "checkpoint_factor": 15000,
+  "checkpoint_factor": 10000,
   "extra_save_iters": [7000,23841,47683,95367,143050,166891],
   "eval_interval": 100,
   "eval_iters": 10,

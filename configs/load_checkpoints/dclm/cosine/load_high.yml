@@ -1,4 +1,3 @@
 {
-  "load": "checkpoints/JOB-2705796_410M-Llama2_it-190735_wu-0.01_mxlr-0.001_mnlr-3e-05_sch-cosine_tr-dclm-train_resume",
-
+  "load": "checkpoints/JOB-2733557_410M-Llama2_it-190735_wu-0.01_mxlr-0.001_mnlr-3e-05_sch-cosine_tr-dclm-train_resume",
 }
