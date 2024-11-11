@@ -13,10 +13,12 @@
   "gpt_j_residual": true,
   "output_layer_parallelism": "column",
 
-  "attention_config": [[["flash"], 24]],
+  # "attention_config": [[["flash"], 24]],
 
   "scaled_upper_triang_masked_softmax_fusion": true,
   "bias_gelu_fusion": true,
+  "rope_fusion": true,
+  "layernorm_fusion": true,
 
   "init_method": "small_init",
   "output_layer_init_method": "wang_init",
@@ -42,7 +44,7 @@
     "cpu_offload": false
   },
 
-  "train_micro_batch_size_per_gpu": 32,
+  "train_micro_batch_size_per_gpu": 16,
   "data_impl": "mmap",
   "num_workers": 1,
 
@@ -72,13 +74,15 @@
   "lr_decay_style": "cosine",
   "warmup": 0.01,
   "checkpoint_factor": 1000,
-  "extra_save_iters": [0,1,2,4,8,16,32,64,128,256,512],
-  "eval_interval": 143000,
+  # "extra_save_iters": [0,1,2,4,8,16,32,64,128,256,512],
+  "eval_interval": 50,
   "eval_iters": 10,
+  "launcher": "slurm",
+  "deepspeed_slurm": true,
 
   "log_interval": 10,
   "steps_per_print": 10,
   "wall_clock_breakdown": true,
 
-  "tokenizer_type": "HFTokenizer"
+  # "tokenizer_type": "HFTokenizer"
 }
