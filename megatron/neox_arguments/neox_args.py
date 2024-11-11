@@ -475,6 +475,22 @@ class NeoXArgsModel(NeoXArgsTemplate):
     Parameter controlling whether the output layer is parallelized over the hidden dim (row) or the vocab dim (column)
     """
 
+    identifier_string: str = ""
+
+    """
+    an identifier for the model, used for saving checkpoints,logging, etc.
+    """
+
+    train_dataset_name: str = "no_train_dataset_name_given"
+    """
+    An identified for the training dataset used for logging
+    """
+
+    val_dataset_name: str = "no_val_dataset_name_given"
+    """
+    An identified for the training dataset used for logging
+    """
+
 
 @dataclass
 class NeoXArgsOptimizer(NeoXArgsTemplate):
@@ -549,9 +565,29 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     Number of iterations to decay learning rate over, If None defaults to --train-iters
     """
 
+    constant_iters_percent: float = None
+    """
+    Percent of total iterations to use constant learning rate for. If None, defaults to 0.
+    """
+
+    cooldown_iters_percent: float = None
+    """
+    Percent of total iterations to cooldown the learning rate for. If None, defaults to 0.
+    """
+
+    timescale: int = None
+    """
+    Defines the steepness of the cooldown curve.
+    """
+
     min_lr: float = 0.0
     """
     Minimum value for learning rate. The scheduler clips values below this threshold.
+    """
+
+    constant_lr: float = None
+    """
+    Constant learning rate. If set, overrides all other learning rate settings.
     """
 
     warmup: float = 0.01
@@ -567,6 +603,11 @@ class NeoXArgsLRScheduler(NeoXArgsTemplate):
     use_checkpoint_lr_scheduler: bool = False
     """
     Use checkpoint to set the values of the scheduler (learning rate, warmup iterations, minimum learning rate, maximum number of iterations, and decay style from checkpoint and ignore input arguments.
+    """
+
+    num_repeats: int = 1
+    """
+    the number of times the smalle schedule is repeated for infinite cosine decay
     """
 
 
@@ -816,9 +857,10 @@ class NeoXArgsTokenizer(NeoXArgsTemplate):
         "SPMTokenizer",
         "CharLevelTokenizer",
         "TiktokenTokenizer",
+        "Llama3HFTokenizer",
     ] = "GPT2BPETokenizer"
     """
-    Type of tokenizer to use - should be one of ["GPT2BPETokenizer", "HFTokenizer", "HFGPT2Tokenizer", "SPMTokenizer", "CharLevelTokenizer", "TiktokenTokenizer"]
+    Type of tokenizer to use - should be one of ["GPT2BPETokenizer", "HFTokenizer", "HFGPT2Tokenizer", "SPMTokenizer", "CharLevelTokenizer", "TiktokenTokenizer", "Llama3HFTokenizer"]
     """
 
     padded_vocab_size: int = None

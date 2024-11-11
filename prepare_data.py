@@ -22,6 +22,7 @@ TOKENIZER_CHOICES = [
     "CharLevelTokenizer",
     "TiktokenTokenizer",
     "SPMTokenizer",
+    "Llama3HFTokenizer",
 ]
 DATASET_CHOICES = [i for i in DATA_DOWNLOADERS.keys() if i != "pass"]
 
