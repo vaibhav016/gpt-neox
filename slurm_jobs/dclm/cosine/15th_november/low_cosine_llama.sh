@@ -1,0 +1,33 @@
+#!/bin/bash
+#SBATCH --output=/ccs/home/vaibhav_016/bif151/scratch/vaibhav_016/slurm_logs/output/slurm-%j.out
+#SBATCH --error=/ccs/home/vaibhav_016/bif151/scratch/vaibhav_016/slurm_logs/error/slurm-%j.err
+#SBATCH --mail-user=vaibhavsinghfcos@gmail.com
+#SBATCH -A bif151
+#SBATCH -J llama_dclm_cos_low
+#SBATCH -t 24:00:00
+#SBATCH -p extended
+#SBATCH -N 8
+#SBATCH --mail-type=BEGIN,END,FAIL
+
+# Some potentially useful distributed environment variables
+export HOSTNAMES=`scontrol show hostnames "$SLURM_JOB_NODELIST"`
+export MASTER_ADDR=$(scontrol show hostnames "$SLURM_JOB_NODELIST" | head -n 1)
+export MASTER_PORT=12803
+export COUNT_NODE=`scontrol show hostnames "$SLURM_JOB_NODELIST" | wc -l`
+source /ccs/home/vaibhav_016/bif151/scratch/vaibhav_016/neox/gpt-neox/write_hostfile.sh
+export DLTS_HOSTFILE=/lustre/orion/bif151/scratch/vaibhav_016/neox/gpt-neox/hostfiles/hosts_$SLURM_JOBID
+# export DLTS_HOSTFILE=/lustre/orion/bif151/scratch/vaibhav_016/neox/gpt-neox/hostfiles/hosts_$SLURM_JOBID
+
+### Setup ####
+source /ccs/home/vaibhav_016/bif151/scratch/vaibhav_016/setup.sh
+
+### Running the training script ###
+cd /ccs/home/vaibhav_016/bif151/scratch/vaibhav_016/neox/gpt-neox
+# python deepy.py train.py --conf_dir configs llama2/410M.yml dataset_config/dclm/dclm_config_scratch.yml schedulers/cos/adam_cosine_lr3e-4_3e-5_wu-0.01.yml load_checkpoints/dclm/cosine/load_low.yml
+# python deepy.py train.py --conf_dir configs 49M.yml local_setup.yml
+# python deepy.py train.py --conf_dir configs llama2/410M.yml dataset_config/dclm/dclm_config_scratch.yml schedulers/cos/adam_cosine_lr3e-4_3e-5_wu-0.01.yml load_checkpoints/dclm/cosine/load_scratch.yml
+# python deepy.py train.py --conf_dir configs llama2/slurm_410.yml dataset_config/dclm/dclm_config_scratch.yml schedulers/cos/adam_cosine_lr3e-4_3e-5_wu-0.01.yml load_checkpoints/dclm/cosine/load_scratch.yml
+
+
+
+exit 0

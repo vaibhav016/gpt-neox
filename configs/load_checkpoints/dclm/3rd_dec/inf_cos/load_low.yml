@@ -1,0 +1,4 @@
+{
+  "load": "checkpoints_3rd_dec/dclm/inf_cos/low",
+  "save": "checkpoints_3rd_dec/dclm/inf_cos/low",
+}

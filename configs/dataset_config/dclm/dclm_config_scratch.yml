@@ -1,0 +1,29 @@
+# Suggested data paths when using GPT-NeoX locally
+{
+  # "data_path": "data/enwik8/enwik8_text_document",
+
+  # or for weighted datasets:
+  # "train-data-paths": ["data/enwik8/enwik8_text_document",],
+  # "test-data-paths": ["data/enwik8/enwik8_text_document",],
+  # "valid-data-paths": ["data/enwik8/enwik8_text_document",],
+
+  # "train-data-paths": ["data/data_shared/llama3_tokenized_datasets/dclm-baseline/train_400B/dclm-baseline/merged_train",],
+  # "test-data-paths": ["data/data_shared/llama3_tokenized_datasets/dclm-baseline/test/dclm-baseline/merged_test",],
+  # "valid-data-paths":["data/data_shared/llama3_tokenized_datasets/dclm-baseline/val/dclm-baseline/merged_val",],
+
+  "train-data-paths": ["data/dclm/train_400B/merged_train",],
+  "test-data-paths": ["data/dclm/test/merged_test",],
+  "valid-data-paths":["data/dclm/valid/merged_val",],
+
+  "train-data-weights": [1.,],
+  "test-data-weights": [1., ],
+  "valid-data-weights": [1.,],
+
+  "vocab_file": "data/Meta-Llama-3-8B/tokenizer.json",
+  "tokenizer_type": "Llama3HFTokenizer",
+
+  "train-dataset-name": 'dclm_train',
+  "val-dataset-name": 'dclm_val',
+
+  "checkpoint_validation_with_forward_pass": False,
+}

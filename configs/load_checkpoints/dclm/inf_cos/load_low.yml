@@ -1,0 +1,4 @@
+{
+  "load": "checkpoints/dclm/inf_cos/low/JOB-2819872__it-190735_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_constant_infinite_tr-dclm-train_resume",
+  "save": "checkpoints/dclm/inf_cos/low",
+}

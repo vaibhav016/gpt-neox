@@ -1,0 +1,4 @@
+{
+  "load": "checkpoints_3rd_dec/dclm/inf_cos/ablations/high/const_7",
+  "save": "checkpoints_3rd_dec/dclm/inf_cos/ablations/high/const_7",
+}

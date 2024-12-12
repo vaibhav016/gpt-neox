@@ -1,0 +1,4 @@
+{
+  "load": "checkpoints/dclm/cosine/low/JOB-2820084__it-190735_wu-0.01_mxlr-2e-06_mnlr-8e-08_sch-cosine_tr-dclm-train_resume",
+  "save": "checkpoints/dclm/cosine/low",
+}
