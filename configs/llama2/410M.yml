@@ -41,7 +41,7 @@
   "init_method": "small_init",
   "output_layer_init_method": "wang_init",
 
-   "train_micro_batch_size_per_gpu": 1,
+   "train_micro_batch_size_per_gpu": 4,
    "data_impl": "mmap",
 
    "checkpoint_activations": true,
@@ -68,7 +68,7 @@
    "eval_interval": 100,
    "eval_iters": 10,
 
-   "log_interval": 50,
+   "log_interval": 100,
    "steps_per_print": 100,
    # "keep_last_n_checkpoints": 4,
    "wall_clock_breakdown": true,

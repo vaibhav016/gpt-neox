@@ -1,0 +1,19 @@
+{
+"optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 1.0e-3,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8,
+    }
+  },
+  "min_lr": 3.0e-5,
+  "lr-decay-style": "cosine_constant_infinite",
+  "warmup": 0.01,
+  "constant_lr": 3.0e-4,
+  "constant_iters_percent" : 0.85,
+  "cooldown_iters_percent" : 0.6,
+  "timescale" : 10,
+  "tensorboard_dir": "tensorboard/dclm/inf_cos/high/ablation_3e_4",
+  "log_dir": "logs/dclm/inf_cos/high/ablation_3e_4",
+}

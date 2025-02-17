@@ -1,0 +1,5 @@
+{
+  "load": "checkpoints_3rd_dec/german/cos/low/JOB-2918323__it-47684_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-german-train_resume",
+  "save": "checkpoints_3rd_dec/german/cos/low",
+  "finetune": false,
+}

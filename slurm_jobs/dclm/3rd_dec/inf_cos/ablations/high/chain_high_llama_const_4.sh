@@ -4,12 +4,12 @@
 #SBATCH --mail-user=vaibhavsinghfcos@gmail.com
 #SBATCH -A bif151
 #SBATCH -J dc.ih.4
-#SBATCH -t 6:00:00
+#SBATCH -t 2:00:00
 #SBATCH -p batch
-#SBATCH -N 128
+#SBATCH -N 32
 #SBATCH --mail-type=BEGIN,END,FAIL
 
-SECONDS_BEFORE_EXIT=21420  # 2 hour 57 minutes (for a 2-hour job)
+SECONDS_BEFORE_EXIT=7020  # 2 hour 57 minutes (for a 2-hour job)
 
 # Recompute the host file
 export HOSTNAMES=`scontrol show hostnames "$SLURM_JOB_NODELIST"`

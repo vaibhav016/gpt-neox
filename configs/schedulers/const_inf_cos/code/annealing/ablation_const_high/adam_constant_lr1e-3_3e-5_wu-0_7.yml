@@ -1,0 +1,22 @@
+{
+"optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 7.0e-4,
+      "betas": [0.9, 0.95],
+      "eps": 1.0e-8,
+    }
+  },
+  "min_lr": 7.0e-4,
+  "lr-decay-style": "cosine_cooldown_infinite",
+  "warmup": 0,
+  "min_lr": 3.0e-5,
+  "constant_lr": 7.0e-4,
+  "constant_iters_percent" : 0.85,
+  "cooldown_iters_percent" : 0.6,
+  "timescale" : 10,
+  "override_lr_scheduler": True, # setting this to True, since we want to train on code for a constant lr
+  "use_checkpoint_lr_scheduler": False, # Again, we dont want to use the checkpoint's LR schedular. 
+  "tensorboard_dir": "tensorboard/code/inf_cos/high/anneal/ablation_7e_4",
+  "log_dir": "logs/code/inf_cos/high/anneal/ablation_7e_4",
+}

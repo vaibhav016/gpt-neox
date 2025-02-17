@@ -68,7 +68,7 @@ def make_dataset(path, impl, skip_warmup=False):
         return None
     if impl == "infer":
         impl = infer_dataset_impl(path)
-    elif impl == "cached" and IndexedDataset.exists(path):
+    if impl == "cached" and IndexedDataset.exists(path):
         return IndexedCachedDataset(path)
     elif impl == "mmap" and MMapIndexedDataset.exists(path):
         return MMapIndexedDataset(path, skip_warmup)

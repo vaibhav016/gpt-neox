@@ -1,0 +1,5 @@
+{
+  "load": "checkpoints_3rd_dec/code/inf_cos/high/JOB-3019839__it-47684_wu-0_mxlr-0.0005_mnlr-3e-05_sch-cosine_cooldown_infinite_tr-code-train_resume",
+  "save": "checkpoints_3rd_dec/code/inf_cos/high",
+  "finetune": false,
+}

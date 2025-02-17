@@ -1,0 +1,5 @@
+{
+  "load": "checkpoints_3rd_dec/code/inf_cos/ablations/cooldown_proportion_0.3/replay/const_1p/JOB-3027139__it-47684_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_constant_infinite_tr-dclm-train_resume",
+  "save": "checkpoints_3rd_dec/code/inf_cos/ablations/cooldown_proportion_0.3/replay/const_1p_exp",
+  "finetune": true,
+}

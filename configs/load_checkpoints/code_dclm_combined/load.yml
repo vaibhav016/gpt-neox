@@ -1,0 +1,5 @@
+{
+  "load": "checkpoints_3rd_dec/code_dclm_combined/JOB-3045968__it-95368_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-code-dclm-train_resume",
+  "save": "checkpoints_3rd_dec/code_dclm_combined",
+  "finetune": false,
+}

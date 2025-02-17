@@ -145,9 +145,6 @@ class AnnealingLR(object):
                     exp_factor = -math.log(self.min_lr/self.constant_lr) / end_iter_
                     lr = self.constant_lr * math.exp(-1* exp_factor * num_iters_)
 
-
-
-
         else:
             lr = self.start_lr
         return max(lr, self.min_lr)

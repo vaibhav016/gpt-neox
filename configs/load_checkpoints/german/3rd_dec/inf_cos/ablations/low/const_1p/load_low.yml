@@ -1,0 +1,5 @@
+{
+  "load": "checkpoints_3rd_dec/german/inf_cos/ablations/low/const_1p/JOB-3020681__it-47684_wu-0_mxlr-0.0001_mnlr-3e-05_sch-cosine_cooldown_infinite_tr-german-train_resume",
+  "save": "checkpoints_3rd_dec/german/inf_cos/ablations/low/const_1p",
+  "finetune": false,
+}

@@ -4,9 +4,9 @@
 #SBATCH --mail-user=vaibhavsinghfcos@gmail.com
 #SBATCH -A bif151
 #SBATCH -J dc.ic.hi
-#SBATCH -t 6:00:00
-#SBATCH -p batch
-#SBATCH -N 128
+#SBATCH -t 24:00:00
+#SBATCH -p extended
+#SBATCH -N 32
 #SBATCH --mail-type=BEGIN,END,FAIL
 
 SECONDS_BEFORE_EXIT=86100  # 23 hour 57 minutes (for a 24-hour job)

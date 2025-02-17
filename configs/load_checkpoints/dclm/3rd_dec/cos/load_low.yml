@@ -1,4 +1,4 @@
 {
-  "load": "checkpoints_3rd_dec/dclm/cos/low",
+  "load": "checkpoints_3rd_dec/dclm/cos/low/JOB-2884971__it-47684_wu-0.01_mxlr-0.0003_mnlr-3e-05_sch-cosine_tr-dclm-train_resume",
   "save": "checkpoints_3rd_dec/dclm/cos/low",
 }

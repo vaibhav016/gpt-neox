@@ -11,6 +11,6 @@
   "lr-decay-style": "cosine",
   "warmup": 0.01,
   "constant_iters_percent" : 0.85, # This argument does not affect lr, its only required to save the model(HACKY solution)
-  "tensorboard_dir": "tensorboard/dclm/cos/low",  
-  "log_dir": "logs/dclm/cos/low",
+  "tensorboard_dir": "tensorboard/code_dclm_combined/",  
+  "log_dir": "logs/code_dclm_combined/",
 }

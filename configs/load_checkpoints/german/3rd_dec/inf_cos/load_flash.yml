@@ -1,0 +1,4 @@
+{
+  "load": "checkpoints/dclm/inf_cos/high_flash",
+  "save": "checkpoints/dclm/inf_cos/high_flash",
+}

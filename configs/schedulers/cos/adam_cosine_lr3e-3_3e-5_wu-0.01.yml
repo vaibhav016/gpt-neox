@@ -13,4 +13,7 @@
   "constant_iters_percent" : 0.85, # This argument does not affect lr, its only required to save the model(HACKY solution)
   "tensorboard_dir": "tensorboard/dclm/cos/high",
   "log_dir": "logs/dclm/cos/high",
+  "override_lr_scheduler": True, # setting this to True, since we want to train on german for a constant lr
+  "use_checkpoint_lr_scheduler": False, # Again, we dont want to use the checkpoint's LR schedular. 
+ 
 }

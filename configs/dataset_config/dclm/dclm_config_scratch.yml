@@ -13,11 +13,11 @@
 
   "train-data-paths": ["data/dclm/train_400B/merged_train",],
   "test-data-paths": ["data/dclm/test/merged_test",],
-  "valid-data-paths":["data/dclm/valid/merged_val",],
+  "valid-data-paths":[["data/dclm/valid/merged_val"],],
 
   "train-data-weights": [1.,],
   "test-data-weights": [1., ],
-  "valid-data-weights": [1.,],
+  "valid-data-weights": [[1.],],
 
   "vocab_file": "data/Meta-Llama-3-8B/tokenizer.json",
   "tokenizer_type": "Llama3HFTokenizer",

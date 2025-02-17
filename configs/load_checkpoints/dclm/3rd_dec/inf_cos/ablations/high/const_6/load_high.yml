@@ -1,4 +1,4 @@
 {
-  "load": "checkpoints_3rd_dec/dclm/inf_cos/ablations/high/const_6",
+  "load": "checkpoints_3rd_dec/dclm/inf_cos/ablations/high/const_6/JOB-2884710__it-47684_wu-0.01_mxlr-0.001_mnlr-3e-05_sch-cosine_constant_infinite_tr-dclm-train_resume",
   "save": "checkpoints_3rd_dec/dclm/inf_cos/ablations/high/const_6",
 }
